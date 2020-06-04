@@ -27,7 +27,7 @@ export const useApiCall = ({ fetcher, args, onSuccess, onFail }) => {
       }));
       onFail && onFail(error);
     }
-  }, [fetcher, onSuccess, onFail]);
+  }, [fetcher, onSuccess, onFail, args]);
 
   return { data, loading, error, trigger };
 };

@@ -7,6 +7,7 @@ import {
   getAxesSize,
   getAxesTotal,
   updateAxesPagination,
+  getAxesLoading,
 } from "./redux/axesSlice";
 import {
   Table,
@@ -16,8 +17,9 @@ import {
   TableBody,
   makeStyles,
   TableFooter,
+  CircularProgress,
 } from "@material-ui/core";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import TablePaginator from "components/pagination/table-pagination";
 
 const useStyles = makeStyles({
@@ -33,9 +35,10 @@ const Axes = () => {
   const dispatch = useDispatch();
   const page = useSelector(getAxesPage);
   const size = useSelector(getAxesSize);
+  const loading = useSelector(getAxesLoading);
   useEffect(() => {
     dispatch(fetchAxes());
-  }, [page, size]);
+  }, [page, size, dispatch]);
 
   const handleRowClick = (axe) => () => {
     history.push(`/axe/${axe.slug}`);
@@ -56,6 +59,13 @@ const Axes = () => {
           </TableRow>
         </TableHead>
         <TableBody>
+          {loading && (
+            <TableRow>
+              <TableCell colSpan={4} align="center">
+                <CircularProgress />
+              </TableCell>
+            </TableRow>
+          )}
           {axes.map((axe) => (
             <TableRow
               className={classes.row}

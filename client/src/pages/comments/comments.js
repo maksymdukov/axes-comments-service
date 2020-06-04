@@ -29,7 +29,7 @@ const Comments = () => {
 
   useEffect(() => {
     dispatch(fetchAllComments());
-  }, [page, size, statusFilter]);
+  }, [page, size, statusFilter, dispatch]);
 
   const onApproveSuccess = (comment) => () => {
     if (statusFilter === "") {

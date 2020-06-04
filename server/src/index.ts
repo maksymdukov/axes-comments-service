@@ -4,8 +4,6 @@ import cors from 'cors';
 import { router } from './routes';
 import { errorHandler } from './middlewares/error-handler';
 
-const isDev = process.env.NODE_ENV !== 'production';
-
 const app = express();
 
 app.use(cors());
@@ -18,7 +16,7 @@ app.get('/', (req, res) => {
 app.use('/api', router);
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.SERVER_PORT || 3001;
 
 const start = async () => {
   if (!process.env.MONGODB_URI) {

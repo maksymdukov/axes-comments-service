@@ -10,7 +10,6 @@ import {
 } from "@material-ui/core";
 import StatusButton from "components/buttons/comment-status";
 import DeleteCommentButton from "components/buttons/delete-comment";
-import { useDispatch } from "react-redux";
 import clsx from "clsx";
 import moment from "moment";
 

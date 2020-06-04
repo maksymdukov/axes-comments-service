@@ -1,4 +1,4 @@
-import { Router, Request, Response, NextFunction } from 'express';
+import { Router, Request, Response } from 'express';
 import { body } from 'express-validator';
 import { validateInput } from '../../middlewares/validate-input';
 import { Comment } from '../../models/comments/comment';
@@ -17,7 +17,7 @@ router.post(
       .withMessage('rating should be between 1 and 5'),
   ],
   validateInput,
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response) => {
     const { slug, name, message, rating } = req.body;
     const comment = Comment.build({
       author: { name },

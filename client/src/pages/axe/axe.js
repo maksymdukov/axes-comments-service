@@ -12,7 +12,7 @@ import {
   changeStatusFilterAxe,
   getAxeOnComments,
 } from "./redux/commentsSlice";
-import { Typography, makeStyles } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import Paginator from "components/pagination/pagination";
 import AxeTitle from "./components/axe-title";
 import Filters from "components/layout/filters";
@@ -32,7 +32,7 @@ const Axe = ({
 
   useEffect(() => {
     dispatch(fetchCommentsBySlug(slug));
-  }, [page, size, statusFilter]);
+  }, [page, size, statusFilter, dispatch, slug]);
 
   const onApproveSuccess = (comment) => () => {
     dispatch(

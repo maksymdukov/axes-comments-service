@@ -44,6 +44,7 @@ export const getAxesPage = (state) => state.axes.page;
 export const getAxesSize = (state) => state.axes.size;
 export const getAxesTotal = (state) => state.axes.total;
 export const getAxes = (state) => state.axes.items;
+export const getAxesLoading = (state) => state.axes.loading;
 
 export const fetchAxes = () => async (dispatch, getState) => {
   try {

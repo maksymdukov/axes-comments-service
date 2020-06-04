@@ -30,7 +30,7 @@ const StatusButton = ({
     return commentIds;
   }, [commentIds]);
   const args = useMemo(() => ({ status, comments: commentIdsMemo }), [
-    commentIds,
+    commentIdsMemo,
     status,
   ]);
   const { trigger, loading } = useApiCall({
