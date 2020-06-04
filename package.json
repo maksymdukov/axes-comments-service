@@ -8,9 +8,9 @@
     "all:dev": "npm run server:dev & npm run client:dev",
     "all:prod": "npm run client:build && npm run server:prod",
     "server:dev": "cd server && npm run dev",
-    "server:prod": "cd server && npm run prod",
+    "server:prod": "cd server &&  npm install && npm run prod",
     "client:dev": "cd client && npm run start",
-    "client:build": "cd client && npm run build",
+    "client:build": "cd client && npm install && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
