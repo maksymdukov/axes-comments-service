@@ -23,7 +23,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 app.use(errorHandler);
 
-const PORT = process.env.SERVER_PORT || 3001;
+const PORT = process.env.PORT || 80;
 
 const start = async () => {
   if (!process.env.MONGODB_URI) {
