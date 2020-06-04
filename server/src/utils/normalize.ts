@@ -32,7 +32,7 @@ export interface Axe {
   };
 }
 
-interface NormilizedAxe {
+export interface NormilizedAxe {
   id: string;
   createdAt: string;
   updatedAt: string;
@@ -71,8 +71,8 @@ export const normilizeAxeEntry = (axe: Entry<AxeEntry>) => {
     description,
     price,
     image: null,
-    pendingCount,
-    approvedCount,
+    ...(pendingCount && { pendingCount }),
+    ...(approvedCount && { approvedCount }),
   };
   if (images && images.length) {
     resultingObject.image = {

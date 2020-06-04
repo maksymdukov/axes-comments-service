@@ -3,6 +3,13 @@ export interface PaginationAttrs {
   size?: string;
 }
 
+export interface PaginatedOutput<T> {
+  items: T[];
+  total: number;
+  size: number;
+  page: number;
+}
+
 const DEFAULT_PAGE_NUMBER = '1';
 const DEFAULT_PAGE_SIZE = '10';
 

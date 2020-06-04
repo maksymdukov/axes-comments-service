@@ -1,6 +1,13 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAxes, getAxes } from "./redux/axesSlice";
+import {
+  fetchAxes,
+  getAxes,
+  getAxesPage,
+  getAxesSize,
+  getAxesTotal,
+  updateAxesPagination,
+} from "./redux/axesSlice";
 import {
   Table,
   TableHead,
@@ -8,8 +15,10 @@ import {
   TableCell,
   TableBody,
   makeStyles,
+  TableFooter,
 } from "@material-ui/core";
 import { Link, useHistory } from "react-router-dom";
+import TablePaginator from "components/pagination/table-pagination";
 
 const useStyles = makeStyles({
   row: {
@@ -22,9 +31,11 @@ const Axes = () => {
   const axes = useSelector(getAxes);
   const history = useHistory();
   const dispatch = useDispatch();
+  const page = useSelector(getAxesPage);
+  const size = useSelector(getAxesSize);
   useEffect(() => {
     dispatch(fetchAxes());
-  }, []);
+  }, [page, size]);
 
   const handleRowClick = (axe) => () => {
     history.push(`/axe/${axe.slug}`);
@@ -67,6 +78,17 @@ const Axes = () => {
             </TableRow>
           ))}
         </TableBody>
+        <TableFooter>
+          <TableRow>
+            <TablePaginator
+              getPage={getAxesPage}
+              getSize={getAxesSize}
+              getTotal={getAxesTotal}
+              colSpan={4}
+              updatePagination={updateAxesPagination}
+            />
+          </TableRow>
+        </TableFooter>
       </Table>
     </div>
   );

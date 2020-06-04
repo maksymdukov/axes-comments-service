@@ -1,6 +1,10 @@
 import mongoose from 'mongoose';
 import { CommentStatus } from './status';
-import { getPaginationQuery, PaginationAttrs } from '../../utils/pagination';
+import {
+  getPaginationQuery,
+  PaginationAttrs,
+  PaginatedOutput,
+} from '../../utils/pagination';
 import { AxeEntry } from '../../utils/normalize';
 import { Entry } from 'contentful';
 
@@ -35,7 +39,7 @@ interface CommentModel extends mongoose.Model<CommentDocument> {
   findApprovedBySlug(slug: string): Promise<CommentDocument[]>;
   findByStatusAndSlug(
     attrs: FindByStatusAttrs
-  ): Promise<{ total: number; comments: CommentDocument[] }>;
+  ): Promise<PaginatedOutput<CommentDocument>>;
   countPendingBySlugs(axes: Entry<AxeEntry>[]): Promise<Entry<AxeEntry>[]>;
 }
 

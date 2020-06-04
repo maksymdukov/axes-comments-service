@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { fetchAxesApi } from "./fetchAxes.api";
+import { paginationState, paginationReducer } from "utils/pagination/reducer";
 
 export const axesSlice = createSlice({
   name: "axes",
@@ -7,9 +8,7 @@ export const axesSlice = createSlice({
     items: [],
     loading: false,
     error: null,
-    page: 1,
-    size: 10,
-    total: null,
+    ...paginationState,
   },
   reducers: {
     fetchStart: (state) => {
@@ -30,13 +29,20 @@ export const axesSlice = createSlice({
       state.items = [];
       state.error = payload.error || "error";
     },
+    ...paginationReducer,
   },
 });
 
-export const { fetchFail, fetchStart, fetchSuccess } = axesSlice.actions;
+export const {
+  fetchFail,
+  fetchStart,
+  fetchSuccess,
+  updatePagination: updateAxesPagination,
+} = axesSlice.actions;
 
 export const getAxesPage = (state) => state.axes.page;
 export const getAxesSize = (state) => state.axes.size;
+export const getAxesTotal = (state) => state.axes.total;
 export const getAxes = (state) => state.axes.items;
 
 export const fetchAxes = () => async (dispatch, getState) => {

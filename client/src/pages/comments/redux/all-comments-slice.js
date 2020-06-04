@@ -1,11 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchCommentsApi } from "./fetchComments.api";
 import { paginationState, paginationReducer } from "utils/pagination/reducer";
+import { fetchAllCommentsApi } from "./all-comments.api";
 
-export const commentsSlice = createSlice({
-  name: "axe",
+export const allCommentsSlice = createSlice({
+  name: "allComments",
   initialState: {
-    axe: null,
     items: [],
     loading: false,
     error: null,
@@ -14,25 +13,18 @@ export const commentsSlice = createSlice({
   },
   reducers: {
     fetchStart: (state) => {
-      // Redux Toolkit allows us to write "mutating" logic in reducers. It
-      // doesn't actually mutate the state because it uses the Immer library,
-      // which detects changes to a "draft state" and produces a brand new
-      // immutable state based off those changes
       state.loading = true;
       state.items = [];
-      state.axe = null;
     },
     fetchSuccess: (state, { payload }) => {
       state.loading = false;
       state.items = payload.items;
       state.total = payload.total;
-      state.axe = payload.axe;
     },
     fetchFail: (state, { payload }) => {
       state.loading = false;
       state.items = [];
       state.error = payload.error || "error";
-      state.axe = null;
     },
     changeStatusFilter: (state, { payload }) => {
       state.statusFilter = payload.statusFilter;
@@ -53,31 +45,32 @@ export const {
   fetchFail,
   fetchStart,
   fetchSuccess,
-  updatePagination: updateCommentPagination,
-  changeComment,
-  changeStatusFilter: changeStatusFilterAxe,
-} = commentsSlice.actions;
+  updatePagination: updateAllCommentsPagination,
+  changeComment: changeCommentAll,
+  changeStatusFilter: changeStatusFilterAllComments,
+} = allCommentsSlice.actions;
 
-export const getCommentsPage = (state) => state.axe.page;
-export const getCommentsSize = (state) => state.axe.size;
-export const getCommentsTotal = (state) => state.axe.total;
-export const getCommentsBySlug = (state) => state.axe.items;
-export const getAxeOnComments = (state) => state.axe.axe;
-export const getAxeStatusFilter = (state) => state.axe.statusFilter;
+export const getAllCommentsLoading = (state) => state.allComments.loading;
+export const getAllCommentsPage = (state) => state.allComments.page;
+export const getAllCommentsSize = (state) => state.allComments.size;
+export const getAllCommentsTotal = (state) => state.allComments.total;
+export const getAllComments = (state) => state.allComments.items;
+export const getAllCommentsStatusFilter = (state) =>
+  state.allComments.statusFilter;
 
-export const fetchCommentsBySlug = (slug) => async (dispatch, getState) => {
+export const fetchAllComments = () => async (dispatch, getState) => {
   try {
     const state = getState();
-    const page = getCommentsPage(state);
-    const size = getCommentsSize(state);
-    const statusFilter = getAxeStatusFilter(state);
+    const page = getAllCommentsPage(state);
+    const size = getAllCommentsSize(state);
+    const statusFilter = getAllCommentsStatusFilter(state);
     dispatch(fetchStart());
-    const { data } = await fetchCommentsApi({ page, size, slug, statusFilter });
-    dispatch(
-      fetchSuccess({ items: data.items, total: data.total, axe: data.axe })
-    );
+    const { data } = await fetchAllCommentsApi({ page, size, statusFilter });
+    dispatch(fetchSuccess({ items: data.items, total: data.total }));
   } catch (error) {
-    dispatch(fetchFail({ error }));
+    console.log(error);
+
+    dispatch(fetchFail({}));
   }
 };
 
@@ -86,4 +79,4 @@ export const fetchCommentsBySlug = (slug) => async (dispatch, getState) => {
 // will call the thunk with the `dispatch` function as the first argument. Async
 // code can then be executed and other actions can be dispatched
 
-export const commentsReducer = commentsSlice.reducer;
+export const allCommentsReducer = allCommentsSlice.reducer;

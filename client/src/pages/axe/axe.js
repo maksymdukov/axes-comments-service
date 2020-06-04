@@ -1,15 +1,22 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCommentsBySlug, getCommentsBySlug } from "./redux/commentsSlice";
 import {
-  Card,
-  CardContent,
-  Typography,
-  CardActions,
-  Button,
-  Box,
-} from "@material-ui/core";
-import moment from "moment";
+  fetchCommentsBySlug,
+  getCommentsBySlug,
+  getCommentsPage,
+  getCommentsSize,
+  getCommentsTotal,
+  updateCommentPagination,
+  changeComment,
+  getAxeStatusFilter,
+  changeStatusFilterAxe,
+  getAxeOnComments,
+} from "./redux/commentsSlice";
+import { Typography, makeStyles } from "@material-ui/core";
+import Paginator from "components/pagination/pagination";
+import AxeTitle from "./components/axe-title";
+import Filters from "components/layout/filters";
+import CommentCard from "components/cards/comment-card";
 
 const Axe = ({
   match: {
@@ -18,61 +25,70 @@ const Axe = ({
 }) => {
   const dispatch = useDispatch();
   const comments = useSelector(getCommentsBySlug);
+  const page = useSelector(getCommentsPage);
+  const size = useSelector(getCommentsSize);
+  const axe = useSelector(getAxeOnComments);
+  const statusFilter = useSelector(getAxeStatusFilter);
 
   useEffect(() => {
     dispatch(fetchCommentsBySlug(slug));
-  }, []);
+  }, [page, size, statusFilter]);
+
+  const onApproveSuccess = (comment) => () => {
+    dispatch(
+      changeComment({ id: comment.id, updatedComment: { status: "approved" } })
+    );
+  };
+
+  const onSuspendSuccess = (comment) => () => {
+    dispatch(
+      changeComment({ id: comment.id, updatedComment: { status: "pending" } })
+    );
+  };
+
+  const onDeleteSuccess = () => {
+    dispatch(fetchCommentsBySlug(slug));
+  };
 
   return (
     <div>
+      <AxeTitle axe={axe} />
+      <Typography align="center" variant="h4">
+        Комментарии:
+      </Typography>
+      <Filters
+        pageSizeProps={{
+          options: [5, 10, 20],
+          updatePagination: updateCommentPagination,
+          getSize: getCommentsSize,
+        }}
+        statusFilterProps={{
+          getStatusFilter: getAxeStatusFilter,
+          updateStatusFilter: changeStatusFilterAxe,
+        }}
+      />
       {comments.map((comment) => (
-        <Box key={comment.id} mb={2}>
-          <Card elevation={3}>
-            <CardContent>
-              <Typography gutterBottom variant="h5" component="h2">
-                {comment.author.name}
-              </Typography>
-              <Typography gutterBottom variant="caption">
-                Дата: {moment(comment.createdAt).fromNow()}
-              </Typography>
-              <Typography
-                variant="body2"
-                color="textPrimary"
-                component="p"
-                gutterBottom
-              >
-                {comment.message}
-              </Typography>
-              <Typography
-                variant="subtitle1"
-                color={comment.status === "pending" ? "error" : "primary"}
-              >
-                Статус: {comment.status === "pending" ? "Ожидает" : "Одобрен"}
-              </Typography>
-            </CardContent>
-            <CardActions>
-              {comment.status === "pending" && (
-                <Button size="small" variant="contained" color="primary">
-                  Одобрить
-                </Button>
-              )}
-              <Button size="small" variant="outlined" color="secondary">
-                Удалить
-              </Button>
-            </CardActions>
-          </Card>
-        </Box>
+        <CommentCard
+          key={comment.id}
+          comment={comment}
+          onApproveSuccess={onApproveSuccess(comment)}
+          onDeleteSuccess={onDeleteSuccess}
+          onSuspendSuccess={onSuspendSuccess(comment)}
+        />
       ))}
+      {!comments.length && (
+        <Typography align="center" variant="h6">
+          Не данных
+        </Typography>
+      )}
+      <Paginator
+        getPage={getCommentsPage}
+        getSize={getCommentsSize}
+        getTotal={getCommentsTotal}
+        updatePagination={updateCommentPagination}
+      />
     </div>
   );
 };
 
 export default Axe;
-
-// author: {name: "maksym dukov"}
-// createdAt: "2020-06-03T15:32:44.625Z"
-// id: "5ed7c29c8c76c05965a134f3"
-// message: "testmessage"
-// slug: "sokira-pokhidna-turistichna-z-keltskim-vizerunkom-sonce"
-// status: "approved"
-// updatedAt: "2020-06-03T16:16:27.291Z"
