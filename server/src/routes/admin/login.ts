@@ -5,11 +5,9 @@ import jsonwebtoken from 'jsonwebtoken';
 import { getDecodedGoogleToken } from '../../services/google';
 import { AuthorizationError } from '../../errors/authorization-error';
 import { config } from '../../config/config';
+import { User } from '../../models/users/user';
 
 const router = Router();
-
-// TODO move to DB
-const adminEmails = [config.ADMIN_EMAIL];
 
 router.post(
   '/login',
@@ -18,7 +16,11 @@ router.post(
   async (req: Request, res: Response) => {
     const { code }: { code: string } = req.body;
     const decodedGoogleToken = await getDecodedGoogleToken(code);
-    if (adminEmails.includes(decodedGoogleToken.email)) {
+    const user = await User.find({
+      email: decodedGoogleToken.email,
+      isAdmin: true,
+    });
+    if (user) {
       const ownToken = jsonwebtoken.sign(
         { email: decodedGoogleToken.email },
         config.JWT_KEY,

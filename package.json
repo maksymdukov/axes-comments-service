@@ -5,6 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "heroku local -f Procfile.dev -e .env.development",
+    "all:dev": "npm run server:dev & npm run client:dev",
+    "server:dev": "cd server && npm run dev",
+    "client:dev": "cd client && npm run start",
     "heroku-postbuild": "cd server && npm install && npm run build && cd ../client && npm install && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "cd server && npm run start"
