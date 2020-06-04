@@ -58,6 +58,7 @@ export const {
   changeStatusFilter: changeStatusFilterAxe,
 } = commentsSlice.actions;
 
+export const getCommentsLoading = (state) => state.axe.loading;
 export const getCommentsPage = (state) => state.axe.page;
 export const getCommentsSize = (state) => state.axe.size;
 export const getCommentsTotal = (state) => state.axe.total;

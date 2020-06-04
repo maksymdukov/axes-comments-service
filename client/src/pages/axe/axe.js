@@ -11,8 +11,9 @@ import {
   getAxeStatusFilter,
   changeStatusFilterAxe,
   getAxeOnComments,
+  getCommentsLoading,
 } from "./redux/commentsSlice";
-import { Typography } from "@material-ui/core";
+import { Typography, Box, CircularProgress } from "@material-ui/core";
 import Paginator from "components/pagination/pagination";
 import AxeTitle from "./components/axe-title";
 import Filters from "components/layout/filters";
@@ -28,6 +29,7 @@ const Axe = ({
   const page = useSelector(getCommentsPage);
   const size = useSelector(getCommentsSize);
   const axe = useSelector(getAxeOnComments);
+  const loading = useSelector(getCommentsLoading);
   const statusFilter = useSelector(getAxeStatusFilter);
 
   useEffect(() => {
@@ -76,10 +78,15 @@ const Axe = ({
           onSuspendSuccess={onSuspendSuccess(comment)}
         />
       ))}
-      {!comments.length && (
+      {!comments.length && !loading && (
         <Typography align="center" variant="h6">
           Не данных
         </Typography>
+      )}
+      {loading && (
+        <Box textAlign="center">
+          <CircularProgress />
+        </Box>
       )}
       <Paginator
         getPage={getCommentsPage}
