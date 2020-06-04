@@ -5,6 +5,7 @@
   "main": "src/index.ts",
   "scripts": {
     "dev": "nodemon src/index.ts",
+    "prod": "NODE_ENV=production ts-node src/index.ts",
     "eslint": "eslint ./",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

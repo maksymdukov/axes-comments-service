@@ -34,9 +34,15 @@ type FindByStatusAttrs = {
   slug?: string;
 } & PaginationAttrs;
 
+type FindApprovedBySlugAttrs = {
+  slug: string;
+} & PaginationAttrs;
+
 interface CommentModel extends mongoose.Model<CommentDocument> {
   build(attrs: CommentAttrs): CommentDocument;
-  findApprovedBySlug(slug: string): Promise<CommentDocument[]>;
+  findApprovedBySlug(
+    attrs: FindApprovedBySlugAttrs
+  ): Promise<PaginatedOutput<CommentDocument[]>>;
   findByStatusAndSlug(
     attrs: FindByStatusAttrs
   ): Promise<PaginatedOutput<CommentDocument>>;
@@ -89,10 +95,19 @@ commentSchema.statics.build = function (attrs: CommentAttrs) {
   });
 };
 
-commentSchema.statics.findApprovedBySlug = function (slug: string) {
-  return Comment.find({ slug, status: CommentStatus.approved }, null, {
+commentSchema.statics.findApprovedBySlug = async function ({
+  page,
+  size,
+  slug,
+}: FindApprovedBySlugAttrs) {
+  const dbQuery = { slug, status: CommentStatus.approved };
+  const total = await Comment.countDocuments(dbQuery);
+  const { pgQuery, pg, sz } = getPaginationQuery({ page, size });
+  const comments = await Comment.find(dbQuery, null, {
     sort: { createdAt: -1 },
+    ...pgQuery,
   });
+  return { total, items: comments, page: pg, size: sz };
 };
 
 commentSchema.statics.findByStatusAndSlug = async function ({
