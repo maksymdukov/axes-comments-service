@@ -57,6 +57,12 @@ const CommentCard = ({
               <Typography gutterBottom variant="h5" component="h2">
                 {comment.author.name}
               </Typography>
+              {comment.author.email && (
+                <Typography gutterBottom variant="body2">
+                  <span className={classes.bold}>Email</span>:{" "}
+                  {comment.author.email}
+                </Typography>
+              )}
               <Typography gutterBottom variant="caption">
                 <span className={classes.bold}>Дата</span>:{" "}
                 {moment(comment.createdAt).fromNow()}

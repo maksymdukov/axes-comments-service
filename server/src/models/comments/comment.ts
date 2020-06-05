@@ -12,6 +12,7 @@ interface CommentDocument extends mongoose.Document {
   slug: string;
   author: {
     name: string;
+    email: string;
   };
   status: CommentStatus;
   rating?: number;
@@ -24,6 +25,7 @@ interface CommentAttrs {
   slug: string;
   author: {
     name: string;
+    email: string;
   };
   rating?: number;
   message: string;
@@ -57,6 +59,10 @@ const commentSchema = new mongoose.Schema(
     },
     author: {
       name: {
+        type: String,
+        required: true,
+      },
+      email: {
         type: String,
         required: true,
       },
@@ -103,7 +109,8 @@ commentSchema.statics.findApprovedBySlug = async function ({
   const dbQuery = { slug, status: CommentStatus.approved };
   const total = await Comment.countDocuments(dbQuery);
   const { pgQuery, pg, sz } = getPaginationQuery({ page, size });
-  const comments = await Comment.find(dbQuery, null, {
+  // exclude author's email
+  const comments = await Comment.find(dbQuery, '-author.email', {
     sort: { createdAt: -1 },
     ...pgQuery,
   });

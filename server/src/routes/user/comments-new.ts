@@ -9,6 +9,7 @@ router.post(
   '/comments',
   [
     body('slug').isLength({ min: 3 }).withMessage('slug is required'),
+    body('email').isEmail().withMessage('email is required'),
     body('name').isLength({ min: 3 }).withMessage('name is required'),
     body('message').isLength({ min: 3 }).withMessage('message is required'),
     body('rating')
@@ -18,9 +19,9 @@ router.post(
   ],
   validateInput,
   async (req: Request, res: Response) => {
-    const { slug, name, message, rating } = req.body;
+    const { slug, name, message, rating, email } = req.body;
     const comment = Comment.build({
-      author: { name },
+      author: { name, email },
       message,
       slug,
       rating,
