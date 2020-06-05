@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import {
   Box,
   Card,
@@ -22,9 +22,13 @@ const useStyles = makeStyles(({ palette }) => ({
   },
   commentLabel: {
     fontSize: "1rem",
+  },
+  bold: {
     fontWeight: "500",
   },
 }));
+
+const splitNewLines = (text) => text.split(/\r\n|\r|\n/g);
 
 const CommentCard = ({
   comment,
@@ -35,6 +39,15 @@ const CommentCard = ({
 }) => {
   const classes = useStyles();
 
+  const message = useMemo(
+    () =>
+      splitNewLines(comment.message).map((line, idx) => (
+        <React.Fragment key={idx}>
+          {line} <br />
+        </React.Fragment>
+      )),
+    [comment.message]
+  );
   return (
     <Box key={comment.id} mb={2}>
       <Card elevation={3}>
@@ -45,16 +58,31 @@ const CommentCard = ({
                 {comment.author.name}
               </Typography>
               <Typography gutterBottom variant="caption">
-                Дата: {moment(comment.createdAt).fromNow()}
+                <span className={classes.bold}>Дата</span>:{" "}
+                {moment(comment.createdAt).fromNow()}
               </Typography>
+              {comment.rating && (
+                <div>
+                  <Typography
+                    variant="subtitle1"
+                    component="span"
+                    className={clsx(classes.bold)}
+                  >
+                    Оценка: {`  `}
+                  </Typography>
+                  {comment.rating}
+                </div>
+              )}
               <Typography
                 variant="body2"
                 color="textPrimary"
                 component="div"
                 gutterBottom
               >
-                <div className={classes.commentLabel}>Комментарий:</div>
-                {comment.message}
+                <div className={clsx(classes.commentLabel, classes.bold)}>
+                  Комментарий:
+                </div>
+                {message}
               </Typography>
               <Typography
                 variant="subtitle1"
