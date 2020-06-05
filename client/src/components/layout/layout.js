@@ -19,6 +19,7 @@ import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
 import LogoutButton from "components/buttons/logout";
 import { Link, useLocation } from "react-router-dom";
+import RebuildBtn from "components/header/rebuild-btn";
 
 const drawerWidth = 240;
 
@@ -138,8 +139,9 @@ export default function Layout({ children }) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            Mini variant drawer
+            Админ панель
           </Typography>
+          <RebuildBtn />
           <LogoutButton className={classes.logout} />
         </Toolbar>
       </AppBar>

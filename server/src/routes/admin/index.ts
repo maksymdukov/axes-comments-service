@@ -4,6 +4,7 @@ import { getAdminComments } from './comments-get';
 import { deleteComments } from './comments-delete';
 import { changeCommentStatus } from './comments-change-status';
 import { getSlugs } from './slugs-get';
+import { rebuildFrontend } from './rebuild-frontend';
 
 const router = Router();
 
@@ -12,5 +13,6 @@ router.use(getAdminComments);
 router.use(deleteComments);
 router.use(changeCommentStatus);
 router.use(getSlugs);
+router.use(rebuildFrontend);
 
 export { router as adminRoutes };
