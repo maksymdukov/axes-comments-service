@@ -18,6 +18,7 @@ import {
   makeStyles,
   TableFooter,
   CircularProgress,
+  Typography,
 } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import TablePaginator from "components/pagination/table-pagination";
@@ -45,11 +46,14 @@ const Axes = () => {
   };
   return (
     <div>
+      <Typography align="center" variant="h4">
+        Топоры:
+      </Typography>
       <Table>
         <TableHead>
           <TableRow>
             {[
-              "Slug",
+              "Картинка",
               "Заголовок",
               "Ожидающие комментарии",
               "Одобренные Комментарии",

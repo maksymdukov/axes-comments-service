@@ -15,8 +15,8 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import MailIcon from "@material-ui/icons/Mail";
+import ListAltIcon from "@material-ui/icons/ListAlt";
+import CommentIcon from "@material-ui/icons/Comment";
 import LogoutButton from "components/buttons/logout";
 import { Link, useLocation } from "react-router-dom";
 import RebuildBtn from "components/header/rebuild-btn";
@@ -94,12 +94,14 @@ const useStyles = makeStyles((theme) => ({
 
 const links = [
   {
-    label: "Топоры",
-    to: "/axes",
+    label: "Комментарии",
+    to: "/",
+    icon: CommentIcon,
   },
   {
-    label: "Комментарии",
-    to: "/comments",
+    label: "Топоры",
+    to: "/axes",
+    icon: ListAltIcon,
   },
 ];
 
@@ -169,11 +171,11 @@ export default function Layout({ children }) {
         </div>
         <Divider />
         <List>
-          {links.map(({ label, to }, index) => (
+          {links.map(({ label, to, icon: Icon }) => (
             <Link key={to} to={to} className={classes.link}>
               <ListItem button selected={location.pathname === to}>
                 <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                  <Icon />
                 </ListItemIcon>
                 <ListItemText primary={label} />
               </ListItem>

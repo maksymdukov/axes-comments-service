@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { paginationState, paginationReducer } from "utils/pagination/reducer";
 import { fetchAllCommentsApi } from "./all-comments.api";
+import { commentStatus } from "constants/comment-status";
 
 export const allCommentsSlice = createSlice({
   name: "allComments",
@@ -8,7 +9,7 @@ export const allCommentsSlice = createSlice({
     items: [],
     loading: false,
     error: null,
-    statusFilter: "",
+    statusFilter: commentStatus.PENDING,
     ...paginationState,
   },
   reducers: {
