@@ -28,6 +28,7 @@ const TablePaginator = ({
 
   return (
     <TablePagination
+      labelRowsPerPage="Количетсво записей на страницу"
       rowsPerPageOptions={sizeOptions}
       count={total || -1}
       rowsPerPage={size}
