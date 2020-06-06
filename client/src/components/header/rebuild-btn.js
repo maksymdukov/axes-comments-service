@@ -23,7 +23,12 @@ const RebuildBtn = () => {
 
   return (
     <WithCenteredLoader loading={loading} wrapperClass={classes.btn}>
-      <Button className={classes.rebuild} onClick={trigger} disabled={loading}>
+      <Button
+        className={classes.rebuild}
+        onClick={trigger}
+        disabled={loading}
+        title="Перестроить весь сайт"
+      >
         Опубликовать
       </Button>
     </WithCenteredLoader>
