@@ -1,4 +1,5 @@
 import express from 'express';
+import 'express-async-errors';
 import path from 'path';
 import mongoose from 'mongoose';
 import cors from 'cors';
@@ -6,6 +7,7 @@ import { router } from './routes';
 import { errorHandler } from './middlewares/error-handler';
 
 const isDev = process.env.NODE_ENV !== 'production';
+const isProd = process.env.NODE_ENV === 'production';
 
 const app = express();
 
@@ -13,7 +15,8 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/api', router);
-if (process.env.NODE_ENV === 'production') {
+
+if (isProd) {
   const buildPath = path.join(__dirname, '..', '..', 'client', 'build');
   // Serve any static files
   app.use(express.static(buildPath));
@@ -23,6 +26,7 @@ if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.join(buildPath, 'index.html'));
   });
 }
+
 app.use(errorHandler);
 
 const PORT = isDev ? 3001 : process.env.PORT;
