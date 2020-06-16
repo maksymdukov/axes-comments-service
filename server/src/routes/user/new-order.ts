@@ -84,8 +84,6 @@ router.post(
         {
           param: 'items.id',
           msg: 'Non-existent item',
-          location: 'body',
-          value: '',
         },
       ]);
     }
