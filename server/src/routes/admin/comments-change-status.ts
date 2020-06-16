@@ -1,10 +1,7 @@
 import { Router, Response, Request } from 'express';
 import { Comment } from '../../models/comments/comment';
 import { requireAuth } from '../../middlewares/requireAuth';
-import {
-  checkArrayOfIds,
-  checkCommentStatus,
-} from '../../utils/custom-validators';
+import { checkArrayOfIds, checkStatus } from '../../utils/custom-validators';
 import { validateInput } from '../../middlewares/validate-input';
 import { body } from 'express-validator';
 import { CommentStatus } from '../../models/comments/status';
@@ -16,7 +13,7 @@ router.patch(
   '/comments',
   requireAuth,
   body('comments').custom(checkArrayOfIds),
-  body('status').custom(checkCommentStatus),
+  body('status').custom(checkStatus(CommentStatus)),
   validateInput,
   async (req: Request, res: Response) => {
     const {

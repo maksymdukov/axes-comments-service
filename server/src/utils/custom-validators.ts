@@ -1,9 +1,10 @@
 import { CommentStatus } from '../models/comments/status';
 import { query } from 'express-validator';
 import mongoose from 'mongoose';
+import { OrderStatus } from '../models/orders/status';
 
-export const checkCommentStatus = (input: CommentStatus) => {
-  if (!Object.values(CommentStatus).includes(input)) {
+export const checkStatus = <T>(statuses: T) => (input: string) => {
+  if (!Object.values(statuses).includes(input)) {
     throw new Error();
   }
   return true;
@@ -17,10 +18,14 @@ export const checkArrayOfIds = (input: string[]) => {
   return true;
 };
 
-export const validateStatusQuery = query('status')
-  .optional()
-  .custom(checkCommentStatus)
-  .withMessage('Should be either approved, pending, cancelled');
+export const validateStatus = <T = any>(statuses: T) =>
+  query('status')
+    .optional()
+    .custom(checkStatus(statuses))
+    .withMessage(`Should be either ${Object.values(statuses).join(' ')}`);
+
+export const validateCommentStatus = validateStatus(CommentStatus);
+export const validateOrderStatus = validateStatus(OrderStatus);
 
 export const validatePagination = [
   query('page').optional().isInt({ min: 1 }),

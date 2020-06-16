@@ -1,8 +1,15 @@
 import mongoose from 'mongoose';
 import { Delivery } from './delivery';
 import { orderItemSchema, OrderItem } from './order-item';
+import { OrderStatus } from './status';
+import {
+  getPaginationQuery,
+  PaginationAttrs,
+  PaginatedOutput,
+} from '../../utils/pagination';
 
 interface OrderDoc extends mongoose.Document {
+  status: OrderStatus;
   customer: {
     email: string;
     name: string;
@@ -19,7 +26,12 @@ interface OrderDoc extends mongoose.Document {
 
 interface OrderModel extends mongoose.Model<OrderDoc> {
   build(attrs: OrderAttrs): OrderDoc;
+  findAllPaginated(attrs: FindAllAttrs): Promise<PaginatedOutput<OrderDoc[]>>;
 }
+
+type FindAllAttrs = {
+  status?: OrderStatus;
+} & PaginationAttrs;
 
 export interface OrderAttrs {
   email: string;
@@ -34,6 +46,11 @@ export interface OrderAttrs {
 
 const orderSchema = new mongoose.Schema(
   {
+    status: {
+      type: String,
+      enum: Object.values(OrderStatus),
+      default: OrderStatus.new,
+    },
     customer: {
       email: { type: String, required: true },
       name: { type: String, required: true },
@@ -58,6 +75,7 @@ const orderSchema = new mongoose.Schema(
         delete ret.__v;
       },
     },
+    timestamps: true,
   }
 );
 
@@ -76,6 +94,25 @@ orderSchema.statics.build = function (attrs: OrderAttrs) {
     },
     items: attrs.items,
   });
+};
+
+orderSchema.statics.findAllPaginated = async function ({
+  page,
+  size,
+  status,
+}: FindAllAttrs) {
+  const dbQuery: { status?: OrderStatus } = {};
+  if (status) {
+    dbQuery.status;
+  }
+  const total = await Order.countDocuments(dbQuery);
+  const { pgQuery, pg, sz } = getPaginationQuery({ page, size });
+  // exclude author's email
+  const orders = await Order.find(dbQuery, null, {
+    sort: { createdAt: -1 },
+    ...pgQuery,
+  });
+  return { total, items: orders, page: pg, size: sz };
 };
 
 export const Order = mongoose.model<OrderDoc, OrderModel>('order', orderSchema);

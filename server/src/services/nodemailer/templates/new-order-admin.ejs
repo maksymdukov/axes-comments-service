@@ -1,0 +1,61 @@
+<%- include('includes/head'); %>
+<div style="width: 600px;">
+  <div>
+    <p>Name: <strong><%= name %></strong></p>
+    <p>Surname: <strong><%= surname %></strong></p>
+    <p>Email: <strong><%= email %></strong></p>
+    <p>Phone: <strong><%= phone %></strong></p>
+    <p>Delivery: <strong><%= delivery %></strong></p>
+    <% if (delivery === 'novaposhta') { %>
+    <p>NovaPoshta: <strong><%= npNumber %></strong></p>
+    <% } else { %>
+    <p>UkrPoshta: <strong><%= ukrAddress %></strong></p>
+    <% } %>
+  </div>
+  <table
+    border="1"
+    align="center"
+    cellpadding="0"
+    cellspacing="0"
+    width="600"
+    style="border-collapse: collapse;"
+  >
+    <tr>
+      <th>
+        Photo
+      </th>
+      <th>
+        Name
+      </th>
+      <th>
+        Amount
+      </th>
+      <th>
+        Price
+      </th>
+    </tr>
+    <% items.forEach(item => { %>
+    <tr>
+      <td style="text-align: center;">
+        <% if (item.image) { %>
+        <img
+          width="150"
+          src="https://<%= item.image.url.substr(2) %>?w=150"
+          alt="<%= item.title %>"
+        />
+        <% } %>
+      </td>
+      <td style="text-align: center;">
+        <%= item.title %>
+      </td>
+      <td style="text-align: center;">
+        <%= item.count %>
+      </td>
+      <td style="text-align: center;">
+        <%= item.price %>
+      </td>
+    </tr>
+    <% }); %>
+  </table>
+</div>
+<%- include('includes/footer'); %>

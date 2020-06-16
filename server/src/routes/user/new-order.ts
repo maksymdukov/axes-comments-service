@@ -7,6 +7,11 @@ import { getAxeEntriesById } from '../../services/contentful';
 import { RequestValidationError } from '../../errors/request-validation-error';
 import { normilizeAxeEntry } from '../../utils/normalize';
 import { arrayToHash } from '../../utils/array-to-hash';
+import {
+  renderTemplate,
+  transporter,
+} from '../../services/nodemailer/nodemailer';
+import { config } from '../../config/config';
 
 const deliveryOpts = Object.values(Delivery);
 
@@ -97,7 +102,7 @@ router.post(
       image: axesHash[item.id].image,
     }));
 
-    const order = Order.build({
+    const buildAttrs = {
       email,
       name,
       surname,
@@ -106,9 +111,23 @@ router.post(
       npNumber,
       ukrAddress,
       items: populatedItems,
-    });
+    };
 
+    const order = Order.build(buildAttrs);
     await order.save();
+
+    const html = await renderTemplate('new-order-admin.ejs', buildAttrs);
+
+    // Send Email to admin
+    await transporter.sendMail({
+      from: config.MAIL_USER, // sender address
+      to: config.MAIL_USER, // list of receivers
+      subject: '[AXES] Новый заказ', // Subject line
+      html,
+    });
+    // TODO
+    // Send email to client
+
     res.json(order);
   }
 );
