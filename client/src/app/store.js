@@ -4,6 +4,7 @@ import { axesReducer } from "pages/axes/redux/axesSlice";
 import { authReducer } from "features/auth/loginSlice";
 import { commentsReducer } from "pages/axe/redux/commentsSlice";
 import { allCommentsReducer } from "pages/comments/redux/all-comments-slice";
+import { allOrdersReducer } from "pages/orders/redux/all-orders-slice";
 
 export default configureStore({
   reducer: {
@@ -12,5 +13,6 @@ export default configureStore({
     axes: axesReducer,
     axe: commentsReducer,
     allComments: allCommentsReducer,
+    allOrders: allOrdersReducer,
   },
 });

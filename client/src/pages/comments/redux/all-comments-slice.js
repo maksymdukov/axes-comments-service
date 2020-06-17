@@ -1,32 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { paginationState, paginationReducer } from "utils/pagination/reducer";
+import {
+  paginationState,
+  paginationReducer,
+  makePaginationSelector,
+} from "utils/redux/pagination/pagination";
 import { fetchAllCommentsApi } from "./all-comments.api";
 import { commentStatus } from "constants/comment-status";
+import { fetchReducers, fetchState } from "utils/redux/fetch/fetch";
 
 export const allCommentsSlice = createSlice({
   name: "allComments",
   initialState: {
-    items: [],
-    loading: false,
-    error: null,
     statusFilter: commentStatus.PENDING,
     ...paginationState,
+    ...fetchState(),
   },
   reducers: {
-    fetchStart: (state) => {
-      state.loading = true;
-      state.items = [];
-    },
-    fetchSuccess: (state, { payload }) => {
-      state.loading = false;
-      state.items = payload.items;
-      state.total = payload.total;
-    },
-    fetchFail: (state, { payload }) => {
-      state.loading = false;
-      state.items = [];
-      state.error = payload.error || "error";
-    },
     changeStatusFilter: (state, { payload }) => {
       state.statusFilter = payload.statusFilter;
     },
@@ -38,6 +27,7 @@ export const allCommentsSlice = createSlice({
         return comment;
       });
     },
+    ...fetchReducers,
     ...paginationReducer,
   },
 });
@@ -52,9 +42,7 @@ export const {
 } = allCommentsSlice.actions;
 
 export const getAllCommentsLoading = (state) => state.allComments.loading;
-export const getAllCommentsPage = (state) => state.allComments.page;
-export const getAllCommentsSize = (state) => state.allComments.size;
-export const getAllCommentsTotal = (state) => state.allComments.total;
+export const getAllCommentsPagination = makePaginationSelector("allComments");
 export const getAllComments = (state) => state.allComments.items;
 export const getAllCommentsStatusFilter = (state) =>
   state.allComments.statusFilter;
@@ -62,8 +50,7 @@ export const getAllCommentsStatusFilter = (state) =>
 export const fetchAllComments = () => async (dispatch, getState) => {
   try {
     const state = getState();
-    const page = getAllCommentsPage(state);
-    const size = getAllCommentsSize(state);
+    const { page, size } = getAllCommentsPagination(state);
     const statusFilter = getAllCommentsStatusFilter(state);
     dispatch(fetchStart());
     const { data } = await fetchAllCommentsApi({ page, size, statusFilter });

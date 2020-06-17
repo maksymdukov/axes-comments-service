@@ -103,7 +103,7 @@ orderSchema.statics.findAllPaginated = async function ({
 }: FindAllAttrs) {
   const dbQuery: { status?: OrderStatus } = {};
   if (status) {
-    dbQuery.status;
+    dbQuery.status = status;
   }
   const total = await Order.countDocuments(dbQuery);
   const { pgQuery, pg, sz } = getPaginationQuery({ page, size });

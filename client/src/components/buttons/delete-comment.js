@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useCallback } from "react";
 import { Button, CircularProgress, Box, makeStyles } from "@material-ui/core";
 import { useApiCall } from "hooks/use-api-call";
 import { deleteCommentsApi } from "pages/axe/redux/deleteComments.api";
@@ -23,8 +23,11 @@ const DeleteCommentButton = ({ commentIds, onSuccess, onFail, ...rest }) => {
     }
     return { comments: commentIds };
   }, [commentIds]);
+  const fetcher = useCallback(() => deleteCommentsApi(fetcherArgs), [
+    fetcherArgs,
+  ]);
   const { trigger, loading } = useApiCall({
-    fetcher: deleteCommentsApi,
+    fetcher,
     args: fetcherArgs,
     onSuccess,
     onFail,

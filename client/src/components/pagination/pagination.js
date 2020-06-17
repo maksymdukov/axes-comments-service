@@ -2,11 +2,9 @@ import React from "react";
 import Pagination from "@material-ui/lab/Pagination";
 import { useSelector, useDispatch } from "react-redux";
 
-const Paginator = ({ getPage, getSize, getTotal, updatePagination }) => {
+const Paginator = ({ getPaginationState, updatePagination }) => {
   const dispatch = useDispatch();
-  const page = useSelector(getPage);
-  const size = useSelector(getSize);
-  const total = useSelector(getTotal);
+  const { page, size, total } = useSelector(getPaginationState);
   const onChange = (e, page) => {
     dispatch(updatePagination({ page }));
   };

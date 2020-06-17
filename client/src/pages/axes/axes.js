@@ -3,11 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   fetchAxes,
   getAxes,
-  getAxesPage,
-  getAxesSize,
-  getAxesTotal,
   updateAxesPagination,
   getAxesLoading,
+  getAxesPagination,
 } from "./redux/axesSlice";
 import {
   Table,
@@ -18,10 +16,10 @@ import {
   makeStyles,
   TableFooter,
   CircularProgress,
-  Typography,
 } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import TablePaginator from "components/pagination/table-pagination";
+import MainHeader from "components/typography/main-header";
 
 const useStyles = makeStyles({
   row: {
@@ -34,8 +32,7 @@ const Axes = () => {
   const axes = useSelector(getAxes);
   const history = useHistory();
   const dispatch = useDispatch();
-  const page = useSelector(getAxesPage);
-  const size = useSelector(getAxesSize);
+  const { size, page } = useSelector(getAxesPagination);
   const loading = useSelector(getAxesLoading);
   useEffect(() => {
     dispatch(fetchAxes());
@@ -46,9 +43,7 @@ const Axes = () => {
   };
   return (
     <div>
-      <Typography align="center" variant="h4">
-        Топоры:
-      </Typography>
+      <MainHeader>Топоры:</MainHeader>
       <Table>
         <TableHead>
           <TableRow>
@@ -95,9 +90,7 @@ const Axes = () => {
         <TableFooter>
           <TableRow>
             <TablePaginator
-              getPage={getAxesPage}
-              getSize={getAxesSize}
-              getTotal={getAxesTotal}
+              getPaginationState={getAxesPagination}
               colSpan={4}
               updatePagination={updateAxesPagination}
             />

@@ -1,6 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { fetchCommentsApi } from "./fetchComments.api";
-import { paginationState, paginationReducer } from "utils/pagination/reducer";
+import {
+  paginationState,
+  paginationReducer,
+  makePaginationSelector,
+} from "utils/redux/pagination/pagination";
 
 export const commentsSlice = createSlice({
   name: "axe",
@@ -59,9 +63,7 @@ export const {
 } = commentsSlice.actions;
 
 export const getCommentsLoading = (state) => state.axe.loading;
-export const getCommentsPage = (state) => state.axe.page;
-export const getCommentsSize = (state) => state.axe.size;
-export const getCommentsTotal = (state) => state.axe.total;
+export const getCommentsPagination = makePaginationSelector("axe");
 export const getCommentsBySlug = (state) => state.axe.items;
 export const getAxeOnComments = (state) => state.axe.axe;
 export const getAxeStatusFilter = (state) => state.axe.statusFilter;
@@ -69,8 +71,7 @@ export const getAxeStatusFilter = (state) => state.axe.statusFilter;
 export const fetchCommentsBySlug = (slug) => async (dispatch, getState) => {
   try {
     const state = getState();
-    const page = getCommentsPage(state);
-    const size = getCommentsSize(state);
+    const { page, size } = getCommentsPagination(state);
     const statusFilter = getAxeStatusFilter(state);
     dispatch(fetchStart());
     const { data } = await fetchCommentsApi({ page, size, slug, statusFilter });
