@@ -3,7 +3,8 @@ import ejs from 'ejs';
 import path from 'path';
 import { config } from '../../config/config';
 
-const templatesDir = path.join(__dirname, 'templates');
+const workingDir = process.cwd();
+const templatesDir = path.join(workingDir, 'templates');
 
 export const transporter = nodemailer.createTransport({
   service: 'gmail',
