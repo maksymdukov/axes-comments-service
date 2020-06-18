@@ -20,6 +20,7 @@ router.delete(
         { param: 'orderId', msg: 'Not found' },
       ]);
     }
+    // TODO delete custom-order/images from google bucket
     res.json(result);
   }
 );

@@ -96,6 +96,7 @@ router.post(
     const newOrder = await customOrder.save();
 
     // Send Email to admin
+    // TODO use uploaded images links
     const html = await renderTemplate('new-custom-order-admin.ejs', buildAttrs);
     await transporter.sendMail({
       from: config.MAIL_USER, // sender address
@@ -108,6 +109,8 @@ router.post(
         contentType: files[fileKey].type,
       })),
     });
+
+    // Send email to client
 
     res.send(newOrder);
   }
