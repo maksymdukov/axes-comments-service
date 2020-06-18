@@ -15,13 +15,15 @@ interface OrderDoc extends mongoose.Document {
     name: string;
     surname: string;
     phone: string;
+    comments: string;
   };
   delivery: {
     type: string;
     npNumber: string;
     ukrAddress: string;
   };
-  items: OrderItem[];
+  items?: OrderItem[];
+  custom: { customImages: string[] } | null;
 }
 
 interface OrderModel extends mongoose.Model<OrderDoc> {
@@ -38,10 +40,12 @@ export interface OrderAttrs {
   name: string;
   surname: string;
   phone: string;
+  comments?: string;
   delivery: string;
   npNumber: string;
   ukrAddress: string;
-  items: OrderItem[];
+  items?: OrderItem[];
+  customImages?: string[];
 }
 
 const orderSchema = new mongoose.Schema(
@@ -56,6 +60,7 @@ const orderSchema = new mongoose.Schema(
       name: { type: String, required: true },
       surname: { type: String, required: true },
       phone: { type: String, required: true },
+      comments: { type: String },
     },
     delivery: {
       type: { type: String, enum: Object.values(Delivery), required: true },
@@ -64,7 +69,12 @@ const orderSchema = new mongoose.Schema(
     },
     items: {
       type: [orderItemSchema],
-      required: true,
+    },
+    custom: {
+      type: {
+        images: [String],
+      },
+      default: null,
     },
   },
   {
@@ -93,6 +103,11 @@ orderSchema.statics.build = function (attrs: OrderAttrs) {
       ukrAddress: attrs.ukrAddress,
     },
     items: attrs.items,
+    custom: attrs.customImages
+      ? {
+          images: attrs.customImages,
+        }
+      : null,
   });
 };
 
