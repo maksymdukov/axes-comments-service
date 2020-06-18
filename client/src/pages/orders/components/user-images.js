@@ -71,12 +71,16 @@ const UserImages = ({ custom }) => {
         open={!!fullscreenImg}
         onClick={closeBackdrop}
         className={classes.backdrop}
+        unmountOnExit={true}
+        mountOnEnter={true}
       >
-        <img
-          className={classes.fullScreenImg}
-          src={getImageUrl(fullscreenImg)}
-          alt="user axe pic"
-        />
+        {fullscreenImg && (
+          <img
+            className={classes.fullScreenImg}
+            src={getImageUrl(fullscreenImg)}
+            alt="user axe pic"
+          />
+        )}
       </Backdrop>
     </>
   );
