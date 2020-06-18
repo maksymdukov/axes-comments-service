@@ -2,7 +2,7 @@ import formidable from 'formidable';
 import { Response, NextFunction, Request } from 'express';
 import { RequestValidationError } from '../errors/request-validation-error';
 
-const overallSizeLimit = 1024 * 1024 * 50; // 100 MB}
+const overallSizeLimit = 1024 * 1024 * 100; // 100 MB}
 
 export const parseCustomOrder = async (
   req: Request,
