@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useCallback } from "react";
 import { Button, CircularProgress, Box, makeStyles } from "@material-ui/core";
 import { useApiCall } from "hooks/use-api-call";
 import { approveCommentsApi } from "pages/axe/redux/approveComments.api";
@@ -29,13 +29,12 @@ const StatusButton = ({
     }
     return commentIds;
   }, [commentIds]);
-  const args = useMemo(() => ({ status, comments: commentIdsMemo }), [
-    commentIdsMemo,
-    status,
-  ]);
+  const fetcher = useCallback(
+    () => approveCommentsApi({ status, comments: commentIdsMemo }),
+    [status, commentIdsMemo]
+  );
   const { trigger, loading } = useApiCall({
-    fetcher: approveCommentsApi,
-    args,
+    fetcher,
     onSuccess,
     onFail,
   });

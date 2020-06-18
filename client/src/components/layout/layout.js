@@ -16,6 +16,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListAltIcon from "@material-ui/icons/ListAlt";
+import ShopTwoIcon from "@material-ui/icons/ShopTwo";
 import CommentIcon from "@material-ui/icons/Comment";
 import LogoutButton from "components/buttons/logout";
 import { Link, useLocation } from "react-router-dom";
@@ -102,6 +103,11 @@ const links = [
     label: "Топоры",
     to: "/axes",
     icon: ListAltIcon,
+  },
+  {
+    label: "Заказы",
+    to: "/orders",
+    icon: ShopTwoIcon,
   },
 ];
 

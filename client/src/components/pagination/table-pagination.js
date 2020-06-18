@@ -5,17 +5,13 @@ import { useSelector, useDispatch } from "react-redux";
 const defaultSizeOptions = [5, 10, 25, 50];
 
 const TablePaginator = ({
-  getSize,
-  getTotal,
-  getPage,
+  getPaginationState,
   sizeOptions = defaultSizeOptions,
   updatePagination,
   ...rest
 }) => {
   const dispatch = useDispatch();
-  const size = useSelector(getSize);
-  const total = useSelector(getTotal);
-  const page = useSelector(getPage);
+  const { page, size, total } = useSelector(getPaginationState);
 
   const handleChangePage = (e, page) => {
     dispatch(updatePagination({ page }));

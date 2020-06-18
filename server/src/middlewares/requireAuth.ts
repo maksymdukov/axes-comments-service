@@ -15,7 +15,7 @@ export interface DecodedToken {
   email: string;
 }
 
-type DecodedUserToken = DecodedToken | null;
+type DecodedUserToken = DecodedToken;
 
 export const requireAuth = (
   req: Request,
@@ -27,15 +27,16 @@ export const requireAuth = (
     throw new AuthorizationError();
   }
   const [, token] = bearerToken.split(' ');
-  const decoded = jsonwebtoken.verify(
-    token,
-    config.JWT_KEY
-  ) as DecodedUserToken;
-  if (!decoded) {
+  try {
+    const decoded = jsonwebtoken.verify(
+      token,
+      config.JWT_KEY
+    ) as DecodedUserToken;
+    req.user = decoded;
+    next();
+  } catch (error) {
     throw new AuthorizationError();
   }
-  req.user = decoded;
-  next();
 };
 
 export interface RequestUser extends Request {

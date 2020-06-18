@@ -2,13 +2,7 @@ import React from "react";
 import { Select, MenuItem } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 
-const statusOptions = [
-  { label: "Все", status: "" },
-  { label: "Ожидающие", status: "pending" },
-  { label: "Одобренные", status: "approved" },
-];
-
-const StatusFilter = ({ getStatusFilter, updateStatusFilter }) => {
+const StatusFilter = ({ getStatusFilter, updateStatusFilter, options }) => {
   const statusFilter = useSelector(getStatusFilter);
   const dispatch = useDispatch();
   return (
@@ -21,7 +15,7 @@ const StatusFilter = ({ getStatusFilter, updateStatusFilter }) => {
         dispatch(updateStatusFilter({ statusFilter: e.target.value }))
       }
     >
-      {statusOptions.map(({ label, status }) => (
+      {options.map(({ label, status }) => (
         <MenuItem key={String(label)} value={status}>
           {label}
         </MenuItem>

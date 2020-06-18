@@ -2,9 +2,9 @@ import React from "react";
 import { Select, MenuItem } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 
-const PageSize = ({ options, updatePagination, getSize }) => {
+const PageSize = ({ options, updatePagination, getPaginationState }) => {
   const dispatch = useDispatch();
-  const size = useSelector(getSize);
+  const { size } = useSelector(getPaginationState);
   return (
     <Select
       labelId="demo-simple-select-label"

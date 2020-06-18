@@ -3,7 +3,7 @@ import { Comment } from '../../models/comments/comment';
 import { requireAuth } from '../../middlewares/requireAuth';
 import { CommentStatus } from '../../models/comments/status';
 import {
-  validateStatusQuery,
+  validateCommentStatus,
   validatePagination,
 } from '../../utils/custom-validators';
 import { validateInput } from '../../middlewares/validate-input';
@@ -22,7 +22,7 @@ const router = Router();
 router.get(
   '/comments',
   requireAuth,
-  [validateStatusQuery, ...validatePagination],
+  [validateCommentStatus, ...validatePagination],
   validateInput,
   async (req: Request, res: Response) => {
     const { page, size, status } = req.query as {
@@ -69,7 +69,7 @@ router.get(
 router.get(
   '/comments/:slug',
   requireAuth,
-  [validateStatusQuery, param('slug').isString(), ...validatePagination],
+  [validateCommentStatus, param('slug').isString(), ...validatePagination],
   validateInput,
   async (req: Request, res: Response) => {
     const { page, size, status } = req.query as {

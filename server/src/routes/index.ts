@@ -1,13 +1,10 @@
 import { Router } from 'express';
-import { createCommentRouter } from './user/comments-new';
-import { getCommentsBySlug } from './user/comments-get';
 import { adminRoutes } from './admin';
+import { userRoutes } from './user';
 
 const router = Router();
 
-router.use(createCommentRouter);
-router.use(getCommentsBySlug);
-
+router.use(userRoutes);
 router.use('/admin', adminRoutes);
 
 export { router };

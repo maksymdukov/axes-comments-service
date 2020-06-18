@@ -3,20 +3,18 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   fetchCommentsBySlug,
   getCommentsBySlug,
-  getCommentsPage,
-  getCommentsSize,
-  getCommentsTotal,
   updateCommentPagination,
   changeComment,
   getAxeStatusFilter,
   changeStatusFilterAxe,
   getAxeOnComments,
   getCommentsLoading,
+  getCommentsPagination,
 } from "./redux/commentsSlice";
 import { Typography, Box, CircularProgress } from "@material-ui/core";
 import Paginator from "components/pagination/pagination";
 import AxeTitle from "./components/axe-title";
-import Filters from "components/layout/filters";
+import CommentFilters from "components/filters/comment-filters";
 import CommentCard from "components/cards/comment-card";
 
 const Axe = ({
@@ -26,8 +24,7 @@ const Axe = ({
 }) => {
   const dispatch = useDispatch();
   const comments = useSelector(getCommentsBySlug);
-  const page = useSelector(getCommentsPage);
-  const size = useSelector(getCommentsSize);
+  const { page, size } = useSelector(getCommentsPagination);
   const axe = useSelector(getAxeOnComments);
   const loading = useSelector(getCommentsLoading);
   const statusFilter = useSelector(getAxeStatusFilter);
@@ -58,11 +55,10 @@ const Axe = ({
       <Typography align="center" variant="h4">
         Комментарии:
       </Typography>
-      <Filters
+      <CommentFilters
         pageSizeProps={{
-          options: [5, 10, 20],
           updatePagination: updateCommentPagination,
-          getSize: getCommentsSize,
+          getPaginationState: getCommentsPagination,
         }}
         statusFilterProps={{
           getStatusFilter: getAxeStatusFilter,
@@ -89,9 +85,7 @@ const Axe = ({
         </Box>
       )}
       <Paginator
-        getPage={getCommentsPage}
-        getSize={getCommentsSize}
-        getTotal={getCommentsTotal}
+        getPaginationState={getCommentsPagination}
         updatePagination={updateCommentPagination}
       />
     </div>
