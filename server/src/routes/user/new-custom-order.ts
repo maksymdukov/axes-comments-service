@@ -15,7 +15,7 @@ import { config } from '../../config/config';
 
 const router = Router();
 
-const maxFileSize = 1024 * 1024 * 5; // 5 Mb
+const maxFileSize = 1024 * 1024 * 10; // 10 Mb
 
 const validationSchema: ValidationSchema = {
   ...orderCredsSchema,

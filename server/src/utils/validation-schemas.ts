@@ -17,7 +17,7 @@ export const orderCredsSchema: ValidationSchema = {
     isMobilePhone: { options: 'any' },
   },
   comments: {
-    isLength: { options: { min: 3, max: 1000 } },
+    isLength: { options: { min: 0, max: 1000 } },
     optional: true,
   },
   delivery: {

@@ -2,13 +2,14 @@ import formidable from 'formidable';
 import { Response, NextFunction, Request } from 'express';
 import { RequestValidationError } from '../errors/request-validation-error';
 
+const overallSizeLimit = 1024 * 1024 * 50; // 100 MB}
+
 export const parseCustomOrder = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const sizeLimitBytes = 1024 * 1024 * 20; // 20 MB}
-  if (Number(req.headers['content-length']) > sizeLimitBytes) {
+  if (Number(req.headers['content-length']) > overallSizeLimit) {
     throw new RequestValidationError([
       { msg: 'Request is too big', param: 'request' },
     ]);
