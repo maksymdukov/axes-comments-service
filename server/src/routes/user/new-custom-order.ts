@@ -51,10 +51,11 @@ router.post(
       phone,
       ukrAddress,
       comments,
-    } = req.body as Omit<OrderAttrs, 'items' | 'custom'> & {
+    } = req.body as Omit<OrderAttrs, 'items' | 'customImages'> & {
       files: { [k: string]: File };
     };
 
+    // Upload images to firebase storage
     const uploadPromises: ReturnType<typeof uploadFile>[] = [];
     Object.values(files).forEach(({ path, name, type }) => {
       uploadPromises.push(
@@ -66,8 +67,8 @@ router.post(
         })
       );
     });
-
     const results = await Promise.all(uploadPromises);
+
     const customImages: string[] = [];
     results.forEach(([, apiResponse]) => {
       customImages.push(apiResponse.name);

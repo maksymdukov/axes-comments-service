@@ -47,7 +47,7 @@ router.post(
       ukrAddress,
       items,
       comments,
-    } = req.body as Omit<OrderAttrs, 'custom' | 'customImages'>;
+    } = req.body as Omit<OrderAttrs, 'customImages'>;
 
     // check axes for existence in contentful db;
     const ids = items!.map((axe) => axe.id);

@@ -1,25 +1,19 @@
 import React from "react";
-import {
-  Box,
-  Card,
-  CardContent,
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-} from "@material-ui/core";
+import { Box, Card, CardContent } from "@material-ui/core";
 import Group from "./group";
 import GroupItem from "./group-item";
 import { orderStatusTranslated } from "constants/order-status";
+import CartItems from "./cart-items";
+import UserImages from "./user-images";
 
 const OrderCard = ({
   order: {
-    customer: { email, name, surname, phone },
+    customer: { email, name, surname, phone, comments },
     delivery: { type, npNumber, ukrAddress },
     status,
     items,
     createdAt,
+    custom,
   },
   totalSum,
 }) => {
@@ -32,12 +26,17 @@ const OrderCard = ({
             <GroupItem label="Имя">{name}</GroupItem>
             <GroupItem label="Фамилия">{surname}</GroupItem>
             <GroupItem label="Телефон">{phone}</GroupItem>
+            {comments && (
+              <GroupItem label="Комментарий клиента">{comments}</GroupItem>
+            )}
           </Group>
+
           <Group label="Доставка">
             <GroupItem label="Тип">{type}</GroupItem>
             {npNumber && <GroupItem label="Отделение">{npNumber}</GroupItem>}
             {ukrAddress && <GroupItem label="Адрес">{ukrAddress}</GroupItem>}
           </Group>
+
           <Group label="Заказ">
             <GroupItem label="Статус">
               {orderStatusTranslated[status]}
@@ -45,39 +44,24 @@ const OrderCard = ({
             <GroupItem label="Дата">
               {new Date(createdAt).toLocaleString()}
             </GroupItem>
-            <GroupItem label="Общая сумма">{totalSum} грн</GroupItem>
+            {!custom && (
+              <GroupItem label="Общая сумма">{totalSum} грн</GroupItem>
+            )}
           </Group>
-          <Group label="Товары">
-            <Table>
-              <TableHead>
-                <TableRow>
-                  {["Название", "Картинка", "Стоимость, грн", "Кол-во"].map(
-                    (item) => (
-                      <TableCell key={item}>{item}</TableCell>
-                    )
-                  )}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {items.map((cartItem) => (
-                  <TableRow key={cartItem.id}>
-                    <TableCell>{cartItem.title}</TableCell>
-                    <TableCell>
-                      {cartItem.image && (
-                        <img
-                          src={cartItem.image.url}
-                          alt={cartItem.title}
-                          style={{ width: 100, height: "auto" }}
-                        />
-                      )}
-                    </TableCell>
-                    <TableCell>{cartItem.price}</TableCell>
-                    <TableCell>{cartItem.count}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </Group>
+
+          {!custom && (
+            // Usual order
+            <Group label="Товары">
+              <CartItems items={items} />
+            </Group>
+          )}
+
+          {custom && (
+            // Custom order
+            <Group label="Пользовательские картинки">
+              <UserImages custom={custom} />
+            </Group>
+          )}
         </CardContent>
       </Card>
     </Box>

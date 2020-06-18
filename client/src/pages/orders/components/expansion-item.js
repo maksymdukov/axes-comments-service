@@ -5,7 +5,6 @@ import {
   ExpansionPanelDetails,
   makeStyles,
   Box,
-  Button,
 } from "@material-ui/core";
 import GroupItem from "./group-item";
 import OrderCard from "./order-card";
@@ -70,10 +69,20 @@ const ExpansionItem = ({ order }) => {
           <GroupItem label="Статус">
             {orderStatusTranslated[order.status]}
           </GroupItem>
-          <GroupItem label="Сумма" boxProps={{ mb: 2 }}>
-            {totalSum} грн
-          </GroupItem>
+          {!order.custom && (
+            // Render if it's usual order, not custom
+            <GroupItem label="Сумма" boxProps={{ mb: 2 }}>
+              {totalSum} грн
+            </GroupItem>
+          )}
+          {order.custom && (
+            <GroupItem label="Тип" boxProps={{ mb: 2 }}>
+              Индивидиуальный заказ
+            </GroupItem>
+          )}
+
           {/* <Box display="inline-block" mr={2}>
+          // TODO
             <Button variant="contained" disabled={true}>
               Изменить заказ
             </Button>
