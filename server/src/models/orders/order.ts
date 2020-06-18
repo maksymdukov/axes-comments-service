@@ -96,6 +96,7 @@ orderSchema.statics.build = function (attrs: OrderAttrs) {
       name: attrs.name,
       surname: attrs.surname,
       phone: attrs.phone,
+      comments: attrs.comments,
     },
     delivery: {
       type: attrs.delivery,

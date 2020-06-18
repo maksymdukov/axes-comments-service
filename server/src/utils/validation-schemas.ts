@@ -32,7 +32,7 @@ export const orderCredsSchema: ValidationSchema = {
   },
   ukrAddress: {
     isString: true,
-    isLength: { options: { min: 3, max: 255 } },
+    isLength: { options: { min: 0, max: 255 } },
     optional: true,
   },
 };

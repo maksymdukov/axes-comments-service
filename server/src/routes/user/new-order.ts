@@ -88,9 +88,8 @@ router.post(
     const order = Order.build(buildAttrs);
     await order.save();
 
-    const html = await renderTemplate('new-order-admin.ejs', buildAttrs);
-
     // Send Email to admin
+    const html = await renderTemplate('new-order-admin.ejs', buildAttrs);
     await transporter.sendMail({
       from: config.MAIL_USER, // sender address
       to: config.MAIL_USER, // list of receivers

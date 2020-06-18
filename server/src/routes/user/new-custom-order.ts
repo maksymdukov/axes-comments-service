@@ -7,6 +7,11 @@ import { validateInput } from '../../middlewares/validate-input';
 import { uploadFile } from '../../services/firebase';
 import { OrderAttrs, Order } from '../../models/orders/order';
 import { randomBytes } from 'crypto';
+import {
+  renderTemplate,
+  transporter,
+} from '../../services/nodemailer/nodemailer';
+import { config } from '../../config/config';
 
 const router = Router();
 
@@ -74,7 +79,7 @@ router.post(
       customImages.push(apiResponse.name);
     });
 
-    const customOrder = Order.build({
+    const buildAttrs = {
       name,
       delivery,
       email,
@@ -84,9 +89,25 @@ router.post(
       ukrAddress,
       comments,
       customImages,
-    });
+    };
+
+    const customOrder = Order.build(buildAttrs);
 
     const newOrder = await customOrder.save();
+
+    // Send Email to admin
+    const html = await renderTemplate('new-custom-order-admin.ejs', buildAttrs);
+    await transporter.sendMail({
+      from: config.MAIL_USER, // sender address
+      to: config.MAIL_USER, // list of receivers
+      subject: '[AXES] Новый индивидуальный заказ', // Subject line
+      html,
+      attachments: Object.keys(files).map((fileKey) => ({
+        filename: files[fileKey].name,
+        path: files[fileKey].path,
+        contentType: files[fileKey].type,
+      })),
+    });
 
     res.send(newOrder);
   }
