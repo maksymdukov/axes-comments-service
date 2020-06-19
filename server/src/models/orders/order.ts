@@ -19,8 +19,9 @@ interface OrderDoc extends mongoose.Document {
   };
   delivery: {
     type: string;
-    npNumber: string;
-    ukrAddress: string;
+    npNumber?: string;
+    npSettlement?: string;
+    ukrAddress?: string;
   };
   items?: OrderItem[];
   custom: { customImages: string[] } | null;
@@ -42,8 +43,9 @@ export interface OrderAttrs {
   phone: string;
   comments?: string;
   delivery: string;
-  npNumber: string;
-  ukrAddress: string;
+  npNumber?: string;
+  npSettlement?: string;
+  ukrAddress?: string;
   items?: OrderItem[];
   customImages?: string[];
 }
@@ -65,6 +67,7 @@ const orderSchema = new mongoose.Schema(
     delivery: {
       type: { type: String, enum: Object.values(Delivery), required: true },
       npNumber: { type: String },
+      npSettlement: { type: String },
       ukrAddress: { type: String },
     },
     items: {
@@ -101,6 +104,7 @@ orderSchema.statics.build = function (attrs: OrderAttrs) {
     delivery: {
       type: attrs.delivery,
       npNumber: attrs.npNumber,
+      npSettlement: attrs.npSettlement,
       ukrAddress: attrs.ukrAddress,
     },
     items: attrs.items,

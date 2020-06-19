@@ -26,6 +26,10 @@ export const orderCredsSchema: ValidationSchema = {
       errorMessage: `Must be ${deliveryOpts.join(' or ')}`,
     },
   },
+  npSettlement: {
+    isLength: { options: { min: 0, max: 1000 } },
+    optional: true,
+  },
   npNumber: {
     isInt: { options: { min: 1 } },
     optional: true,

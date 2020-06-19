@@ -9,7 +9,7 @@ import UserImages from "./user-images";
 const OrderCard = ({
   order: {
     customer: { email, name, surname, phone, comments },
-    delivery: { type, npNumber, ukrAddress },
+    delivery: { type, npNumber, npSettlement, ukrAddress },
     status,
     items,
     createdAt,
@@ -33,6 +33,9 @@ const OrderCard = ({
 
           <Group label="Доставка">
             <GroupItem label="Тип">{type}</GroupItem>
+            {npSettlement && (
+              <GroupItem label="Локация">{npSettlement}</GroupItem>
+            )}
             {npNumber && <GroupItem label="Отделение">{npNumber}</GroupItem>}
             {ukrAddress && <GroupItem label="Адрес">{ukrAddress}</GroupItem>}
           </Group>

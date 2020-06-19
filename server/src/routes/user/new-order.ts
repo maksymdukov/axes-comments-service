@@ -44,6 +44,7 @@ router.post(
       phone,
       delivery,
       npNumber,
+      npSettlement,
       ukrAddress,
       items,
       comments,
@@ -81,6 +82,7 @@ router.post(
       comments,
       delivery,
       npNumber,
+      npSettlement,
       ukrAddress,
       items: populatedItems,
     };
