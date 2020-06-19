@@ -39,6 +39,10 @@ export async function uploadFile({
   });
 }
 
+export const deleteFile = async (fileName: string) => {
+  return bucket.deleteFiles({ prefix: fileName });
+};
+
 export const uploadCustomOrderImage = (
   attrs: Omit<UploadFileAttrs, 'folder'>
 ) => uploadFile({ ...attrs, folder: 'custom-order/' });

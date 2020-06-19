@@ -14,14 +14,14 @@ router.delete(
   validateInput,
   async (req: Request, res: Response) => {
     const { orderId } = req.params;
-    const result = await Order.deleteOne({ _id: orderId });
-    if (!result.deletedCount) {
+    const order = await Order.findById(orderId);
+    if (!order) {
       throw new RequestValidationError([
         { param: 'orderId', msg: 'Not found' },
       ]);
     }
-    // TODO delete custom-order/images from google bucket
-    res.json(result);
+    await order.remove();
+    res.json({});
   }
 );
 

@@ -7,6 +7,7 @@ import {
   PaginationAttrs,
   PaginatedOutput,
 } from '../../utils/pagination';
+import { deleteFile } from '../../services/firebase';
 
 interface OrderDoc extends mongoose.Document {
   status: OrderStatus;
@@ -24,7 +25,7 @@ interface OrderDoc extends mongoose.Document {
     ukrAddress?: string;
   };
   items?: OrderItem[];
-  custom: { customImages: string[] } | null;
+  custom: { images: string[] } | null;
 }
 
 interface OrderModel extends mongoose.Model<OrderDoc> {
@@ -134,5 +135,16 @@ orderSchema.statics.findAllPaginated = async function ({
   });
   return { total, items: orders, page: pg, size: sz };
 };
+
+orderSchema.post<OrderDoc>('remove', async function (doc) {
+  // remove images in google cloud storage
+  if (doc.custom) {
+    const deletePromises: Promise<void>[] = [];
+    doc.custom.images.forEach((image) =>
+      deletePromises.push(deleteFile(image))
+    );
+    await Promise.all(deletePromises);
+  }
+});
 
 export const Order = mongoose.model<OrderDoc, OrderModel>('order', orderSchema);
