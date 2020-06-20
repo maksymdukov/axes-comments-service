@@ -98,20 +98,18 @@ router.post(
     const newOrder = await customOrder.save();
 
     // Send Email to admin
-    // TODO use uploaded images links
-    const html = await renderTemplate('new-custom-order-admin.ejs', buildAttrs);
+    const html = await renderTemplate('new-custom-order-admin.ejs', {
+      ...buildAttrs,
+      BUCKET_URL: config.BUCKET_URL,
+    });
     await transporter.sendMail({
       from: config.MAIL_USER, // sender address
       to: config.MAIL_USER, // list of receivers
       subject: '[AXES] Новый индивидуальный заказ', // Subject line
       html,
-      attachments: Object.keys(files).map((fileKey) => ({
-        filename: files[fileKey].name,
-        path: files[fileKey].path,
-        contentType: files[fileKey].type,
-      })),
     });
-
+    
+    // TODO
     // Send email to client
 
     res.send(newOrder);

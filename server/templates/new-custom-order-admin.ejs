@@ -1,19 +1,31 @@
 <%- include('includes/head'); %>
 <div style="width: 600px;">
   <div>
-    <p>Name: <strong><%= name %></strong></p>
-    <p>Surname: <strong><%= surname %></strong></p>
+    <p>Имя: <strong><%= name %></strong></p>
+    <p>Фамилия: <strong><%= surname %></strong></p>
     <p>Email: <strong><%= email %></strong></p>
-    <p>Phone: <strong><%= phone %></strong></p>
-    <p>Delivery: <strong><%= delivery %></strong></p>
+    <p>Телефон: <strong><%= phone %></strong></p>
+    <p>Доставка: <strong><%= delivery %></strong></p>
     <% if (delivery === 'novaposhta') { %>
-    <p>NovaPoshta Location: <strong><%= npSettlement %></strong></p>
-    <p>NovaPoshta: <strong><%= npNumber %></strong></p>
+    <p>Населенный пункт: <strong><%= npSettlement %></strong></p>
+    <p>Номер отделения: <strong><%= npNumber %></strong></p>
     <% } else { %>
-    <p>UkrPoshta: <strong><%= ukrAddress %></strong></p>
+    <p>Адрес: <strong><%= ukrAddress %></strong></p>
     <% } %> <% if (comments) { %>
-    <p>Comments: <i><%= comments %></i></p>
-    <% } %>
+    <p>Комментрий: <i><%= comments %></i></p>
+    <% } %> <% if (customImages.length > 0) { %>
+    <p>Узоры клиента:</p>
+    <% customImages.forEach(image => { %>
+    <div>
+      <a href="<%= BUCKET_URL %><%= image %>" target="_blank">
+        <img
+          width="300"
+          src="<%= BUCKET_URL %><%= image %>"
+          alt="client image"
+        />
+      </a>
+    </div>
+    <% }) %> <% } %>
   </div>
 </div>
 <%- include('includes/footer'); %>

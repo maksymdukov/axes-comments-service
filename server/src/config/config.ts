@@ -31,6 +31,9 @@ if (!process.env.FIREBASE_CONFIG) {
 if (!process.env.FIREBASE_STORAGE_BUCKET) {
   throw new Error('FIREBASE_STORAGE_BUCKET env is required');
 }
+if (!process.env.REACT_APP_BUCKET_URL) {
+  throw new Error('REACT_APP_BUCKET_URL env is required');
+}
 
 export const config = {
   PORT: process.env.PORT,
@@ -45,4 +48,5 @@ export const config = {
   MAIL_PASSWORD: process.env.MAIL_PASSWORD,
   FIREBASE_CONFIG: process.env.FIREBASE_CONFIG,
   FIREBASE_STORAGE_BUCKET: process.env.FIREBASE_STORAGE_BUCKET,
+  BUCKET_URL: process.env.REACT_APP_BUCKET_URL,
 };
