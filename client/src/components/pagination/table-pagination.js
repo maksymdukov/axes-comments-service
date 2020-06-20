@@ -14,12 +14,12 @@ const TablePaginator = ({
   const { page, size, total } = useSelector(getPaginationState);
 
   const handleChangePage = (e, page) => {
-    dispatch(updatePagination({ page }));
+    dispatch(updatePagination({ page: page + 1 }));
   };
 
   const handleChangeRowsPerPage = (event) => {
     const size = parseInt(event.target.value, 10);
-    dispatch(updatePagination({ size }));
+    dispatch(updatePagination({ size, page: 1 }));
   };
 
   return (

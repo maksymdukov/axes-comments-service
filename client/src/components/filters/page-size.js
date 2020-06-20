@@ -10,7 +10,9 @@ const PageSize = ({ options, updatePagination, getPaginationState }) => {
       labelId="demo-simple-select-label"
       id="demo-simple-select"
       value={size}
-      onChange={(e) => dispatch(updatePagination({ size: e.target.value }))}
+      onChange={(e) =>
+        dispatch(updatePagination({ size: e.target.value, page: 1 }))
+      }
     >
       {options.map((size) => (
         <MenuItem key={String(size)} value={size}>

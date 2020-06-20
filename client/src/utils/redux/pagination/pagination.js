@@ -1,5 +1,4 @@
-const DEFAULT_SIZE = 10;
-const DEFAULT_PAGE = 1;
+import { config } from "config";
 
 export const paginationReducer = {
   updatePagination: (state, { payload }) => {
@@ -16,8 +15,8 @@ export const paginationReducer = {
 };
 
 export const paginationState = {
-  page: DEFAULT_PAGE,
-  size: DEFAULT_SIZE,
+  page: config.DEFAULT_PAGE,
+  size: config.DEFAULT_SIZE,
   total: null,
 };
 
