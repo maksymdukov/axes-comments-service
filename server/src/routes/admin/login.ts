@@ -16,7 +16,7 @@ router.post(
   async (req: Request, res: Response) => {
     const { code }: { code: string } = req.body;
     const decodedGoogleToken = await getDecodedGoogleToken(code);
-    const user = await User.find({
+    const user = await User.findOne({
       email: decodedGoogleToken.email,
       isAdmin: true,
     });
