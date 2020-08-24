@@ -12,6 +12,7 @@ import {
   transporter,
 } from '../../services/nodemailer/nodemailer';
 import { config } from '../../config/config';
+import { sendSMSToAdmin } from '../../services/sms-service';
 
 const router = Router();
 
@@ -102,13 +103,18 @@ router.post(
       ...buildAttrs,
       BUCKET_URL: config.BUCKET_URL,
     });
-    await transporter.sendMail({
+    transporter.sendMail({
       from: config.MAIL_USER, // sender address
       to: config.MAIL_USER, // list of receivers
       subject: '[AXES] Новый индивидуальный заказ', // Subject line
       html,
     });
-    
+
+    // Send Sms to admin
+    sendSMSToAdmin(
+      `Новый индивидуальный заказ топоров от ${buildAttrs.surname} ${buildAttrs.name}.`
+    );
+
     // TODO
     // Send email to client
 

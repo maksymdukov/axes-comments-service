@@ -12,6 +12,7 @@ import {
 } from '../../services/nodemailer/nodemailer';
 import { config } from '../../config/config';
 import { orderCredsSchema } from '../../utils/validation-schemas';
+import { sendSMSToAdmin } from '../../services/sms-service';
 
 const router = Router();
 
@@ -92,12 +93,17 @@ router.post(
 
     // Send Email to admin
     const html = await renderTemplate('new-order-admin.ejs', buildAttrs);
-    await transporter.sendMail({
+    transporter.sendMail({
       from: config.MAIL_USER, // sender address
       to: config.MAIL_USER, // list of receivers
       subject: '[AXES] Новый заказ', // Subject line
       html,
     });
+    // Send Sms to admin
+    sendSMSToAdmin(
+      `Новый заказ топоров от ${buildAttrs.surname} ${buildAttrs.name}.`
+    );
+
     // TODO
     // Send email to client
 
