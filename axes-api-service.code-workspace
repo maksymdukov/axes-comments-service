@@ -8,6 +8,9 @@
 		},
 		{
 			"path": "."
+		},
+		{
+			"path": "server2"
 		}
 	],
 	"settings": {}
