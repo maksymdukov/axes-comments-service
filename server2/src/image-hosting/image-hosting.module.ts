@@ -1,14 +1,8 @@
-import { DynamicModule, Module, ModuleMetadata } from '@nestjs/common';
+import { DynamicModule, Module } from '@nestjs/common';
 import { IMAGE_HOSTING_OPTIONS } from './image-hosting.constants';
 import { ImageHostingService } from './image-hosting.service';
+import { ImageHostingAsyncOpts } from './interfaces/image-hosting-async-opts.type';
 import { ImageHostingOptions } from './interfaces/image-hosting-options.interface';
-
-export type ImageHostingAsyncOpts = {
-  useFactory?: (
-    ...args: any[]
-  ) => Promise<ImageHostingOptions> | ImageHostingOptions;
-  inject?: any[];
-} & Pick<ModuleMetadata, 'imports'>;
 
 @Module({})
 export class ImageHostingModule {
