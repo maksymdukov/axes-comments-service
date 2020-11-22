@@ -40,7 +40,7 @@ const imageHostingModule = ImageHostingModule.forRootAsync({
   imports: [ConfigModule],
   inject: [ApiConfigService],
   useFactory: (apiConfigService: ApiConfigService) => {
-    const cnf = apiConfigService.get<ImageHostingConfig>('imageHosting');
+    const cnf = apiConfigService.config.imageHosting;
     return {
       accessToken: cnf.accessToken,
       spaceId: cnf.spaceId,

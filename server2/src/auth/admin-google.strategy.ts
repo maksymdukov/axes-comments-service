@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import { Strategy, VerifyCallback, Profile } from 'passport-google-oauth20';
-import { AuthConfig } from 'src/config/config.interface';
+import { Strategy, Profile } from 'passport-google-oauth20';
 import { ApiConfigService } from '../api-config/api-config.service';
 
 @Injectable()
@@ -10,9 +9,10 @@ export class AdminGoogleStrategy extends PassportStrategy(
   'admin-google',
 ) {
   constructor(apiConfigService: ApiConfigService) {
+    const { googleClientId, googleClientSecret } = apiConfigService.config.auth;
     super({
-      clientID: apiConfigService.get<AuthConfig>('auth').googleClientId,
-      clientSecret: apiConfigService.get<AuthConfig>('auth').googleClientSecret,
+      clientID: googleClientId,
+      clientSecret: googleClientSecret,
       callbackURL: 'http://localhost:3001/api/admin/auth/google-callback',
       scope: ['email', 'profile'],
     });

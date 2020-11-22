@@ -13,3 +13,9 @@ export interface ImageHostingConfig {
   spaceId: string;
   environmentId: string;
 }
+
+export interface AppConfig {
+  auth: AuthConfig;
+  db: DbConfig;
+  imageHosting: ImageHostingConfig;
+}

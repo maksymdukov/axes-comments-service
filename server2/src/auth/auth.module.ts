@@ -17,7 +17,7 @@ import { JwtStrategy } from './jwt.strategy';
       imports: [ConfigModule],
       inject: [ApiConfigService],
       useFactory: (apiConfigService: ApiConfigService) => ({
-        secret: apiConfigService.get<AuthConfig>('auth').jwtKey,
+        secret: apiConfigService.config.auth.jwtKey,
         signOptions: { expiresIn: JWT_EXPIRES_IN },
       }),
     }),
