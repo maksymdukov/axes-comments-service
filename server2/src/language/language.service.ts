@@ -3,9 +3,13 @@ import { LANGUAGES } from './language.constants';
 import { Language } from './language.entity';
 import { ELanguage } from './languages.enum';
 
+interface Langs {
+  [idx: string]: Language;
+}
+
 @Injectable()
 export class LanguageService {
-  langs: { [idx: string]: Language } = {};
+  langs: Langs = {};
   constructor(@Inject(LANGUAGES) private languages: Language[]) {}
 
   get ru() {
