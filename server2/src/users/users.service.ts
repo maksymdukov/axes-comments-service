@@ -1,15 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { PaginationDto } from 'src/common/dto/pagination.dto';
-import { paginatedOutput } from 'src/common/utils/paginated-output.utils';
+import { PaginationDto } from 'src/utils/pagination/pagination.dto';
 import { User } from 'src/users/entities/user.entity';
 import { Repository } from 'typeorm';
+import { PaginationService } from 'src/utils/pagination/pagination.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
+    private paginationService: PaginationService,
   ) {}
 
   async getUsers(pagination: PaginationDto) {
@@ -17,6 +18,6 @@ export class UsersService {
       skip: pagination.skip,
       take: pagination.limit,
     });
-    return paginatedOutput(items, total, pagination);
+    return this.paginationService.paginateOutput(items, total, pagination);
   }
 }

@@ -1,25 +1,31 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { PaginationDto } from 'src/utils/pagination/pagination.dto';
 import { paginatedOutput } from 'src/common/utils/paginated-output.utils';
-import { Repository } from 'typeorm';
 import { ImageHostingService } from '../image-hosting/image-hosting.service';
-import { Image } from './image.entity';
+import { DeleteImagesDto } from './dto/delete-images.dto';
+import { UpdateImagesDto } from './dto/update-images.dto';
+import { ImageRepository } from './image.repository';
+import { LanguageService } from 'src/language/language.service';
+import { ImageLanguageRepository } from './image-language.repository';
+import { PaginationService } from 'src/utils/pagination/pagination.service';
 
 @Injectable()
 export class ImagesService {
   constructor(
     private imageHosting: ImageHostingService,
-    @InjectRepository(Image) private imageRepository: Repository<Image>,
+    @InjectRepository(ImageRepository) private imageRepository: ImageRepository,
+    @InjectRepository(ImageLanguageRepository)
+    private imageLanguageRepository: ImageLanguageRepository,
+    private languageService: LanguageService,
+    private paginationService: PaginationService,
   ) {}
 
   async getImages(paginationDto: PaginationDto) {
-    const { skip, limit } = paginationDto;
-    const [images, total] = await this.imageRepository.findAndCount({
-      skip,
-      take: limit,
-    });
-    return paginatedOutput(images, total, paginationDto);
+    const [images, total] = await this.imageRepository.findImages(
+      paginationDto,
+    );
+    return this.paginationService.paginateOutput(images, total, paginationDto);
   }
 
   async uploadImages(files: Express.Multer.File[]) {
@@ -28,7 +34,7 @@ export class ImagesService {
     );
     const assets = await Promise.all(uploadPromises);
 
-    const persistPromises = assets.map((asset) => {
+    const persistPromises = assets.map(async (asset) => {
       const { contentType, fileName, height, id, url, width } = asset;
 
       const image = this.imageRepository.create({
@@ -38,10 +44,24 @@ export class ImagesService {
         width,
         imageId: id,
         url,
-        titleUk: fileName,
-        titleRu: fileName,
       });
-      return this.imageRepository.save(image);
+      await this.imageRepository.save(image);
+
+      const imageLanguageUk = this.imageLanguageRepository.create({
+        image,
+        title: image.fileName,
+        language: this.languageService.uk,
+      });
+      const imageLanguageRu = this.imageLanguageRepository.create({
+        image,
+        title: image.fileName,
+        language: this.languageService.ru,
+      });
+
+      return Promise.all([
+        this.imageLanguageRepository.save(imageLanguageUk),
+        this.imageLanguageRepository.save(imageLanguageRu),
+      ]);
     });
 
     const images = await Promise.all(persistPromises);
@@ -49,18 +69,26 @@ export class ImagesService {
     return images;
   }
 
-  updateImages() {}
+  async updateImagesTitles(updateImagesDto: UpdateImagesDto) {
+    const updateImagesPromises = updateImagesDto.images.map(async (img) => {
+      const image = await this.imageLanguageRepository.findImageLanguage(img);
+      image.title = img.title;
+      return this.imageLanguageRepository.save(image);
+    });
+    return Promise.all(updateImagesPromises);
+  }
 
-  async deleteImages(ids: number[]) {
-    const images = await this.imageRepository.findByIds(ids);
-    if (!images.length) {
-      throw new BadRequestException('No such images');
+  async deleteImages(deleteImagesDto: DeleteImagesDto) {
+    const images = await this.imageRepository.findByIds(deleteImagesDto.ids);
+
+    try {
+      const deleteFromHostingPromises = images.map((img) =>
+        this.imageHosting.deleteImage(img.imageId),
+      );
+      await Promise.all(deleteFromHostingPromises);
+    } catch (error) {
+      console.log(error);
     }
-
-    const deleteFromHostingPromises = images.map((img) =>
-      this.imageHosting.deleteImage(img.imageId),
-    );
-    await Promise.all(deleteFromHostingPromises);
 
     return this.imageRepository.remove(images);
   }

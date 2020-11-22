@@ -10,6 +10,8 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { ProductsModule } from './products/products.module';
 import { ApiConfigModule } from './api-config/api-config.module';
+import { LanguageModule } from './language/language.module';
+import { UtilsModule } from './utils/utils.module';
 
 const configModule = ConfigModule.forRoot({
   load: [configuration],
@@ -25,6 +27,7 @@ const typeOrmModule = TypeOrmModule.forRootAsync({
       url: apiConfigService.get<DbConfig>('db').databaseUrl,
       useUnifiedTopology: true,
       synchronize: apiConfigService.isDev,
+      logging: 'all',
       ssl: {
         rejectUnauthorized: false,
       },
@@ -55,6 +58,8 @@ const imageHostingModule = ImageHostingModule.forRootAsync({
     UsersModule,
     AuthModule,
     ProductsModule,
+    LanguageModule,
+    UtilsModule,
   ],
   controllers: [],
   providers: [],

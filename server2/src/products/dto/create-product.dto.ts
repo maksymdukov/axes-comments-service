@@ -9,15 +9,27 @@ import {
 export class CreateProductDto {
   @IsNotEmpty()
   @IsString()
-  title: string;
+  ruTitle: string;
 
   @IsNotEmpty()
   @IsString()
-  description: string;
+  ukTitle: string;
 
   @IsNotEmpty()
   @IsString()
-  longDescription: string;
+  ruDescription: string;
+
+  @IsNotEmpty()
+  @IsString()
+  ukDescription: string;
+
+  @IsNotEmpty()
+  @IsString()
+  ruLongDescription: string;
+
+  @IsNotEmpty()
+  @IsString()
+  ukLongDescription: string;
 
   @IsNotEmpty()
   @IsNumber()
@@ -30,6 +42,6 @@ export class CreateProductDto {
 
   @IsNotEmpty({ each: true })
   @IsArray()
-  @IsNumber(null, { each: true })
+  @IsNumber({}, { each: true })
   imageIds: number[];
 }

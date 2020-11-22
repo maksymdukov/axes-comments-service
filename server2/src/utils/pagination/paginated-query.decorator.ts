@@ -1,5 +1,5 @@
 import { PipeTransform, Query, Type } from '@nestjs/common';
-import { PaginationPipe } from '../pipes/transform-pagination.pipe';
+import { PaginationPipe } from './transform-pagination.pipe';
 
 export const PaginatedQuery = (
   ...pipes: (Type<PipeTransform> | PipeTransform)[]

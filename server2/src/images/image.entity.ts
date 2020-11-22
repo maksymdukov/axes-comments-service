@@ -3,21 +3,17 @@ import {
   CreateDateColumn,
   Entity,
   ManyToMany,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Product } from '../products/product.entity';
+import { ImageLanguage } from './image-language.entity';
 
 @Entity()
 export class Image {
   @PrimaryGeneratedColumn()
   id: number;
-
-  @Column()
-  titleUk: string;
-
-  @Column()
-  titleRu: string;
 
   @Column()
   imageId: string;
@@ -43,6 +39,15 @@ export class Image {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @ManyToMany(() => Product, (product) => product.images)
+  @OneToMany(() => ImageLanguage, (imageLanguage) => imageLanguage.image)
+  languages: ImageLanguage;
+
+  @ManyToMany(() => Product, (product) => product.images, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   products: Product[];
+
+  titleRu: string;
+  titleUk: string;
 }

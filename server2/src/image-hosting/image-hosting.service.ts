@@ -2,9 +2,10 @@ import { Inject, Injectable } from '@nestjs/common';
 import { IMAGE_HOSTING_OPTIONS } from './image-hosting.constants';
 import { ImageHostingOptions } from './interfaces/image-hosting-options.interface';
 import { createClient } from 'contentful-management';
-import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { PaginationDto } from 'src/utils/pagination/pagination.dto';
 import { ClientAPI } from 'contentful-management/dist/typings/create-contentful-api';
 import { Asset } from 'contentful-management/dist/typings/entities/asset';
+import { INormalizedAsset } from './interfaces/normalized-asset.interface';
 
 @Injectable()
 export class ImageHostingService {
@@ -70,7 +71,7 @@ export class ImageHostingService {
     await asset.delete();
   }
 
-  private normalizieAsset(asset: Asset) {
+  private normalizieAsset(asset: Asset): INormalizedAsset {
     const {
       sys: { id },
       fields: {

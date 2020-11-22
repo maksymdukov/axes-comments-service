@@ -3,12 +3,13 @@ import {
   BadRequestException,
   PipeTransform,
 } from '@nestjs/common';
-import { PaginationDto } from '../dto/pagination.dto';
+import { ELanguage } from 'src/language/languages.enum';
 
 export class PaginationPipe implements PipeTransform {
   transform(value: any, metadata: ArgumentMetadata) {
-    value.size = value.size || '10';
-    value.page = value.page || '1';
+    value.size ||= '10';
+    value.page ||= '1';
+    value.locale ||= ELanguage.uk;
     const { size, page } = value;
     const psize = parseInt(size);
     const ppage = parseInt(page);

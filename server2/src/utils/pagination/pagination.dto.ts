@@ -1,10 +1,17 @@
-import { IsInt, Min, Max, IsNumberString, IsOptional } from 'class-validator';
+import { IsOptional, IsEnum } from 'class-validator';
+import { ELanguage } from 'src/language/languages.enum';
 
 export class PaginationDto {
   @IsOptional()
   page: string;
+
   @IsOptional()
   size: string;
+
+  @IsOptional()
+  @IsEnum(ELanguage)
+  locale: ELanguage;
+
   skip = 0;
   limit = 10;
 

@@ -1,4 +1,4 @@
-import { PaginationDto } from '../dto/pagination.dto';
+import { PaginationDto } from '../../utils/pagination/pagination.dto';
 
 export const paginatedOutput = (
   items: any,

@@ -4,24 +4,17 @@ import {
   Entity,
   JoinTable,
   ManyToMany,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Image } from '../images/image.entity';
+import { ProductLanguage } from './product-language.entity';
 
 @Entity()
 export class Product {
   @PrimaryGeneratedColumn()
   id: number;
-
-  @Column({ type: 'text' })
-  title: string;
-
-  @Column()
-  description: string;
-
-  @Column({ type: 'text' })
-  longDescription: string;
 
   @Column({ type: 'real' })
   price: number;
@@ -38,4 +31,10 @@ export class Product {
   @ManyToMany(() => Image, (image) => image.products)
   @JoinTable()
   images: Image[];
+
+  @OneToMany(
+    () => ProductLanguage,
+    (productLanguage) => productLanguage.product,
+  )
+  languages: ProductLanguage;
 }
