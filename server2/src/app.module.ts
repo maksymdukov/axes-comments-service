@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import configuration from './config/configuration';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DbConfig, ImageHostingConfig } from './config/config.interface';
 import { ApiConfigService } from './api-config/api-config.service';
 import { ImageHostingModule } from './image-hosting/image-hosting.module';
 import { ImagesModule } from './images/images.module';
@@ -24,7 +23,7 @@ const typeOrmModule = TypeOrmModule.forRootAsync({
   useFactory: (apiConfigService: ApiConfigService) => {
     return {
       type: 'postgres',
-      url: apiConfigService.get<DbConfig>('db').databaseUrl,
+      url: apiConfigService.config.db.databaseUrl,
       useUnifiedTopology: true,
       synchronize: apiConfigService.isDev,
       logging: 'all',
