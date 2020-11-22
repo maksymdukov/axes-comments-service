@@ -1,7 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PaginationDto } from 'src/utils/pagination/pagination.dto';
-import { paginatedOutput } from 'src/common/utils/paginated-output.utils';
 import { ImageRepository } from 'src/images/image.repository';
 import { LanguageService } from 'src/language/language.service';
 import { ELanguage } from 'src/language/languages.enum';
