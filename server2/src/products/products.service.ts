@@ -8,6 +8,7 @@ import { ProductLanguageRepository } from './product-language.repository';
 import { ProductRepository } from './product.repository';
 import { PaginationService } from 'src/utils/pagination/pagination.service';
 import { GetProductsDto } from './dto/get-products.dto';
+import { GetProductByIdDto } from './dto/get-product-by-id.dto';
 
 @Injectable()
 export class ProductsService {
@@ -122,10 +123,6 @@ export class ProductsService {
   async getProducts(getProductsDto: GetProductsDto) {
     const [products, total] = await this.productsRepository.findProducts(
       getProductsDto,
-      {
-        isLocalized: false,
-        isFeatured: getProductsDto.isFeatured,
-      },
     );
     return this.paginationService.paginateOutput(
       products,
@@ -134,18 +131,7 @@ export class ProductsService {
     );
   }
 
-  async getProductsByLang(getProductsDto: GetProductsDto) {
-    const [products, total] = await this.productsRepository.findProducts(
-      getProductsDto,
-      {
-        isLocalized: true,
-        isFeatured: getProductsDto.isFeatured,
-      },
-    );
-    return this.paginationService.paginateOutput(
-      products,
-      total,
-      getProductsDto,
-    );
+  async getProductById(id: number, getProductByIdDto: GetProductByIdDto) {
+    return this.productsRepository.findProductById(id, getProductByIdDto);
   }
 }

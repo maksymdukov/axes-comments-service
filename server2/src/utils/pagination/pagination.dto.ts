@@ -10,7 +10,7 @@ export class PaginationDto {
 
   @IsOptional()
   @IsEnum(ELanguage)
-  locale: ELanguage;
+  locale: ELanguage | undefined;
 
   skip = 0;
   limit = 10;

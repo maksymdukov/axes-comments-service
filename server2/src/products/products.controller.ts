@@ -1,7 +1,7 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
 import { PaginatedQuery } from 'src/utils/pagination/paginated-query.decorator';
+import { GetProductByIdDto } from './dto/get-product-by-id.dto';
 import { GetProductsDto } from './dto/get-products.dto';
-import { DefaultLocaleTransform } from './pipes/deafult-locale.pipe';
 import { GetProductsTransform } from './pipes/get-products-transform.pipe';
 import { ProductsService } from './products.service';
 
@@ -9,11 +9,19 @@ import { ProductsService } from './products.service';
 export class ProductsController {
   constructor(private productsService: ProductsService) {}
 
-  @Get('localized')
-  getProductsByLang(
-    @PaginatedQuery(GetProductsTransform, DefaultLocaleTransform)
+  @Get()
+  getProducts(
+    @PaginatedQuery(GetProductsTransform)
     getProductsDto: GetProductsDto,
   ) {
-    return this.productsService.getProductsByLang(getProductsDto);
+    return this.productsService.getProducts(getProductsDto);
+  }
+
+  @Get(':id')
+  getProductById(
+    @Param('id', ParseIntPipe) id: number,
+    @Query() getProductByIdDto: GetProductByIdDto,
+  ) {
+    return this.productsService.getProductById(id, getProductByIdDto);
   }
 }
