@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ImageStorageModule } from 'src/image-storage/image-storage.module';
+import { ImageStorageModule } from 'src/integrations/image-storage/image-storage.module';
 import { LanguageModule } from 'src/language/language.module';
 import { AdminImagesController } from './admin-images.controller';
 import { ImageLanguageRepository } from './image-language.repository';

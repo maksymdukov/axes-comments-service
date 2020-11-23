@@ -3,7 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import configuration from './config/configuration';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ApiConfigService } from './api-config/api-config.service';
-import { ImageStorageModule } from './image-storage/image-storage.module';
+import { ImageStorageModule } from './integrations/image-storage/image-storage.module';
 import { ImagesModule } from './images/images.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
@@ -13,6 +13,7 @@ import { LanguageModule } from './language/language.module';
 import { UtilsModule } from './utils/utils.module';
 import { SlidesModule } from './slides/slides.module';
 import { ReviewSlidesModule } from './review-slides/review-slides.module';
+import { CommentsModule } from './comments/comments.module';
 
 const configModule = ConfigModule.forRoot({
   load: [configuration],
@@ -63,6 +64,7 @@ const imageStorageModule = ImageStorageModule.forRootAsync({
     UtilsModule,
     SlidesModule,
     ReviewSlidesModule,
+    CommentsModule,
   ],
   controllers: [],
   providers: [],

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PaginationDto } from 'src/utils/pagination/pagination.dto';
-import { ImageStorageService } from '../image-storage/image-storage.service';
+import { ImageStorageService } from '../integrations/image-storage/image-storage.service';
 import { DeleteImagesDto } from './dto/delete-images.dto';
 import { UpdateImagesDto } from './dto/update-images.dto';
 import { ImageRepository } from './image.repository';
