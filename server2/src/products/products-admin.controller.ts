@@ -9,8 +9,9 @@ import {
   Post,
 } from '@nestjs/common';
 import { PaginatedQuery } from 'src/utils/pagination/paginated-query.decorator';
-import { PaginationDto } from 'src/utils/pagination/pagination.dto';
 import { CreateProductDto } from './dto/create-product.dto';
+import { GetProductsDto } from './dto/get-products.dto';
+import { GetProductsTransform } from './pipes/get-products-transform.pipe';
 import { ProductsService } from './products.service';
 
 @Controller('api/admin/products')
@@ -18,13 +19,10 @@ export class ProductsAdminController {
   constructor(private productsService: ProductsService) {}
 
   @Get()
-  getProducts(@PaginatedQuery() paginationDto: PaginationDto) {
-    return this.productsService.getProducts(paginationDto);
-  }
-
-  @Get('localized')
-  getProductsByLang(@PaginatedQuery() paginationDto: PaginationDto) {
-    return this.productsService.getProductsByLang(paginationDto);
+  getProducts(
+    @PaginatedQuery(GetProductsTransform) getProductsDto: GetProductsDto,
+  ) {
+    return this.productsService.getProducts(getProductsDto);
   }
 
   @Post()

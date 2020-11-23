@@ -22,6 +22,9 @@ export class Product {
   @Column({ unique: true })
   slug: string;
 
+  @Column({ default: false, nullable: true })
+  isFeatured: boolean;
+
   @CreateDateColumn()
   createdAt: Date;
 

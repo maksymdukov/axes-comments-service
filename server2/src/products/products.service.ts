@@ -1,6 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { PaginationDto } from 'src/utils/pagination/pagination.dto';
 import { ImageRepository } from 'src/images/image.repository';
 import { LanguageService } from 'src/language/language.service';
 import { ELanguage } from 'src/language/languages.enum';
@@ -8,6 +7,7 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { ProductLanguageRepository } from './product-language.repository';
 import { ProductRepository } from './product.repository';
 import { PaginationService } from 'src/utils/pagination/pagination.service';
+import { GetProductsDto } from './dto/get-products.dto';
 
 @Injectable()
 export class ProductsService {
@@ -83,6 +83,7 @@ export class ProductsService {
       ukDescription,
       ukLongDescription,
       ukTitle,
+      isFeatured,
     } = updateProductDto;
     const [product, images] = await Promise.all([
       this.productsRepository.findOneOrFail(id),
@@ -91,6 +92,7 @@ export class ProductsService {
     product.price = price;
     product.slug = slug;
     product.images = images;
+    product.isFeatured = isFeatured;
     const [productRu, productUk] = await Promise.all([
       this.productLanguageRepository.findProductLanguage(
         product.id,
@@ -109,33 +111,41 @@ export class ProductsService {
     productUk.description = ukDescription;
     productUk.longDescription = ukLongDescription;
 
-    await Promise.all([
+    const [prod] = await Promise.all([
+      this.productsRepository.save(product),
       this.productLanguageRepository.save(productRu),
       this.productLanguageRepository.save(productUk),
     ]);
-    return product;
+    return prod;
   }
 
-  async getProducts(paginationDto: PaginationDto) {
+  async getProducts(getProductsDto: GetProductsDto) {
     const [products, total] = await this.productsRepository.findProducts(
-      paginationDto,
+      getProductsDto,
+      {
+        isLocalized: false,
+        isFeatured: getProductsDto.isFeatured,
+      },
     );
     return this.paginationService.paginateOutput(
       products,
       total,
-      paginationDto,
+      getProductsDto,
     );
   }
 
-  async getProductsByLang(paginationDto: PaginationDto) {
+  async getProductsByLang(getProductsDto: GetProductsDto) {
     const [products, total] = await this.productsRepository.findProducts(
-      paginationDto,
-      true,
+      getProductsDto,
+      {
+        isLocalized: true,
+        isFeatured: getProductsDto.isFeatured,
+      },
     );
     return this.paginationService.paginateOutput(
       products,
       total,
-      paginationDto,
+      getProductsDto,
     );
   }
 }

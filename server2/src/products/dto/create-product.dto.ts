@@ -1,5 +1,6 @@
 import {
   IsArray,
+  IsBoolean,
   IsLowercase,
   IsNotEmpty,
   IsNumber,
@@ -34,6 +35,10 @@ export class CreateProductDto {
   @IsNotEmpty()
   @IsNumber()
   price: number;
+
+  @IsNotEmpty()
+  @IsBoolean()
+  isFeatured: boolean;
 
   @IsNotEmpty()
   @IsString()
