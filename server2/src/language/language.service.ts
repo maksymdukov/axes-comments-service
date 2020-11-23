@@ -1,15 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { LANGUAGES } from './language.constants';
 import { Language } from './language.entity';
+import { ILangs } from './language.interface';
 import { ELanguage } from './languages.enum';
-
-interface Langs {
-  [idx: string]: Language;
-}
 
 @Injectable()
 export class LanguageService {
-  langs: Langs = {};
+  langs: ILangs = {};
   constructor(@Inject(LANGUAGES) private languages: Language[]) {}
 
   get ru() {
