@@ -12,6 +12,7 @@ import { ApiConfigModule } from './api-config/api-config.module';
 import { LanguageModule } from './language/language.module';
 import { UtilsModule } from './utils/utils.module';
 import { SlidesModule } from './slides/slides.module';
+import { ReviewSlidesModule } from './review-slides/review-slides.module';
 
 const configModule = ConfigModule.forRoot({
   load: [configuration],
@@ -61,6 +62,7 @@ const imageStorageModule = ImageStorageModule.forRootAsync({
     LanguageModule,
     UtilsModule,
     SlidesModule,
+    ReviewSlidesModule,
   ],
   controllers: [],
   providers: [],

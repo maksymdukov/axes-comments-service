@@ -1,3 +1,4 @@
+import { ReviewSlide } from 'src/review-slides/review-slide.entity';
 import { Slide } from 'src/slides/slide.entity';
 import {
   Column,
@@ -5,6 +6,7 @@ import {
   Entity,
   ManyToMany,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -48,6 +50,9 @@ export class Image {
 
   @OneToMany(() => Slide, (slide) => slide.smallImage)
   smallSlides: Slide[];
+
+  @OneToOne(() => ReviewSlide, (slide) => slide.image)
+  reviewSlide: ReviewSlide;
 
   @ManyToMany(() => Product, (product) => product.images, {
     onDelete: 'CASCADE',
