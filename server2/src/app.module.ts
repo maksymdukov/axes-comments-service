@@ -11,6 +11,7 @@ import { ProductsModule } from './products/products.module';
 import { ApiConfigModule } from './api-config/api-config.module';
 import { LanguageModule } from './language/language.module';
 import { UtilsModule } from './utils/utils.module';
+import { SlidesModule } from './slides/slides.module';
 
 const configModule = ConfigModule.forRoot({
   load: [configuration],
@@ -59,6 +60,7 @@ const imageStorageModule = ImageStorageModule.forRootAsync({
     ProductsModule,
     LanguageModule,
     UtilsModule,
+    SlidesModule,
   ],
   controllers: [],
   providers: [],

@@ -126,4 +126,16 @@ export class ProductsService {
       paginationDto,
     );
   }
+
+  async getProductsByLang(paginationDto: PaginationDto) {
+    const [products, total] = await this.productsRepository.findProducts(
+      paginationDto,
+      true,
+    );
+    return this.paginationService.paginateOutput(
+      products,
+      total,
+      paginationDto,
+    );
+  }
 }

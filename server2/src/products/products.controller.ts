@@ -22,6 +22,11 @@ export class ProductsController {
     return this.productsService.getProducts(paginationDto);
   }
 
+  @Get('localized')
+  getProductsByLang(@PaginatedQuery() paginationDto: PaginationDto) {
+    return this.productsService.getProductsByLang(paginationDto);
+  }
+
   @Post()
   createProduct(@Body() createProductDto: CreateProductDto) {
     return this.productsService.createProduct(createProductDto);
