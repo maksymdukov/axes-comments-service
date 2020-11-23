@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PaginationDto } from 'src/utils/pagination/pagination.dto';
-import { ImageHostingService } from '../image-hosting/image-hosting.service';
+import { ImageStorageService } from '../image-storage/image-storage.service';
 import { DeleteImagesDto } from './dto/delete-images.dto';
 import { UpdateImagesDto } from './dto/update-images.dto';
 import { ImageRepository } from './image.repository';
@@ -12,7 +12,7 @@ import { PaginationService } from 'src/utils/pagination/pagination.service';
 @Injectable()
 export class ImagesService {
   constructor(
-    private imageHosting: ImageHostingService,
+    private imageStorage: ImageStorageService,
     @InjectRepository(ImageRepository) private imageRepository: ImageRepository,
     @InjectRepository(ImageLanguageRepository)
     private imageLanguageRepository: ImageLanguageRepository,
@@ -29,7 +29,7 @@ export class ImagesService {
 
   async uploadImages(files: Express.Multer.File[]) {
     const uploadPromises = files.map((file) =>
-      this.imageHosting.uploadImage(file),
+      this.imageStorage.uploadImage(file),
     );
     const assets = await Promise.all(uploadPromises);
 
@@ -82,7 +82,7 @@ export class ImagesService {
 
     try {
       const deleteFromHostingPromises = images.map((img) =>
-        this.imageHosting.deleteImage(img.imageId),
+        this.imageStorage.deleteImage(img.imageId),
       );
       await Promise.all(deleteFromHostingPromises);
     } catch (error) {

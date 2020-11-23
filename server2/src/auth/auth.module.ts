@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { AuthConfig } from 'src/config/config.interface';
 import { ApiConfigService } from '../api-config/api-config.service';
 import { AdminGoogleStrategy } from './admin-google.strategy';
 import { JWT_EXPIRES_IN } from './auth.constants';

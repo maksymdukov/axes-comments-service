@@ -1,4 +1,4 @@
-interface GoogleUser {
+interface IGoogleUser {
   email: string;
   firstName: string;
   lastName: string;

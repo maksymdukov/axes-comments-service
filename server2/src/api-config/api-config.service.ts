@@ -1,15 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { AppConfig } from 'src/config/config.interface';
+import { IAppConfig } from 'src/config/config.interface';
 
 @Injectable()
 export class ApiConfigService {
-  private _config: AppConfig;
+  private _config: IAppConfig;
   constructor(private configService: ConfigService) {
     this._config = {
-      auth: this.get<AppConfig['auth']>('auth'),
-      db: this.get<AppConfig['db']>('db'),
-      imageHosting: this.get<AppConfig['imageHosting']>('imageHosting'),
+      auth: this.get<IAppConfig['auth']>('auth'),
+      db: this.get<IAppConfig['db']>('db'),
+      imageHosting: this.get<IAppConfig['imageHosting']>('imageHosting'),
     };
   }
 

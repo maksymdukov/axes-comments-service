@@ -1,21 +1,21 @@
-export interface AuthConfig {
+export interface IAuthConfig {
   jwtKey: string;
   googleClientId: string;
   googleClientSecret: string;
 }
 
-export interface DbConfig {
+export interface IDbConfig {
   databaseUrl: string;
 }
 
-export interface ImageHostingConfig {
+export interface IImageStorageConfig {
   accessToken: string;
   spaceId: string;
   environmentId: string;
 }
 
-export interface AppConfig {
-  auth: AuthConfig;
-  db: DbConfig;
-  imageHosting: ImageHostingConfig;
+export interface IAppConfig {
+  auth: IAuthConfig;
+  db: IDbConfig;
+  imageHosting: IImageStorageConfig;
 }

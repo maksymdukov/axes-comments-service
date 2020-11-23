@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { IMAGE_HOSTING_OPTIONS } from './image-hosting.constants';
-import { ImageHostingOptions } from './interfaces/image-hosting-options.interface';
+import { IMAGE_HOSTING_OPTIONS } from './image-storage.constants';
+import { IImageStorageOptions } from './interfaces/image-hosting-options.interface';
 import { createClient } from 'contentful-management';
 import { PaginationDto } from 'src/utils/pagination/pagination.dto';
 import { ClientAPI } from 'contentful-management/dist/typings/create-contentful-api';
@@ -8,12 +8,12 @@ import { Asset } from 'contentful-management/dist/typings/entities/asset';
 import { INormalizedAsset } from './interfaces/normalized-asset.interface';
 
 @Injectable()
-export class ImageHostingService {
+export class ImageStorageService {
   private _client: ClientAPI;
-  private options: ImageHostingOptions;
+  private options: IImageStorageOptions;
   constructor(
     @Inject(IMAGE_HOSTING_OPTIONS)
-    options: ImageHostingOptions,
+    options: IImageStorageOptions,
   ) {
     this.options = options;
     this._client = createClient({

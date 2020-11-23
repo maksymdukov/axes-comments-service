@@ -3,7 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import configuration from './config/configuration';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ApiConfigService } from './api-config/api-config.service';
-import { ImageHostingModule } from './image-hosting/image-hosting.module';
+import { ImageStorageModule } from './image-storage/image-storage.module';
 import { ImagesModule } from './images/images.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
@@ -35,7 +35,7 @@ const typeOrmModule = TypeOrmModule.forRootAsync({
   },
 });
 
-const imageHostingModule = ImageHostingModule.forRootAsync({
+const imageStorageModule = ImageStorageModule.forRootAsync({
   imports: [ConfigModule],
   inject: [ApiConfigService],
   useFactory: (apiConfigService: ApiConfigService) => {
@@ -52,7 +52,7 @@ const imageHostingModule = ImageHostingModule.forRootAsync({
   imports: [
     configModule,
     typeOrmModule,
-    imageHostingModule,
+    imageStorageModule,
     ImagesModule,
     UsersModule,
     AuthModule,
