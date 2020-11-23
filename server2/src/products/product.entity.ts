@@ -1,3 +1,4 @@
+import { Comment } from 'src/comments/comment.entity';
 import {
   Column,
   CreateDateColumn,
@@ -40,4 +41,7 @@ export class Product {
     (productLanguage) => productLanguage.product,
   )
   languages: ProductLanguage;
+
+  @OneToMany(() => Comment, (comment) => comment.product)
+  comments: Comment[];
 }

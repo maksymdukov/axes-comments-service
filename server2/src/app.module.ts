@@ -14,6 +14,7 @@ import { UtilsModule } from './utils/utils.module';
 import { SlidesModule } from './slides/slides.module';
 import { ReviewSlidesModule } from './review-slides/review-slides.module';
 import { CommentsModule } from './comments/comments.module';
+import { AnonymousUsersModule } from './anonymous-users/anonymous-users.module';
 
 const configModule = ConfigModule.forRoot({
   load: [configuration],
@@ -65,6 +66,7 @@ const imageStorageModule = ImageStorageModule.forRootAsync({
     SlidesModule,
     ReviewSlidesModule,
     CommentsModule,
+    AnonymousUsersModule,
   ],
   controllers: [],
   providers: [],

@@ -1,7 +1,9 @@
+import { Comment } from 'src/comments/comment.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -24,4 +26,7 @@ export class User {
 
   @UpdateDateColumn()
   updatedDate: Date;
+
+  @OneToMany(() => Comment, (comment) => comment.user)
+  comments: Comment[];
 }

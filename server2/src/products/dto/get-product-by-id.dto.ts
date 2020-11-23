@@ -4,5 +4,5 @@ import { ELanguage } from 'src/language/languages.enum';
 export class GetOneProductDto {
   @IsOptional()
   @IsEnum(ELanguage)
-  locale: ELanguage;
+  locale?: ELanguage;
 }
