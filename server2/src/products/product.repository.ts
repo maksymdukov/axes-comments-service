@@ -22,6 +22,7 @@ export class ProductRepository extends Repository<Product> {
       .innerJoinAndSelect('productlanguages.language', 'lang')
       .leftJoinAndSelect('images.languages', 'imagelanguage')
       .innerJoinAndSelect('imagelanguage.language', 'imglang')
+      .orderBy('products.createdAt', 'DESC')
       .take(limit)
       .skip(skip);
     if (isLocalized) {

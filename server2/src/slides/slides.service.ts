@@ -1,17 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ImageRepository } from 'src/images/image.repository';
-import { Repository } from 'typeorm';
+import { PaginationDto } from 'src/utils/pagination/pagination.dto';
+import { PaginationService } from 'src/utils/pagination/pagination.service';
 import { CreateSlideDto } from './dto/create-slide.dto';
-import { Slide } from './slide.entity';
+import { SlidesRepository } from './slides.repository';
 
 @Injectable()
 export class SlidesService {
   constructor(
-    @InjectRepository(Slide)
-    private slidesRepository: Repository<Slide>,
+    @InjectRepository(SlidesRepository)
+    private slidesRepository: SlidesRepository,
     @InjectRepository(ImageRepository)
     private imagesRepository: ImageRepository,
+    private paginationService: PaginationService,
   ) {}
 
   async createSlide(createSlideDto: CreateSlideDto) {
@@ -43,6 +45,11 @@ export class SlidesService {
     slide.name = updateSlideDto.name;
     return this.slidesRepository.save(slide);
   }
-  async getSlides() {}
-  async getSlidesLocalized() {}
+
+  async getSlides(paginationDto: PaginationDto) {
+    const [slides, total] = await this.slidesRepository.findSlides(
+      paginationDto,
+    );
+    return this.paginationService.paginateOutput(slides, total, paginationDto);
+  }
 }

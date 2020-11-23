@@ -1,5 +1,12 @@
 import { Image } from 'src/images/image.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity()
 export class Slide {
@@ -8,6 +15,12 @@ export class Slide {
 
   @Column({ default: 'slide' })
   name: string;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 
   @ManyToOne(() => Image, (image) => image.bigSlides, { onDelete: 'CASCADE' })
   bigImage: Image;

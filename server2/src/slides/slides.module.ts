@@ -2,12 +2,13 @@ import { Module } from '@nestjs/common';
 import { SlidesService } from './slides.service';
 import { SlidesAdminController } from './slides-admin.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Slide } from './slide.entity';
 import { ImageRepository } from 'src/images/image.repository';
+import { SlidesRepository } from './slides.repository';
+import { SlidesController } from './slides.controller';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Slide, ImageRepository])],
+  imports: [TypeOrmModule.forFeature([SlidesRepository, ImageRepository])],
   providers: [SlidesService],
-  controllers: [SlidesAdminController],
+  controllers: [SlidesAdminController, SlidesController],
 })
 export class SlidesModule {}

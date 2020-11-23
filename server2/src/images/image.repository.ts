@@ -10,6 +10,7 @@ export class ImageRepository extends Repository<Image> {
     return this.createQueryBuilder('image')
       .leftJoinAndSelect('image.languages', 'imagelanguage')
       .innerJoinAndSelect('imagelanguage.language', 'lang')
+      .orderBy('image.createdAt', 'DESC')
       .take(limit)
       .skip(skip)
       .getManyAndCount();
