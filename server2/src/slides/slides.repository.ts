@@ -13,7 +13,7 @@ export class SlidesRepository extends Repository<Slide> {
       .innerJoinAndSelect('smallimage.languages', 'smallimglang')
       .where('bigimglang.name = :locale', { locale: paginationDto.locale })
       .andWhere('smallimglang.name = :locale', { locale: paginationDto.locale })
-      .orderBy('slides.createdAt', 'DESC')
+      .orderBy('slides.updatedAt', 'DESC')
       .take(limit)
       .skip(skip)
       .getManyAndCount();
