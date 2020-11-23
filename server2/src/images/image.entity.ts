@@ -1,3 +1,4 @@
+import { Slide } from 'src/slides/slide.entity';
 import {
   Column,
   CreateDateColumn,
@@ -40,7 +41,13 @@ export class Image {
   updatedAt: Date;
 
   @OneToMany(() => ImageLanguage, (imageLanguage) => imageLanguage.image)
-  languages: ImageLanguage;
+  languages: ImageLanguage[];
+
+  @OneToMany(() => Slide, (slide) => slide.bigImage)
+  bigSlides: Slide[];
+
+  @OneToMany(() => Slide, (slide) => slide.smallImage)
+  smallSlides: Slide[];
 
   @ManyToMany(() => Product, (product) => product.images, {
     onDelete: 'CASCADE',

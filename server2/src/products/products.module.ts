@@ -4,9 +4,10 @@ import { ImageRepository } from 'src/images/image.repository';
 import { ImagesModule } from '../images/images.module';
 import { ProductRepository } from './product.repository';
 import { ProductsService } from './products.service';
-import { ProductsController } from './products.controller';
+import { ProductsAdminController } from './products-admin.controller';
 import { ProductLanguageRepository } from './product-language.repository';
 import { LanguageModule } from 'src/language/language.module';
+import { ProductsController } from './products.controller';
 
 @Module({
   imports: [
@@ -19,6 +20,6 @@ import { LanguageModule } from 'src/language/language.module';
     LanguageModule,
   ],
   providers: [ProductsService],
-  controllers: [ProductsController],
+  controllers: [ProductsAdminController, ProductsController],
 })
 export class ProductsModule {}
