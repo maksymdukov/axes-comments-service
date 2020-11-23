@@ -1,6 +1,6 @@
 import { Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
 import { PaginatedQuery } from 'src/utils/pagination/paginated-query.decorator';
-import { GetProductByIdDto } from './dto/get-product-by-id.dto';
+import { GetOneProductDto } from './dto/get-product-by-id.dto';
 import { GetProductsDto } from './dto/get-products.dto';
 import { GetProductsTransform } from './pipes/get-products-transform.pipe';
 import { ProductsService } from './products.service';
@@ -20,8 +20,16 @@ export class ProductsController {
   @Get(':id')
   getProductById(
     @Param('id', ParseIntPipe) id: number,
-    @Query() getProductByIdDto: GetProductByIdDto,
+    @Query() getProductByIdDto: GetOneProductDto,
   ) {
     return this.productsService.getProductById(id, getProductByIdDto);
+  }
+
+  @Get('/slug/:slug')
+  getProductBySlug(
+    @Param('slug') slug: string,
+    @Query() getOneProductDto: GetOneProductDto,
+  ) {
+    return this.productsService.getProductBySlug(slug, getOneProductDto);
   }
 }

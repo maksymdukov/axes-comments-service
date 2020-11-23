@@ -8,7 +8,7 @@ import { ProductLanguageRepository } from './product-language.repository';
 import { ProductRepository } from './product.repository';
 import { PaginationService } from 'src/utils/pagination/pagination.service';
 import { GetProductsDto } from './dto/get-products.dto';
-import { GetProductByIdDto } from './dto/get-product-by-id.dto';
+import { GetOneProductDto } from './dto/get-product-by-id.dto';
 
 @Injectable()
 export class ProductsService {
@@ -131,7 +131,11 @@ export class ProductsService {
     );
   }
 
-  async getProductById(id: number, getProductByIdDto: GetProductByIdDto) {
+  async getProductById(id: number, getProductByIdDto: GetOneProductDto) {
     return this.productsRepository.findProductById(id, getProductByIdDto);
+  }
+
+  async getProductBySlug(slug: string, getOneProductDto: GetOneProductDto) {
+    return this.productsRepository.findProductBySlug(slug, getOneProductDto);
   }
 }
