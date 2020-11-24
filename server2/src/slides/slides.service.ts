@@ -47,9 +47,9 @@ export class SlidesService {
   }
 
   async getSlides(paginationDto: PaginationDto) {
-    const [slides, total] = await this.slidesRepository.findSlides(
+    return this.paginationService.paginateOutput(
+      await this.slidesRepository.findSlides(paginationDto),
       paginationDto,
     );
-    return this.paginationService.paginateOutput(slides, total, paginationDto);
   }
 }

@@ -1,4 +1,6 @@
 import { Comment } from 'src/comments/comment.entity';
+import { Delivery } from 'src/delivery/delivery.entity';
+import { Order } from 'src/orders/entities/orders.entity';
 import {
   Column,
   CreateDateColumn,
@@ -27,6 +29,12 @@ export class User {
   @UpdateDateColumn()
   updatedDate: Date;
 
+  @OneToMany(() => Order, (order) => order.user)
+  orders: Order[];
+
   @OneToMany(() => Comment, (comment) => comment.user)
   comments: Comment[];
+
+  @OneToMany(() => Delivery, (delivery) => delivery.user)
+  deliveries: Delivery;
 }

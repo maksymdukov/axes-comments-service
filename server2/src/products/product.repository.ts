@@ -1,4 +1,4 @@
-import { EntityRepository, Repository } from 'typeorm';
+import { EntityRepository, In, Repository } from 'typeorm';
 import { Product } from './product.entity';
 import { GetProductsDto } from './dto/get-products.dto';
 import { GetOneProductDto } from './dto/get-product-by-id.dto';
@@ -55,5 +55,9 @@ export class ProductRepository extends Repository<Product> {
         .andWhere('imglang.name = :locale', { locale });
     }
     return query.getOneOrFail();
+  }
+
+  getProductsPrices(slugs: string[]) {
+    return this.find({ where: { slug: In(slugs) } });
   }
 }

@@ -121,12 +121,8 @@ export class ProductsService {
   }
 
   async getProducts(getProductsDto: GetProductsDto) {
-    const [products, total] = await this.productsRepository.findProducts(
-      getProductsDto,
-    );
     return this.paginationService.paginateOutput(
-      products,
-      total,
+      await this.productsRepository.findProducts(getProductsDto),
       getProductsDto,
     );
   }
@@ -137,5 +133,18 @@ export class ProductsService {
 
   async getProductBySlug(slug: string, getOneProductDto: GetOneProductDto) {
     return this.productsRepository.findProductBySlug(slug, getOneProductDto);
+  }
+
+  async getProductsPrices(
+    slugs: string[],
+  ): Promise<{ [index: string]: number }> {
+    const products = await this.productsRepository.getProductsPrices(slugs);
+    if (products.length !== slugs.length) {
+      throw new BadRequestException('Wrong product ids/slugs');
+    }
+    return products.reduce((acc, product) => {
+      acc[product.slug] = product.price;
+      return acc;
+    }, {});
   }
 }

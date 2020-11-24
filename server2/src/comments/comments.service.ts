@@ -56,24 +56,15 @@ export class CommentsService {
   }
 
   async getComments(getCommentsDto: GetCommentsDto) {
-    const [comments, total] = await this.commentsRepository.findComments(
-      getCommentsDto,
-    );
     return this.pagionationService.paginateOutput(
-      comments,
-      total,
+      await this.commentsRepository.findComments(getCommentsDto),
       getCommentsDto,
     );
   }
 
   async getCommentsBySlug(slug: string, paginationDto: PaginationDto) {
-    const [comments, total] = await this.commentsRepository.findCommentsBySlug(
-      slug,
-      paginationDto,
-    );
     return this.pagionationService.paginateOutput(
-      comments,
-      total,
+      await this.commentsRepository.findCommentsBySlug(slug, paginationDto),
       paginationDto,
     );
   }

@@ -14,10 +14,12 @@ export class UsersService {
   ) {}
 
   async getUsers(pagination: PaginationDto) {
-    const [items, total] = await this.usersRepository.findAndCount({
-      skip: pagination.skip,
-      take: pagination.limit,
-    });
-    return this.paginationService.paginateOutput(items, total, pagination);
+    return this.paginationService.paginateOutput(
+      await this.usersRepository.findAndCount({
+        skip: pagination.skip,
+        take: pagination.limit,
+      }),
+      pagination,
+    );
   }
 }

@@ -21,17 +21,14 @@ export class ImagesService {
   ) {}
 
   async getImages(paginationDto: PaginationDto) {
-    const [images, total] = await this.imageRepository.findImages(
+    return this.paginationService.paginateOutput(
+      await this.imageRepository.findImages(paginationDto),
       paginationDto,
     );
-    return this.paginationService.paginateOutput(images, total, paginationDto);
   }
 
   async uploadImages(files: Express.Multer.File[]) {
-    const uploadPromises = files.map((file) =>
-      this.imageStorage.uploadImage(file),
-    );
-    const assets = await Promise.all(uploadPromises);
+    const assets = await this.uploadImagesToStorage(files);
 
     const persistPromises = assets.map(async (asset) => {
       const { contentType, fileName, height, id, url, width } = asset;
@@ -66,6 +63,13 @@ export class ImagesService {
     const images = await Promise.all(persistPromises);
 
     return images;
+  }
+
+  async uploadImagesToStorage(files: Express.Multer.File[]) {
+    const uploadPromises = files.map((file) =>
+      this.imageStorage.uploadImage(file),
+    );
+    return await Promise.all(uploadPromises);
   }
 
   async updateImagesTitles(updateImagesDto: UpdateImagesDto) {

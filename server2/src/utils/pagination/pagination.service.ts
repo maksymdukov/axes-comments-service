@@ -3,7 +3,7 @@ import { PaginationDto } from './pagination.dto';
 
 @Injectable()
 export class PaginationService {
-  paginateOutput(items: any, total: number, paginationDto: PaginationDto) {
+  paginateOutput([items, total]: [any, number], paginationDto: PaginationDto) {
     return {
       items,
       total,
