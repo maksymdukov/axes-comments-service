@@ -28,4 +28,21 @@ export class DeliveryService {
     });
     return this.deliveryRepository.save(mainDelivery);
   }
+
+  async change(id: number, changeDeliveryDto: CreateDeliveryDto) {
+    const {
+      npNumber,
+      npSettlement,
+      delivery,
+      ukrAddress,
+      ukrIdx,
+    } = changeDeliveryDto;
+    const existingDelivery = await this.deliveryRepository.findOneOrFail(id);
+    existingDelivery.address = ukrAddress ?? existingDelivery.address;
+    existingDelivery.branch = npNumber ?? existingDelivery.branch;
+    existingDelivery.idx = ukrIdx ?? existingDelivery.idx;
+    existingDelivery.settlement = npSettlement ?? existingDelivery.settlement;
+    existingDelivery.type = delivery ?? existingDelivery.type;
+    return this.deliveryRepository.save(existingDelivery);
+  }
 }

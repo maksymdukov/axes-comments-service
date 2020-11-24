@@ -13,11 +13,16 @@ export class OrdersRepository extends Repository<Order> {
       relations: [
         'details',
         'details.product',
+        'customDetails',
+        'customDetails.image',
         'user',
         'anonymousUser',
         'delivery',
       ],
       where: status ? { status } : {},
+      order: {
+        createdAt: 'DESC',
+      },
     });
   }
 
@@ -39,8 +44,8 @@ export class OrdersRepository extends Repository<Order> {
   ) {
     const { comment, status } = changeOrderDto;
     const order = await this.getOrder(id);
-    order.comment ||= comment;
-    order.status ||= status;
+    order.comment = comment ?? order.comment;
+    order.status = status ?? order.status;
     return this.save(order);
   }
 }

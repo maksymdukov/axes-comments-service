@@ -13,6 +13,16 @@ import { Order } from '../entities/orders.entity';
 import { OrdersDetailsService } from './orders-details.service';
 import { AnonymousUsersService } from 'src/anonymous-users/anonymous-users.service';
 import { ChangeOrderDto } from '../dto/change-order.dto';
+import { CreateAnonymousCustomOrder } from '../dto/create-anon-custom-order.dto';
+import { CustomOrdersDetailsService } from './custom-orders-details.service';
+import { ChangeAnonymousCustomOrderDto } from '../dto/change-anonymous-custom-order.dto';
+import { CreateCustomOrderDto } from '../dto/create-custom-order.dto';
+
+type CreateOrderCombinedDto =
+  | CreateAnonymousOrderDto
+  | CreateOrderDto
+  | CreateAnonymousCustomOrder
+  | CreateCustomOrderDto;
 
 @Injectable()
 export class OrdersService {
@@ -23,22 +33,33 @@ export class OrdersService {
     private pagionationService: PaginationService,
     private orderDetailsService: OrdersDetailsService,
     private anonymousUsersService: AnonymousUsersService,
+    private customOrderDetailsService: CustomOrdersDetailsService,
   ) {}
 
-  async create(
-    createOrderDto: CreateAnonymousOrderDto | CreateOrderDto,
-    user?: User,
-  ) {
+  async create(createOrderDto: CreateOrderCombinedDto, user?: User) {
     let order: Order;
     if (createOrderDto instanceof CreateOrderDto) {
       // existing user
       order = await this.createOrder(createOrderDto, user);
-    } else if (createOrderDto instanceof CreateAnonymousOrderDto) {
+    } else if (
+      createOrderDto instanceof CreateAnonymousOrderDto ||
+      createOrderDto instanceof CreateAnonymousCustomOrder
+    ) {
       // anonymous user
       order = await this.createAnonymousOrder(createOrderDto);
     }
     await this.ordersRepository.save(order);
-    await this.orderDetailsService.createMany(order, createOrderDto);
+    if (
+      createOrderDto instanceof CreateOrderDto ||
+      createOrderDto instanceof CreateAnonymousOrderDto
+    ) {
+      await this.orderDetailsService.createMany(order, createOrderDto);
+    } else if (createOrderDto instanceof CreateAnonymousCustomOrder) {
+      await this.customOrderDetailsService.createMany(
+        order,
+        createOrderDto.files,
+      );
+    }
     return order;
   }
 
@@ -50,7 +71,9 @@ export class OrdersService {
       delivery: { id: createOrderDto.deliveryId },
     });
   }
-  private async createAnonymousOrder(createOrderDto: CreateAnonymousOrderDto) {
+  private async createAnonymousOrder(
+    createOrderDto: CreateAnonymousOrderDto | CreateAnonymousCustomOrder,
+  ) {
     const {
       email,
       firstName,
@@ -93,17 +116,29 @@ export class OrdersService {
 
   async change(
     id: number,
-    changeOrderDto: ChangeAnonymousOrderDto | ChangeOrderDto,
+    changeOrderDto:
+      | ChangeAnonymousOrderDto
+      | ChangeOrderDto
+      | ChangeAnonymousCustomOrderDto,
   ) {
     const order = await this.ordersRepository.changeById(id, changeOrderDto);
-    if (changeOrderDto instanceof ChangeAnonymousOrderDto) {
+    if (
+      changeOrderDto instanceof ChangeAnonymousOrderDto ||
+      changeOrderDto instanceof ChangeAnonymousCustomOrderDto
+    ) {
       await this.anonymousUsersService.change(
         order.anonymousUser.id,
         changeOrderDto,
       );
+      await this.deliveryService.change(order.delivery.id, changeOrderDto);
     }
     // order items
-    await this.orderDetailsService.changeMany(changeOrderDto, order);
+    if (
+      changeOrderDto instanceof ChangeOrderDto ||
+      changeOrderDto instanceof ChangeAnonymousOrderDto
+    ) {
+      await this.orderDetailsService.changeMany(changeOrderDto, order);
+    }
     return this.ordersRepository.getOrder(id);
   }
 

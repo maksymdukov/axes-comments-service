@@ -1,18 +1,14 @@
 import {
-  ArrayMinSize,
-  IsArray,
   IsEmail,
   IsEnum,
   IsNotEmpty,
   IsOptional,
   IsString,
-  ValidateNested,
 } from 'class-validator';
 import { CreateDeliveryDto } from 'src/delivery/dto/create-delivery.dto';
 import { EOrderStatus } from '../enums/order-status.enum';
-import { OrderItemDto } from './order-item.dto';
 
-export class ChangeAnonymousOrderDto extends CreateDeliveryDto {
+export class ChangeAnonymousCustomOrderDto extends CreateDeliveryDto {
   @IsNotEmpty()
   @IsEnum(EOrderStatus)
   status: EOrderStatus;
@@ -40,9 +36,4 @@ export class ChangeAnonymousOrderDto extends CreateDeliveryDto {
   @IsOptional()
   @IsString()
   comment: string;
-
-  @IsArray()
-  @ArrayMinSize(1)
-  @ValidateNested({ each: true })
-  items: OrderItemDto[];
 }

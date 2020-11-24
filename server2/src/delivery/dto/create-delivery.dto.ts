@@ -23,5 +23,5 @@ export class CreateDeliveryDto {
 
   @IsOptional()
   @IsInt()
-  userId: number;
+  userId?: number;
 }

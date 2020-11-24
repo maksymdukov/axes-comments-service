@@ -41,7 +41,7 @@ export class ImagesService {
         imageId: id,
         url,
       });
-      await this.imageRepository.save(image);
+      const img = await this.imageRepository.save(image);
 
       const imageLanguageUk = this.imageLanguageRepository.create({
         image,
@@ -54,10 +54,11 @@ export class ImagesService {
         language: this.languageService.ru,
       });
 
-      return Promise.all([
+      await Promise.all([
         this.imageLanguageRepository.save(imageLanguageUk),
         this.imageLanguageRepository.save(imageLanguageRu),
       ]);
+      return img;
     });
 
     const images = await Promise.all(persistPromises);

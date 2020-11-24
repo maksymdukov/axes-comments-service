@@ -13,6 +13,7 @@ import { ChangeAnonymousOrderDto } from '../dto/change-anonymous-order.dto';
 import { GetOrdersDto } from '../dto/get-orders.dto';
 import { OrdersService } from '../services/orders.service';
 import { ChangeOrderDto } from '../dto/change-order.dto';
+import { ChangeAnonymousCustomOrderDto } from '../dto/change-anonymous-custom-order.dto';
 
 @Controller('/api/admin/orders')
 export class OrdersAdminController {
@@ -37,6 +38,14 @@ export class OrdersAdminController {
     @Param('id', ParseIntPipe) id: number,
   ) {
     return this.ordersService.change(id, changeAnonymousOrderDto);
+  }
+
+  @Patch('/anonymous/custom/:id')
+  changeCustomOrder(
+    @Body() changeOrderDto: ChangeAnonymousCustomOrderDto,
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    return this.ordersService.change(id, changeOrderDto);
   }
 
   @Patch(':id')

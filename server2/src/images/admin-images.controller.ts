@@ -15,6 +15,7 @@ import { ImagesService } from 'src/images/images.service';
 import { DeleteImagesDto } from './dto/delete-images.dto';
 import { UpdateImagesDto } from './dto/update-images.dto';
 import { PaginatedQuery } from 'src/utils/pagination/paginated-query.decorator';
+import { filesFilter } from './images.utils';
 
 @Controller('api/admin/images')
 export class AdminImagesController {
@@ -28,12 +29,7 @@ export class AdminImagesController {
   @Post('upload')
   @UseInterceptors(
     FilesInterceptor('images', null, {
-      fileFilter: (req, file, cb) => {
-        if (!file.mimetype.includes('image')) {
-          return cb(new Error('Only images are allowed'), false);
-        }
-        cb(null, true);
-      },
+      fileFilter: filesFilter,
     }),
   )
   uploadImages(@UploadedFiles() files: Express.Multer.File[]) {

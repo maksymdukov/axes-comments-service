@@ -11,6 +11,7 @@ import { OrdersDetailsService } from './services/orders-details.service';
 import { CustomOrdersDetailsService } from './services/custom-orders-details.service';
 import { OrdersController } from './controllers/orders.controller';
 import { AnonymousUsersModule } from 'src/anonymous-users/anonymous-users.module';
+import { ImagesModule } from 'src/images/images.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { AnonymousUsersModule } from 'src/anonymous-users/anonymous-users.module
     DeliveryModule,
     ProductsModule,
     AnonymousUsersModule,
+    ImagesModule,
   ],
   providers: [OrdersService, OrdersDetailsService, CustomOrdersDetailsService],
   controllers: [OrdersController, OrdersAdminController],
