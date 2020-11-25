@@ -10,6 +10,7 @@ export class ApiConfigService {
       auth: this.get<IAppConfig['auth']>('auth'),
       db: this.get<IAppConfig['db']>('db'),
       imageHosting: this.get<IAppConfig['imageHosting']>('imageHosting'),
+      mail: this.get<IAppConfig['mail']>('mail'),
     };
   }
 

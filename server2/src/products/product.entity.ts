@@ -40,7 +40,7 @@ export class Product {
     () => ProductLanguage,
     (productLanguage) => productLanguage.product,
   )
-  languages: ProductLanguage;
+  languages: ProductLanguage[];
 
   @OneToMany(() => Comment, (comment) => comment.product)
   comments: Comment[];

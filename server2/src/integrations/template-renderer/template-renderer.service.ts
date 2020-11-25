@@ -1,7 +1,7 @@
 import { Inject, Injectable, Scope } from '@nestjs/common';
 import { TEMPLATE_RENDERER_OPTIONS } from './template-renderer.constants';
-import path from 'path';
-import ejs from 'ejs';
+import * as path from 'path';
+import * as ejs from 'ejs';
 import { ITemplateRendererOptions } from './interfaces/template-renderer-options.interface';
 
 @Injectable({ scope: Scope.TRANSIENT })

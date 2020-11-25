@@ -8,16 +8,16 @@ import { ITemplateRendererOptions } from '../template-renderer/interfaces/templa
 @Module({})
 export class MailerModule {
   static forAsyncRoot(opts: IMailerModuleAsyncOpts): DynamicModule {
+    const optionsProvider = {
+      provide: ROOT_MAILER_OPTIONS,
+      useFactory: opts.useFactory,
+      inject: opts.inject,
+    };
     return {
       module: MailerModule,
       global: true,
-      providers: [
-        {
-          provide: ROOT_MAILER_OPTIONS,
-          useFactory: opts.useFactory,
-          inject: opts.inject,
-        },
-      ],
+      providers: [optionsProvider],
+      exports: [optionsProvider],
     };
   }
 

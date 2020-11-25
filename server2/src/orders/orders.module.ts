@@ -13,7 +13,7 @@ import { OrdersController } from './controllers/orders.controller';
 import { AnonymousUsersModule } from 'src/anonymous-users/anonymous-users.module';
 import { ImagesModule } from 'src/images/images.module';
 import { MailerModule } from 'src/integrations/mailer/mailer.module';
-import path from 'path';
+import * as path from 'path';
 
 @Module({
   imports: [

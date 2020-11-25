@@ -28,7 +28,7 @@ export class MailerService {
     });
   }
 
-  async sendEmail(options: ISendEmailOptions) {
+  async send(options: ISendEmailOptions) {
     const { templatePath, templateData, subject, from, to } = options;
     const html = await this.templateRenderer.render(templatePath, templateData);
     return this.nodemailer.sendMail({
@@ -37,5 +37,14 @@ export class MailerService {
       to: to || this.rootMailerOptions.recipient,
       subject: this.rootMailerOptions.getPrefix(subject),
     });
+  }
+
+  async sendToAdmin(
+    options: Pick<
+      ISendEmailOptions,
+      'subject' | 'templatePath' | 'templateData'
+    >,
+  ) {
+    this.send(options);
   }
 }

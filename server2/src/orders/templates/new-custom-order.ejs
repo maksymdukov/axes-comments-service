@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div style="width: 600px;">
+      <div>
+        <p>Имя: <strong><%= user.firstName %></strong></p>
+        <p>Фамилия: <strong><%= user.lastName %></strong></p>
+        <p>Email: <strong><%= user.email %></strong></p>
+        <p>Телефон: <strong><%= user.phone %></strong></p>
+        <p>Доставка: <strong><%= delivery.delivery %></strong></p>
+        <% if (delivery.delivery === 'novaposhta') { %>
+        <p>Населенный пункт: <strong><%= delivery.settlement %></strong></p>
+        <p>Номер отделения: <strong><%= delivery.branch %></strong></p>
+        <% } else { %>
+        <p>Адрес: <strong><%= delivery.address %></strong></p>
+        <p>Индекс: <strong><%= delivery.idx %></strong></p>
+        <% } %> <% if (comment) { %>
+        <p>Комментрий: <i><%= comments %></i></p>
+        <% } %> <% if (customDetails.length > 0) { %>
+        <p>Узоры клиента:</p>
+        <% customDetails.forEach(item => { %>
+        <div>
+          <a href="https://<%= item.image.url.substr(2) %>" target="_blank">
+            <img
+              width="300"
+              src="https://<%= item.image.url.substr(2) %>?w=150"
+              alt="client image"
+            />
+          </a>
+        </div>
+        <% }) %> <% } %>
+      </div>
+    </div>
+  </body>
+</html>

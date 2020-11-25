@@ -24,6 +24,11 @@ export class OrdersAdminController {
     return this.ordersService.get(getOrdersDto);
   }
 
+  @Get(':id')
+  getOrder(@Param('id', ParseIntPipe) id: number) {
+    return this.ordersService.getById(id);
+  }
+
   @Patch(':id/status')
   changeOrderStatus(
     @Param('id', ParseIntPipe) id: number,

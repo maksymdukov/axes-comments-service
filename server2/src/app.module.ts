@@ -65,6 +65,8 @@ const mailerModule = MailerModule.forAsyncRoot({
         pass,
       },
       service: 'gmail',
+      sender: user,
+      recipient: user,
     };
   },
 });

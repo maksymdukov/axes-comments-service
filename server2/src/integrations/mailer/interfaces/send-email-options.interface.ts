@@ -3,5 +3,5 @@ export interface ISendEmailOptions {
   to?: string;
   subject: string;
   templatePath: string;
-  templateData: any;
+  templateData?: any;
 }
