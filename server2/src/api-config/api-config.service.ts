@@ -7,15 +7,18 @@ export class ApiConfigService {
   private _config: IAppConfig;
   constructor(private configService: ConfigService) {
     this._config = {
-      auth: this.get<IAppConfig['auth']>('auth'),
-      db: this.get<IAppConfig['db']>('db'),
-      imageHosting: this.get<IAppConfig['imageHosting']>('imageHosting'),
-      mail: this.get<IAppConfig['mail']>('mail'),
+      NODE_ENV: this.get('NODE_ENV'),
+      server: this.get('server'),
+      auth: this.get('auth'),
+      db: this.get('db'),
+      imageHosting: this.get('imageHosting'),
+      mail: this.get('mail'),
+      sms: this.get('sms'),
     };
   }
 
-  get<T = any>(name: string) {
-    return this.configService.get<T>(name);
+  get<T extends keyof IAppConfig>(name: T): IAppConfig[T] {
+    return this.configService.get(name);
   }
 
   get config() {
@@ -23,10 +26,10 @@ export class ApiConfigService {
   }
 
   get isDev() {
-    return this.get<string>('NODE_ENV') === 'development';
+    return this.get('NODE_ENV') === 'development';
   }
 
   get isProd() {
-    return this.get<string>('NODE_ENV') === 'production';
+    return this.get('NODE_ENV') === 'production';
   }
 }

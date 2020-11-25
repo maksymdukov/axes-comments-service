@@ -18,6 +18,7 @@ import { CustomOrdersDetailsService } from './custom-orders-details.service';
 import { ChangeAnonymousCustomOrderDto } from '../dto/change-anonymous-custom-order.dto';
 import { CreateCustomOrderDto } from '../dto/create-custom-order.dto';
 import { MailerService } from 'src/integrations/mailer/mailer.service';
+import { SmsService } from 'src/integrations/sms/sms.service';
 
 type CreateOrderCombinedDto =
   | CreateAnonymousOrderDto
@@ -36,6 +37,7 @@ export class OrdersService {
     private anonymousUsersService: AnonymousUsersService,
     private customOrderDetailsService: CustomOrdersDetailsService,
     private mailerService: MailerService,
+    private smsService: SmsService,
   ) {}
 
   async create(createOrderDto: CreateOrderCombinedDto, user?: User) {
@@ -174,10 +176,18 @@ export class OrdersService {
   }
 
   private notifyAboutNewOrder(order: Order) {
+    const user = order.anonymousUser || {
+      ...order.user.profile,
+      email: order.user.email,
+    };
+    this.smsService.sendToAdmin(
+      `Новый заказ топоров от ${user.firstName} ${user.lastName}.`,
+    );
+
     return this.mailerService.sendToAdmin({
       templatePath: 'new-order.ejs',
       templateData: {
-        user: order.anonymousUser || order.user,
+        user,
         delivery: order.delivery,
         details: order.details,
         comment: order.comment,
@@ -187,10 +197,17 @@ export class OrdersService {
   }
 
   private notifyAboutNewCustomOrder(order: Order) {
+    const user = order.anonymousUser || {
+      ...order.user.profile,
+      email: order.user.email,
+    };
+    this.smsService.sendToAdmin(
+      `Новый индивидуальный заказ топоров от ${user.firstName} ${user.lastName}.`,
+    );
     return this.mailerService.sendToAdmin({
       templatePath: 'new-custom-order.ejs',
       templateData: {
-        user: order.anonymousUser || order.user,
+        user: user,
         delivery: order.delivery,
         comment: order.comment,
         customDetails: order.customDetails,

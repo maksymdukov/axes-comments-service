@@ -18,6 +18,7 @@ import { AnonymousUsersModule } from './anonymous-users/anonymous-users.module';
 import { OrdersModule } from './orders/orders.module';
 import { DeliveryModule } from './delivery/delivery.module';
 import { MailerModule } from './integrations/mailer/mailer.module';
+import { SmsModule } from './integrations/sms/sms.module';
 
 const configModule = ConfigModule.forRoot({
   load: [configuration],
@@ -71,6 +72,14 @@ const mailerModule = MailerModule.forAsyncRoot({
   },
 });
 
+const smsModule = SmsModule.forRootAsync({
+  inject: [ApiConfigService],
+  useFactory: (apiConfigService: ApiConfigService) => ({
+    adminPhone: apiConfigService.config.sms.adminPhone,
+    apiKey: apiConfigService.config.sms.apiKey,
+  }),
+});
+
 @Module({
   imports: [
     configModule,
@@ -89,6 +98,7 @@ const mailerModule = MailerModule.forAsyncRoot({
     OrdersModule,
     DeliveryModule,
     mailerModule,
+    smsModule,
   ],
   controllers: [],
   providers: [],

@@ -16,4 +16,8 @@ export default () => ({
     user: process.env.MAIL_USER,
     pass: process.env.MAIL_PASSWORD,
   },
+  sms: {
+    apiKey: process.env.SMS_SERVICE_API_KEY,
+    adminPhone: process.env.ADMIN_PHONE,
+  },
 });

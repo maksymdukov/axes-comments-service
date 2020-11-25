@@ -14,6 +14,7 @@ import { AnonymousUsersModule } from 'src/anonymous-users/anonymous-users.module
 import { ImagesModule } from 'src/images/images.module';
 import { MailerModule } from 'src/integrations/mailer/mailer.module';
 import * as path from 'path';
+import { SmsModule } from 'src/integrations/sms/sms.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import * as path from 'path';
     ProductsModule,
     AnonymousUsersModule,
     ImagesModule,
+    SmsModule.forFeature(),
   ],
   providers: [OrdersService, OrdersDetailsService, CustomOrdersDetailsService],
   controllers: [OrdersController, OrdersAdminController],

@@ -19,9 +19,21 @@ export interface IMailConfig {
   pass: string;
 }
 
+export interface ISmsConfig {
+  apiKey: string;
+  adminPhone: string;
+}
+
+export interface IServerConfig {
+  port: string;
+}
+
 export interface IAppConfig {
+  NODE_ENV: string;
+  server: IServerConfig;
   auth: IAuthConfig;
   db: IDbConfig;
   imageHosting: IImageStorageConfig;
   mail: IMailConfig;
+  sms: ISmsConfig;
 }

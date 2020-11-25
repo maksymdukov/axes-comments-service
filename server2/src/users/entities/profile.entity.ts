@@ -8,5 +8,11 @@ export class UserProfile {
   lastName: string;
 
   @Column({ nullable: true })
+  middleName: string;
+
+  @Column({ nullable: true })
   photo: string;
+
+  @Column({ nullable: true })
+  phone: string;
 }
