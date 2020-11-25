@@ -14,8 +14,14 @@ export interface IImageStorageConfig {
   environmentId: string;
 }
 
+export interface IMailConfig {
+  user: string;
+  pass: string;
+}
+
 export interface IAppConfig {
   auth: IAuthConfig;
   db: IDbConfig;
   imageHosting: IImageStorageConfig;
+  mail: IMailConfig;
 }

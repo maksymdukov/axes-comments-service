@@ -17,6 +17,7 @@ import { CommentsModule } from './comments/comments.module';
 import { AnonymousUsersModule } from './anonymous-users/anonymous-users.module';
 import { OrdersModule } from './orders/orders.module';
 import { DeliveryModule } from './delivery/delivery.module';
+import { MailerModule } from './integrations/mailer/mailer.module';
 
 const configModule = ConfigModule.forRoot({
   load: [configuration],
@@ -54,6 +55,20 @@ const imageStorageModule = ImageStorageModule.forRootAsync({
   },
 });
 
+const mailerModule = MailerModule.forAsyncRoot({
+  inject: [ApiConfigService],
+  useFactory: (apiConfigService: ApiConfigService) => {
+    const { pass, user } = apiConfigService.config.mail;
+    return {
+      auth: {
+        user,
+        pass,
+      },
+      service: 'gmail',
+    };
+  },
+});
+
 @Module({
   imports: [
     configModule,
@@ -71,6 +86,7 @@ const imageStorageModule = ImageStorageModule.forRootAsync({
     AnonymousUsersModule,
     OrdersModule,
     DeliveryModule,
+    mailerModule,
   ],
   controllers: [],
   providers: [],

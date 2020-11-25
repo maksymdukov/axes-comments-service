@@ -12,6 +12,8 @@ import { CustomOrdersDetailsService } from './services/custom-orders-details.ser
 import { OrdersController } from './controllers/orders.controller';
 import { AnonymousUsersModule } from 'src/anonymous-users/anonymous-users.module';
 import { ImagesModule } from 'src/images/images.module';
+import { MailerModule } from 'src/integrations/mailer/mailer.module';
+import path from 'path';
 
 @Module({
   imports: [
@@ -20,6 +22,9 @@ import { ImagesModule } from 'src/images/images.module';
       OrderDetailsRepository,
       CustomOrderDetails,
     ]),
+    MailerModule.forFeature({
+      templateDir: path.join('src', 'orders', 'templates'),
+    }),
     DeliveryModule,
     ProductsModule,
     AnonymousUsersModule,

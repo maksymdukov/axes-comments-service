@@ -12,4 +12,8 @@ export default () => ({
     spaceId: process.env.IMAGE_HOSTING_SPACE_ID,
     environmentId: process.env.IMAGE_HOSTING_ENVIRONMENT_ID,
   },
+  mail: {
+    user: process.env.MAIL_USER,
+    pass: process.env.MAIL_PASSWORD,
+  },
 });
