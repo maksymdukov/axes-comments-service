@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div>
+      <p>
+        <span style="font-weight: bold;">Имя:</span>
+        <span style="margin-left: 10px;"><%= firstName %></span>
+      </p>
+      <p>
+        <span style="font-weight: bold;">Email:</span>
+        <span style="margin-left: 10px;"><%= email %></span>
+      </p>
+      <% if (phone) { %>
+      <p>
+        <span style="font-weight: bold;">Телефон:</span>
+        <span style="margin-left: 10px;"><%= phone %></span>
+      </p>
+      <% } %>
+      <p>
+        <span style="font-weight: bold;">Сообщение:</span>
+      </p>
+      <p><%= message %></p>
+    </div>
+</body>
+</html>

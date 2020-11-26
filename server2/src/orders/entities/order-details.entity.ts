@@ -20,7 +20,7 @@ export class OrderDetails {
   @Column({ type: 'real' })
   currentPrice: number;
 
-  @OneToOne(() => Product)
+  @ManyToOne(() => Product)
   @JoinColumn()
   product: Product;
 

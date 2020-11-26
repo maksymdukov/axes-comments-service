@@ -7,5 +7,6 @@ import { AnonymousUsersService } from './anonymous-users.service';
   imports: [TypeOrmModule.forFeature([AnonymousUserRepository])],
   providers: [AnonymousUsersService],
   exports: [AnonymousUsersService],
+  controllers: [],
 })
 export class AnonymousUsersModule {}
