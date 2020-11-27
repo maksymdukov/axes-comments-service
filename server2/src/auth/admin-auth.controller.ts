@@ -1,6 +1,5 @@
-import { Controller, Get, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { Request } from 'express';
 import { GetUser } from 'src/auth/decorators/get-user.decorator';
 
 @Controller('api/admin/auth')

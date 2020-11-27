@@ -5,6 +5,7 @@ import Axes from "pages/axes/axes";
 import Axe from "pages/axe/axe";
 import Comments from "pages/comments/comments";
 import Orders from "pages/orders/orders";
+import Gallery from 'pages/gallery/gallery';
 
 const Routes = () => {
   return (
@@ -12,6 +13,7 @@ const Routes = () => {
       <Switch>
         <Route path="/" exact component={Comments} />
         <Route path="/axes" exact component={Axes} />
+        <Route path="/gallery" exact component={Gallery} />
         <Route path="/axe/:slug" component={Axe} />
         <Route path="/orders" component={Orders} />
       </Switch>

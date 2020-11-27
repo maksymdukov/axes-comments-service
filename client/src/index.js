@@ -7,20 +7,18 @@ import * as serviceWorker from "./serviceWorker";
 import { Router } from "react-router-dom";
 import { createBrowserHistory } from "history";
 import moment from "moment";
-import 'moment/locale/ru';
+import "moment/locale/ru";
 
 moment.locale("ru");
 
 export const history = createBrowserHistory();
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Router history={history}>
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </Router>
-  </React.StrictMode>,
+  <Router history={history}>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </Router>,
   document.getElementById("root")
 );
 

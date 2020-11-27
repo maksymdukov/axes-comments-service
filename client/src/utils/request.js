@@ -6,8 +6,14 @@ const axiosInst = axios.create({
   baseURL: `${config.API_URL || ""}/api`,
 });
 
-export const apiRequest = ({ method = "GET", path, data, withAuth = true }) => {
-  const headers = {};
+export const apiRequest = ({
+  method = "GET",
+  path,
+  data,
+  withAuth = true,
+  customHeaders = {},
+}) => {
+  const headers = { ...customHeaders };
   if (withAuth) {
     headers.Authorization = `Bearer ${store.getState().auth.token}`;
   }

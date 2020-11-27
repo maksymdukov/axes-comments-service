@@ -6,6 +6,7 @@ import { ApiConfigService } from './api-config/api-config.service';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
+  app.enableCors();
   const configService = await app.get(ApiConfigService);
   const port = configService.isDev ? 3001 : +configService.config.server.port;
   await app.listen(port);

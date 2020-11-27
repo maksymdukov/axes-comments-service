@@ -17,9 +17,9 @@ export const useApiCall = ({ fetcher, onSuccess, onFail }) => {
           ...prevState,
           loading: false,
           error: null,
-          data: resp.data,
+          data: resp && resp.data,
         }));
-        onSuccess && onSuccess(...args);
+        onSuccess && onSuccess(resp);
       } catch (error) {
         setState((prevState) => ({
           ...prevState,

@@ -21,6 +21,7 @@ import CommentIcon from "@material-ui/icons/Comment";
 import LogoutButton from "components/buttons/logout";
 import { Link, useLocation } from "react-router-dom";
 import RebuildBtn from "components/header/rebuild-btn";
+import PermMediaIcon from "@material-ui/icons/PermMedia";
 
 const drawerWidth = 240;
 
@@ -108,6 +109,11 @@ const links = [
     label: "Заказы",
     to: "/orders",
     icon: ShopTwoIcon,
+  },
+  {
+    label: "Галлерея",
+    to: "/gallery",
+    icon: PermMediaIcon,
   },
 ];
 

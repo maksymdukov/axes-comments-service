@@ -6,14 +6,15 @@ import StatusFilter from "components/filters/status-filter";
 const Filters = ({ pageSizeProps, statusFilterProps }) => {
   return (
     <Box mb={1}>
-      Количетсво записей на странице:
-      <Box display="inline-block" ml={1} mr={2}>
-        <PageSize {...pageSizeProps} />
-      </Box>
-      Статус:
-      <Box display="inline-block" ml={1} mr={2}>
-        <StatusFilter {...statusFilterProps} />
-      </Box>
+      <PageSize {...pageSizeProps} />
+      {statusFilterProps && (
+        <>
+          Статус:
+          <Box display="inline-block" ml={1} mr={2}>
+            <StatusFilter {...statusFilterProps} />
+          </Box>
+        </>
+      )}
     </Box>
   );
 };

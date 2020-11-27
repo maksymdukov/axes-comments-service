@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { ApiConfigService } from '../api-config/api-config.service';
+import { AuthController } from './admin-auth.controller';
 import { AdminGoogleStrategy } from './admin-google.strategy';
 import { JWT_EXPIRES_IN } from './auth.constants';
 import { GoogleStrategy } from './google.strategy';
@@ -21,6 +22,7 @@ import { JwtStrategy } from './jwt.strategy';
       }),
     }),
   ],
+  controllers: [AuthController],
   providers: [JwtStrategy, GoogleStrategy, AdminGoogleStrategy],
 })
 export class AuthModule {}
