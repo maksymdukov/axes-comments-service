@@ -19,11 +19,13 @@ const ConfirmationDialog = ({
   confirmLabel,
   confirmBtnProps,
   children,
+  fullScreen,
+  titleClassname,
 }) => {
   const Wrapper = content ? DialogContent : React.Fragment;
   return (
-    <Dialog onClose={onClose} open={open}>
-      <DialogTitle>{title}</DialogTitle>
+    <Dialog onClose={onClose} open={open} fullScreen={fullScreen}>
+      <DialogTitle className={titleClassname}>{title}</DialogTitle>
       <Wrapper>{children}</Wrapper>
       {actions && (
         <ConfirmationActions

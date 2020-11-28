@@ -1,7 +1,7 @@
 import CenteredLoader from "components/loader/centered-loader";
 import MainHeader from "components/typography/main-header";
 import NoData from "components/typography/no-data";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchGallery,
@@ -16,7 +16,12 @@ import FileUploadDialog from "./components/file-upload-dialog";
 import ImageList from "./components/image-list";
 import PublishIcon from "@material-ui/icons/Publish";
 
-const Gallery = () => {
+const Gallery = ({
+  header = true,
+  onRowSelectionChange,
+  getSelectedRows = () => [],
+  bulkActions = true,
+}) => {
   const dispatch = useDispatch();
   const images = useSelector(getGalleryImages);
   const loading = useSelector(getGalleryLoading);
@@ -46,9 +51,21 @@ const Gallery = () => {
   const onImageDelete = () => {
     dispatch(fetchGallery());
   };
+
+  const onRowsSelected = useCallback(
+    (selected, allSelected, dataSelected) => {
+      onRowSelectionChange(images, allSelected, selected, dataSelected);
+    },
+    [onRowSelectionChange, images]
+  );
+
+  const selectedRows = useMemo(() => getSelectedRows(images), [
+    images,
+    getSelectedRows,
+  ]);
   return (
     <div>
-      <MainHeader>Галлерея:</MainHeader>
+      {header && <MainHeader>Галлерея:</MainHeader>}
       <Box display="flex" justifyContent="space-between" marginBottom={2}>
         <Button
           color="primary"
@@ -67,13 +84,12 @@ const Gallery = () => {
         paginationUpdated={updateGalleryPagination}
         onUpdate={onSuccessfulUpdate}
         onDelete={onImageDelete}
+        onRowSelectionChange={onRowSelectionChange ? onRowsSelected : undefined}
+        rowsSelected={selectedRows}
+        bulkActions={bulkActions}
       />
       {!images.length && !loading && <NoData />}
       <CenteredLoader loading={loading} />
-      {/* <Paginator
-        getPaginationState={getGalleryPagination}
-        updatePagination={updateGalleryPagination}
-      /> */}
       <FileUploadDialog
         isOpened={isDialogOpen}
         handleClose={closeDialog}

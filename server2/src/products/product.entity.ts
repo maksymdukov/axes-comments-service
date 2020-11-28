@@ -5,6 +5,7 @@ import {
   Entity,
   JoinTable,
   ManyToMany,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -26,11 +27,17 @@ export class Product {
   @Column({ default: false, nullable: true })
   isFeatured: boolean;
 
+  @Column({ default: true, select: false })
+  isActive: boolean;
+
   @CreateDateColumn()
   createdAt: Date;
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @ManyToOne(() => Image, { nullable: true })
+  mainImage: Image;
 
   @ManyToMany(() => Image, (image) => image.products)
   @JoinTable()

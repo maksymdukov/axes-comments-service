@@ -7,9 +7,10 @@ const ConfirmationActions = ({
   confirmLabel,
   cancelLabel,
   confirmBtnProps,
+  className,
 }) => {
   return (
-    <DialogActions>
+    <DialogActions className={className}>
       <Button color="primary" onClick={onClose}>
         {cancelLabel}
       </Button>

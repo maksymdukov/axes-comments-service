@@ -9,12 +9,14 @@ const LoadableButton = ({
   onSuccess,
   onFail,
   onClick,
+  setError,
   ...rest
 }) => {
   const { trigger, loading } = useApiCall({
     fetcher,
     onSuccess,
     onFail,
+    setError
   });
   const onClickHandler = (e) => {
     if (onClick && !onClick(e)) {

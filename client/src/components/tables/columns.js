@@ -1,9 +1,9 @@
-import React from 'react';
+import React from "react";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { Box, IconButton } from '@material-ui/core';
+import { Box, IconButton } from "@material-ui/core";
 
-export const actionsColumn = ({onEditClick,onDeleteClick}) => ({
+export const actionsColumn = ({ onEditClick, onDeleteClick }) => ({
   name: "actions",
   label: "Действия",
   options: {
@@ -20,4 +20,16 @@ export const actionsColumn = ({onEditClick,onDeleteClick}) => ({
       );
     },
   },
-},)
+});
+
+export const nameColumn = ({ entities }) => ({
+  name: "name",
+  label: "Имя",
+  options: {
+    customBodyRenderLite: (dataIndex) => {
+      return (
+        entities[dataIndex].languages && entities[dataIndex].languages[0].title
+      );
+    },
+  },
+});

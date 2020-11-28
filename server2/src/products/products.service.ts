@@ -9,6 +9,7 @@ import { ProductRepository } from './product.repository';
 import { PaginationService } from 'src/utils/pagination/pagination.service';
 import { GetProductsDto } from './dto/get-products.dto';
 import { GetOneProductDto } from './dto/get-product-by-id.dto';
+import { GetAdminProductsDto } from './dto/get-admin-products.dto';
 
 @Injectable()
 export class ProductsService {
@@ -25,6 +26,7 @@ export class ProductsService {
   async createProduct(createProductDto: CreateProductDto) {
     const {
       imageIds,
+      mainImageId,
       price,
       slug,
       ruDescription,
@@ -33,12 +35,18 @@ export class ProductsService {
       ukDescription,
       ukLongDescription,
       ukTitle,
+      isActive,
+      isFeatured,
     } = createProductDto;
     const images = await this.imageRepository.findByIds(imageIds);
+    const mainImage = await this.imageRepository.findOneOrFail(mainImageId);
     let product = this.productsRepository.create({
       price,
       slug,
       images,
+      mainImage: mainImage,
+      isActive,
+      isFeatured,
     });
     try {
       product = await this.productsRepository.save(product);
@@ -75,6 +83,7 @@ export class ProductsService {
 
   async updateProduct(id: number, updateProductDto: CreateProductDto) {
     const {
+      mainImageId,
       imageIds,
       price,
       ruDescription,
@@ -85,15 +94,19 @@ export class ProductsService {
       ukLongDescription,
       ukTitle,
       isFeatured,
+      isActive,
     } = updateProductDto;
-    const [product, images] = await Promise.all([
+    const [product, images, mainImage] = await Promise.all([
       this.productsRepository.findOneOrFail(id),
       this.imageRepository.findByIds(imageIds),
+      this.imageRepository.findOneOrFail(mainImageId),
     ]);
     product.price = price;
     product.slug = slug;
     product.images = images;
     product.isFeatured = isFeatured;
+    product.isActive = isActive;
+    product.mainImage = mainImage;
     const [productRu, productUk] = await Promise.all([
       this.productLanguageRepository.findProductLanguage(
         product.id,
@@ -120,7 +133,7 @@ export class ProductsService {
     return prod;
   }
 
-  async getProducts(getProductsDto: GetProductsDto) {
+  async getProducts(getProductsDto: GetProductsDto | GetAdminProductsDto) {
     return this.paginationService.paginateOutput(
       await this.productsRepository.findProducts(getProductsDto),
       getProductsDto,

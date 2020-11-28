@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 
-export const useApiCall = ({ fetcher, onSuccess, onFail }) => {
+export const useApiCall = ({ fetcher, onSuccess, onFail, setError }) => {
   const [{ data, loading, error }, setState] = useState({
     data: null,
     loading: false,
@@ -27,7 +27,18 @@ export const useApiCall = ({ fetcher, onSuccess, onFail }) => {
           error: error,
           data: null,
         }));
-        onFail && onFail(error);
+        if (error && error.message === "canceled") {
+          return;
+        }
+        setError
+          ? setError(
+              (error &&
+                error.response &&
+                error.response.data &&
+                error.response.data.message) ||
+                "Что-то пошло не так"
+            )
+          : onFail && onFail(error);
       }
     },
     [fetcher, onSuccess, onFail]

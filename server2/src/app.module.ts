@@ -35,7 +35,7 @@ const typeOrmModule = TypeOrmModule.forRootAsync({
       url: apiConfigService.config.db.databaseUrl,
       useUnifiedTopology: true,
       synchronize: apiConfigService.isDev,
-      logging: 'all',
+      logging: apiConfigService.isDev ? 'all' : undefined,
       ssl: {
         rejectUnauthorized: false,
       },

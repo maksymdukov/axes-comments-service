@@ -2,6 +2,7 @@ import { EntityRepository, In, Repository } from 'typeorm';
 import { Product } from './product.entity';
 import { GetProductsDto } from './dto/get-products.dto';
 import { GetOneProductDto } from './dto/get-product-by-id.dto';
+import { GetAdminProductsDto } from './dto/get-admin-products.dto';
 
 @EntityRepository(Product)
 export class ProductRepository extends Repository<Product> {
@@ -9,17 +10,21 @@ export class ProductRepository extends Repository<Product> {
     return this.createQueryBuilder('products')
       .leftJoinAndSelect('products.languages', 'productlanguages')
       .leftJoinAndSelect('products.images', 'images')
+      .leftJoinAndSelect('products.mainImage', 'mainImage')
       .innerJoinAndSelect('productlanguages.language', 'lang')
       .leftJoinAndSelect('images.languages', 'imagelanguage')
       .innerJoinAndSelect('imagelanguage.language', 'imglang');
   }
 
-  async findProducts(getProductsDto: GetProductsDto) {
+  async findProducts(getProductsDto: GetProductsDto | GetAdminProductsDto) {
     const { skip, limit, locale, isFeatured } = getProductsDto;
     const query = this.getPopulatedProduct()
       .orderBy('products.createdAt', 'DESC')
       .take(limit)
       .skip(skip);
+    if (getProductsDto instanceof GetAdminProductsDto) {
+      query.addSelect('products.isActive');
+    }
     if (locale) {
       query
         .where('lang.name = :locale', { locale })
@@ -27,6 +32,14 @@ export class ProductRepository extends Repository<Product> {
     }
     if (isFeatured) {
       query.andWhere('products.isFeatured = true');
+    }
+    if (
+      getProductsDto instanceof GetAdminProductsDto &&
+      getProductsDto.isActive !== undefined
+    ) {
+      query.andWhere('products.isActive = :isActive', {
+        isActive: getProductsDto.isActive,
+      });
     }
     return query.getManyAndCount();
   }

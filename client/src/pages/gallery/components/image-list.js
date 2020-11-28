@@ -29,6 +29,8 @@ const ImageList = ({
   onDelete,
   onUpdate,
   onRowSelectionChange,
+  rowsSelected = [],
+  bulkActions,
 }) => {
   const [modal, setModal] = useState(false);
   const [image, setImage] = useState(null);
@@ -85,8 +87,10 @@ const ImageList = ({
     () => ({
       onRowsDelete: onBulkDelete,
       onRowSelectionChange,
+      rowsSelected,
+      customToolbarSelect: bulkActions ? undefined : () => null,
     }),
-    [onRowSelectionChange, onBulkDelete]
+    [onRowSelectionChange, onBulkDelete, rowsSelected]
   );
 
   const pagination = useMemo(() => {

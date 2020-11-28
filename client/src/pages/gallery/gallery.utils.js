@@ -1,22 +1,12 @@
 import React from "react";
-import { actionsColumn } from "components/tables/columns";
+import { actionsColumn, nameColumn } from "components/tables/columns";
 
 export const getGalleryColumns = ({ onEditClick, onDeleteClick, images }) => [
   {
     name: "id",
     label: "ID",
   },
-  {
-    name: "name",
-    label: "Имя",
-    options: {
-      customBodyRenderLite: (dataIndex) => {
-        return (
-          images[dataIndex].languages && images[dataIndex].languages[0].title
-        );
-      },
-    },
-  },
+  nameColumn({ entities: images }),
   {
     name: "url",
     label: "Картинка",

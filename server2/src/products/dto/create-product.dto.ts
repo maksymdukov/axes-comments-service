@@ -41,9 +41,17 @@ export class CreateProductDto {
   isFeatured: boolean;
 
   @IsNotEmpty()
+  @IsBoolean()
+  isActive: boolean;
+
+  @IsNotEmpty()
   @IsString()
   @IsLowercase()
   slug: string;
+
+  @IsNotEmpty()
+  @IsNumber()
+  mainImageId: number;
 
   @IsNotEmpty({ each: true })
   @IsArray()
