@@ -1,5 +1,4 @@
 import CenteredLoader from "components/loader/centered-loader";
-import Paginator from "components/pagination/pagination";
 import MainHeader from "components/typography/main-header";
 import NoData from "components/typography/no-data";
 import React, { useCallback, useEffect, useState } from "react";
@@ -10,8 +9,8 @@ import {
   getGalleryLoading,
   getGalleryPagination,
   updateGalleryPagination,
+  updateImage,
 } from "./redux/gallery-slice";
-import PageSize from "components/filters/page-size";
 import { Box, Button } from "@material-ui/core";
 import FileUploadDialog from "./components/file-upload-dialog";
 import ImageList from "./components/image-list";
@@ -21,7 +20,7 @@ const Gallery = () => {
   const dispatch = useDispatch();
   const images = useSelector(getGalleryImages);
   const loading = useSelector(getGalleryLoading);
-  const { page, size } = useSelector(getGalleryPagination);
+  const { page, size, total } = useSelector(getGalleryPagination);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   useEffect(() => {
@@ -39,14 +38,18 @@ const Gallery = () => {
   const onUpload = useCallback(() => {
     dispatch(fetchGallery());
   }, []);
+
+  const onSuccessfulUpdate = (image, updatedImage) => {
+    dispatch(updateImage({ id: image.id, updatedImage }));
+  };
+
+  const onImageDelete = () => {
+    dispatch(fetchGallery());
+  };
   return (
     <div>
       <MainHeader>Галлерея:</MainHeader>
       <Box display="flex" justifyContent="space-between" marginBottom={2}>
-        <PageSize
-          getPaginationState={getGalleryPagination}
-          updatePagination={updateGalleryPagination}
-        />
         <Button
           color="primary"
           variant="contained"
@@ -56,13 +59,21 @@ const Gallery = () => {
           <PublishIcon /> Загрузить
         </Button>
       </Box>
-      <ImageList images={images} />
+      <ImageList
+        images={images}
+        page={page}
+        size={size}
+        total={total}
+        paginationUpdated={updateGalleryPagination}
+        onUpdate={onSuccessfulUpdate}
+        onDelete={onImageDelete}
+      />
       {!images.length && !loading && <NoData />}
       <CenteredLoader loading={loading} />
-      <Paginator
+      {/* <Paginator
         getPaginationState={getGalleryPagination}
         updatePagination={updateGalleryPagination}
-      />
+      /> */}
       <FileUploadDialog
         isOpened={isDialogOpen}
         handleClose={closeDialog}

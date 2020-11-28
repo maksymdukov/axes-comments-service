@@ -9,7 +9,7 @@ export const paginationReducer = {
       state.size = payload.size;
     }
     if (payload.total) {
-      state.size = payload.total;
+      state.total = payload.total;
     }
   },
 };

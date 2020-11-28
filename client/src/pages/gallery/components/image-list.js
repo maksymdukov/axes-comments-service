@@ -1,15 +1,18 @@
 import { makeStyles } from "@material-ui/core";
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { updateImage } from "../redux/gallery-slice";
+import React, { useCallback, useMemo, useState } from "react";
 import EditImageDialog from "./edit-image-dialog";
-import ImageListItem from "./image-list-item";
+import MuiTable from "components/tables/mui-table";
+import { getGalleryColumns } from "../gallery.utils";
+import { deleteImagesApi } from "../apis/delete-images.api";
 
 const useStyles = makeStyles(() => ({
   gallery: {
     width: "100%",
     display: "flex",
     flexWrap: "wrap",
+    "& > *": {
+      width: "100%",
+    },
   },
   galleryItem: {
     width: "25%",
@@ -17,37 +20,101 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const ImageList = ({ images }) => {
+const ImageList = ({
+  images,
+  page,
+  size,
+  total,
+  paginationUpdated,
+  onDelete,
+  onUpdate,
+  onRowSelectionChange,
+}) => {
   const [modal, setModal] = useState(false);
   const [image, setImage] = useState(null);
-  const dispatch = useDispatch();
   const classes = useStyles();
-  const onImageClick = (image) => {
-    // open form to edit titles of an image
-    setImage(image);
-    setModal(true);
-  };
-  const closeDialog = () => {
-    setModal(false);
-  };
 
-  const onSuccessfulSubmit = (res) => {
-    dispatch(updateImage({ id: image.id, updatedImage: res.data }));
-  };
+  const onEditClick = useCallback(
+    (rowIdx) => {
+      // open form to edit titles of an image
+      setImage(images[rowIdx]);
+      setModal(true);
+    },
+    [setImage, setModal, images]
+  );
+  const closeDialog = useCallback(() => {
+    setModal(false);
+  }, [setModal]);
+
+  const onSuccessfulSubmit = useCallback(
+    (res) => {
+      onUpdate(image, res.data);
+    },
+    [onUpdate, image]
+  );
+
+  const onDeleteClick = useCallback(
+    async (rowIdx) => {
+      const answer = confirm("Действительно хотите удалить?");
+      if (!answer) return;
+      await deleteImagesApi([images[rowIdx].id]);
+      onDelete([images[rowIdx]]);
+    },
+    [onDelete, images]
+  );
+
+  const onBulkDelete = useCallback(
+    ({ data }) => {
+      const answer = confirm("Действительно хотите удалить?");
+      if (!answer) return false;
+      (async () => {
+        const ids = data.map((dt) => images[dt.dataIndex].id);
+        await deleteImagesApi(ids);
+        onDelete(ids);
+      })();
+    },
+    [onDelete, images]
+  );
+
+  const columns = useMemo(
+    () => getGalleryColumns({ onEditClick, onDeleteClick, images }),
+    [onEditClick, onDeleteClick, images]
+  );
+
+  const options = useMemo(
+    () => ({
+      onRowsDelete: onBulkDelete,
+      onRowSelectionChange,
+    }),
+    [onRowSelectionChange, onBulkDelete]
+  );
+
+  const pagination = useMemo(() => {
+    if (!paginationUpdated) return;
+    return {
+      total,
+      size,
+      page,
+      paginationUpdated,
+    };
+  }, [total, size, page, paginationUpdated]);
   return (
-    <section className={classes.gallery}>
-      {images.map((image) => (
-        <div key={image.id} className={classes.galleryItem}>
-          <ImageListItem image={image} onClick={onImageClick} />
-        </div>
-      ))}
-      <EditImageDialog
-        open={modal}
-        image={image}
-        onClose={closeDialog}
-        onSuccessfulSubmit={onSuccessfulSubmit}
-      />
-    </section>
+    <>
+      <section className={classes.gallery}>
+        <MuiTable
+          pagination={pagination}
+          options={options}
+          columns={columns}
+          data={images || []}
+        />
+        <EditImageDialog
+          open={modal}
+          image={image}
+          onClose={closeDialog}
+          onSuccessfulSubmit={onSuccessfulSubmit}
+        />
+      </section>
+    </>
   );
 };
 
