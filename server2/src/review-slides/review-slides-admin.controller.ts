@@ -8,12 +8,19 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
+import { PaginatedQuery } from 'src/utils/pagination/paginated-query.decorator';
+import { PaginationDto } from 'src/utils/pagination/pagination.dto';
 import { CreateReviewSlideDto } from './dto/create-review-slide.dto';
 import { ReviewSlidesService } from './review-slides.service';
 
 @Controller('/api/admin/review-slides')
 export class ReviewSlidesAdmin {
   constructor(private reviewSlidesService: ReviewSlidesService) {}
+
+  @Get()
+  getReviewSlides(@PaginatedQuery() paginationDto: PaginationDto) {
+    return this.reviewSlidesService.getSlides(paginationDto);
+  }
 
   @Post()
   createReviewSlide(@Body() createSlideDto: CreateReviewSlideDto) {

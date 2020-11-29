@@ -8,6 +8,7 @@ import { allOrdersReducer } from "pages/orders/redux/all-orders-slice";
 import { galleryReducer } from "pages/gallery/redux/gallery-slice";
 import { productsReducer } from "pages/products/redux/products-slide";
 import { slidesReducer } from "pages/slides/redux/slides-slice";
+import { reviewSlidesReducer } from "pages/review-slides/redux/review-slides-slice";
 
 export default configureStore({
   reducer: {
@@ -20,5 +21,6 @@ export default configureStore({
     gallery: galleryReducer,
     products: productsReducer,
     slides: slidesReducer,
+    reviewslides: reviewSlidesReducer,
   },
 });

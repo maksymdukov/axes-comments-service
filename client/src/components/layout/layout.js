@@ -126,6 +126,11 @@ const links = [
     to: "/slides",
     icon: SlideshowIcon,
   },
+  {
+    label: "Слайды отзывов",
+    to: "/review-slides",
+    icon: SlideshowIcon,
+  },
 ];
 
 export default function Layout({ children }) {
