@@ -1,137 +1,76 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { Box, Button } from "@material-ui/core";
-import MainHeader from "components/typography/main-header";
-import AddIcon from "@material-ui/icons/Add";
-import CreateEditProductModal from "./components/create-edit-product-modal";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useMemo } from "react";
+import Entities from "components/entity/entities";
+import { getLanguagesMap } from "utils/languages";
 import {
   fetchProducts,
-  getProductsPagination,
-  updateProductsPagination,
   getProducts,
   getProductsLoading,
+  getProductsPagination,
+  updateProductsPagination,
 } from "./redux/products-slide";
-import MuiTable from "components/tables/mui-table";
-import { getProductsColumns } from "./products.utils";
 import { deleteProductApi } from "./apis/delete-product.api";
-import { deleteImagesApi } from "pages/gallery/apis/delete-images.api";
+import { productFormValidation } from "./components/product-form-validation";
+import ProductsForm from "./components/products-form";
+import { getProductsColumns } from "./products.utils";
+
+const useInitialValues = ({ entity }) => {
+  const lngMap = useMemo(
+    () => getLanguagesMap((entity && entity.languages) || []),
+    [entity]
+  );
+
+  return useMemo(
+    () => ({
+      isActive:
+        entity && typeof entity.isActive === "boolean" ? entity.isActive : true,
+      isFeatured:
+        entity && typeof entity.isFeatured === "boolean"
+          ? entity.isFeatured
+          : false,
+      ruTitle: (lngMap.ru && lngMap.ru.title) || "",
+      ruDescription: (lngMap.ru && lngMap.ru.description) || "",
+      ruLongDescription: (lngMap.ru && lngMap.ru.longDescription) || "",
+      ukTitle: (lngMap.uk && lngMap.uk.title) || "",
+      ukDescription: (lngMap.uk && lngMap.uk.description) || "",
+      ukLongDescription: (lngMap.uk && lngMap.uk.longDescription) || "",
+      price: (entity && entity.price) || 0,
+      slug: (entity && entity.slug) || "",
+      mainImage: (entity && entity.mainImage && [entity.mainImage]) || [],
+      images: (entity && entity.images) || [],
+    }),
+    [entity]
+  );
+};
 
 const Products = () => {
-  const dispatch = useDispatch();
-  const { page, size, total } = useSelector(getProductsPagination);
-  const products = useSelector(getProducts);
-  const [modalOpened, setModalOpened] = useState(false);
-  const [productToEdit, setProductToEdit] = useState(undefined);
-
-  useEffect(() => {
-    dispatch(fetchProducts());
-  }, [page, size]);
-
-  const openModal = useCallback(() => {
-    setModalOpened(true);
-  }, [setModalOpened]);
-
-  const closeModal = useCallback(() => {
-    setModalOpened(false);
-  }, [setModalOpened]);
-
-  const onCreateProductClick = useCallback(() => {
-    setProductToEdit(undefined);
-    setModalOpened(true);
-  }, [setModalOpened, setProductToEdit]);
-
-  const onCreateEditSuccess = () => {
-    closeModal();
-    // refetch
-    dispatch(fetchProducts());
-  };
-
-  // Table
-
-  const loading = useSelector(getProductsLoading);
-
-  const pagination = useMemo(() => {
-    return {
-      total,
-      size,
-      page,
-      paginationUpdated: updateProductsPagination,
-    };
-  }, [total, size, page]);
-
-  const onEditProductClick = useCallback(
-    (rowIdx) => {
-      setProductToEdit(products[rowIdx]);
-      openModal();
-    },
-    [openModal, setProductToEdit, products]
+  const entityOptions = useMemo(
+    () => ({
+      getPagination: getProductsPagination,
+      getEntities: getProducts,
+      getEntitiesLoading: getProductsLoading,
+      fetchEntities: fetchProducts,
+      updatePagination: updateProductsPagination,
+      deleteEntityApi: deleteProductApi,
+    }),
+    []
   );
 
-  const onDeleteProductClick = useCallback(
-    async (rowIdx) => {
-      const answer = confirm("Действительно хотите удалить?");
-      if (!answer) return;
-      await deleteProductApi(products[rowIdx].id);
-      dispatch(fetchProducts());
-    },
-    [products, dispatch]
-  );
-
-  const onProductBulkDelete = useCallback(
-    ({ data }) => {
-      const answer = confirm("Действительно хотите удалить?");
-      if (!answer) return false;
-      (async () => {
-        const ids = data.map((dt) => products[dt.dataIndex].id);
-        await Promise.all(ids.map(deleteImagesApi));
-        dispatch(fetchProducts());
-      })();
-    },
-    [products, dispatch]
-  );
-
-  const columns = useMemo(
-    () =>
-      getProductsColumns({
-        products,
-        onDeleteClick: onDeleteProductClick,
-        onEditClick: onEditProductClick,
-      }),
-    [products]
+  const modalOptions = useMemo(
+    () => ({
+      useInitialValues,
+      validationSchema: productFormValidation,
+      EntityForm: ProductsForm,
+    }),
+    []
   );
 
   return (
-    <div>
-      <MainHeader>Товары:</MainHeader>
-      <Box display="flex" justifyContent="space-between" marginBottom={2}>
-        <Button
-          color="primary"
-          variant="contained"
-          size="small"
-          onClick={onCreateProductClick}
-        >
-          <AddIcon /> Создать
-        </Button>
-      </Box>
-      <section>
-        <MuiTable
-          loading={loading}
-          options={{
-            onRowsDelete: onProductBulkDelete,
-          }}
-          columns={columns}
-          data={products || []}
-          pagination={pagination}
-        />
-      </section>
-      <CreateEditProductModal
-        open={modalOpened}
-        onClose={closeModal}
-        product={productToEdit}
-        onCreateSuccess={onCreateEditSuccess}
-        onEditSuccess={onCreateEditSuccess}
-      />
-    </div>
+    <Entities
+      title="Продукты"
+      getEntitiesColumns={getProductsColumns}
+      entityOptions={entityOptions}
+      modalOptions={modalOptions}
+    ></Entities>
   );
 };
 

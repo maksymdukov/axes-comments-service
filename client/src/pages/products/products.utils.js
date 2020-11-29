@@ -3,12 +3,12 @@ import { actionsColumn, nameColumn } from "components/tables/columns";
 export const getProductsColumns = ({
   onEditClick,
   onDeleteClick,
-  products,
+  entities,
 }) => [
   {
     name: "id",
     label: "ID",
   },
-  nameColumn({ entities: products }),
+  nameColumn({ entities }),
   actionsColumn({ onDeleteClick, onEditClick }),
 ];

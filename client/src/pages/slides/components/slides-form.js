@@ -1,7 +1,7 @@
 import EntityForm from "components/form/entity-form";
+import ImagesField from "components/form/gallery/images-field";
 import GutteredField from "components/form/guttered-field";
 import { TextField } from "formik-material-ui";
-import ImagesField from "pages/products/components/images-field";
 import React, { useCallback } from "react";
 import { createSlideApi } from "../apis/create-slide.api";
 import { updateSlideApi } from "../apis/update-slides.api";
