@@ -6,16 +6,23 @@ import { Slide } from './slide.entity';
 export class SlidesRepository extends Repository<Slide> {
   async findSlides(paginationDto: PaginationDto) {
     const { limit, skip } = paginationDto;
-    return this.createQueryBuilder('slides')
+    const qb = this.createQueryBuilder('slides')
       .leftJoinAndSelect('slides.bigImage', 'bigimage')
       .innerJoinAndSelect('bigimage.languages', 'bigimglang')
+      .innerJoinAndSelect('bigimglang.language', 'bigimglng')
       .leftJoinAndSelect('slides.smallImage', 'smallimage')
       .innerJoinAndSelect('smallimage.languages', 'smallimglang')
-      .where('bigimglang.name = :locale', { locale: paginationDto.locale })
-      .andWhere('smallimglang.name = :locale', { locale: paginationDto.locale })
+      .innerJoinAndSelect('smallimglang.language', 'smallimglng')
       .orderBy('slides.updatedAt', 'DESC')
       .take(limit)
-      .skip(skip)
-      .getManyAndCount();
+      .skip(skip);
+    if (paginationDto.locale) {
+      qb.where('bigimglng.name = :locale', {
+        locale: paginationDto.locale,
+      }).andWhere('smallimglng.name = :locale', {
+        locale: paginationDto.locale,
+      });
+    }
+    return qb.getManyAndCount();
   }
 }

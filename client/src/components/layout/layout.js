@@ -22,6 +22,7 @@ import LogoutButton from "components/buttons/logout";
 import { Link, useLocation } from "react-router-dom";
 import RebuildBtn from "components/header/rebuild-btn";
 import PermMediaIcon from "@material-ui/icons/PermMedia";
+import SlideshowIcon from "@material-ui/icons/Slideshow";
 
 const drawerWidth = 240;
 
@@ -119,6 +120,11 @@ const links = [
     label: "Галлерея",
     to: "/gallery",
     icon: PermMediaIcon,
+  },
+  {
+    label: "Слайды",
+    to: "/slides",
+    icon: SlideshowIcon,
   },
 ];
 

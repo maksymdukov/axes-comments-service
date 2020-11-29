@@ -7,6 +7,7 @@ import Comments from "pages/comments/comments";
 import Orders from "pages/orders/orders";
 import Gallery from "pages/gallery/gallery";
 import Products from "pages/products/products";
+import Slides from "pages/slides/slides";
 
 const Routes = () => {
   return (
@@ -16,6 +17,7 @@ const Routes = () => {
         <Route path="/axes" exact component={Axes} />
         <Route path="/gallery" exact component={Gallery} />
         <Route path="/products" exact component={Products} />
+        <Route path="/slides" exact component={Slides} />
         <Route path="/axe/:slug" component={Axe} />
         <Route path="/orders" component={Orders} />
       </Switch>
