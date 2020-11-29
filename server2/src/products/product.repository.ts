@@ -31,7 +31,7 @@ export class ProductRepository extends Repository<Product> {
         .andWhere('imglang.name = :locale', { locale });
     }
     if (isFeatured) {
-      query.andWhere('products.isFeatured = true');
+      query.andWhere('products.isFeatured = :isFeatured', { isFeatured });
     }
     if (
       getProductsDto instanceof GetAdminProductsDto &&

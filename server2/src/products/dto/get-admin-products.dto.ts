@@ -6,8 +6,8 @@ export class GetAdminProductsDto extends PaginationDto {
   featured: string;
 
   @IsOptional()
-  isFeatured: boolean;
+  isFeatured: string | undefined;
 
   @IsOptional()
-  isActive: boolean | undefined;
+  isActive: string | undefined;
 }

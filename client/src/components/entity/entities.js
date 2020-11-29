@@ -19,6 +19,7 @@ const Entities = ({
     fetchEntities,
     updatePagination,
     deleteEntityApi,
+    fetchDeps = [],
   } = entityOptions;
   const dispatch = useDispatch();
   const { page, size, total } = useSelector(getPagination);
@@ -28,7 +29,7 @@ const Entities = ({
 
   useEffect(() => {
     dispatch(fetchEntities());
-  }, [page, size]);
+  }, [page, size, ...fetchDeps]);
 
   const openModal = useCallback(() => {
     setModalOpened(true);

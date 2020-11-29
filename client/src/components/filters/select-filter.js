@@ -1,26 +1,47 @@
 import React from "react";
-import { Select, MenuItem } from "@material-ui/core";
+import {
+  Select,
+  MenuItem,
+  Box,
+  Typography,
+  makeStyles,
+} from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 
-const SelectFilter = ({ getFilterStatus, updateFilterStatus, options }) => {
+const useStyles = makeStyles(() => ({
+  label: {
+    marginRight: 5,
+  },
+}));
+
+const SelectFilter = ({
+  getFilterStatus,
+  updateFilterStatus,
+  options,
+  label,
+}) => {
+  const classes = useStyles();
   const statusFilter = useSelector(getFilterStatus);
   const dispatch = useDispatch();
   return (
-    <Select
-      labelId="demo-simple-select-label"
-      id="demo-simple-select"
-      value={statusFilter}
-      displayEmpty
-      onChange={(e) =>
-        dispatch(updateFilterStatus({ statusFilter: e.target.value }))
-      }
-    >
-      {options.map(({ label, status }) => (
-        <MenuItem key={String(label)} value={status}>
-          {label}
-        </MenuItem>
-      ))}
-    </Select>
+    <Box display="inline-flex" alignItems="center" mr={1}>
+      <Typography className={classes.label}>{label}</Typography>
+      <Select
+        labelId="demo-simple-select-label"
+        id="demo-simple-select"
+        value={statusFilter}
+        displayEmpty
+        onChange={(e) =>
+          dispatch(updateFilterStatus({ value: e.target.value }))
+        }
+      >
+        {options.map(({ label, value }) => (
+          <MenuItem key={String(label)} value={value}>
+            {label}
+          </MenuItem>
+        ))}
+      </Select>
+    </Box>
   );
 };
 

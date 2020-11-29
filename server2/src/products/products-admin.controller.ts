@@ -8,6 +8,7 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
+import { PaginatedQuery } from 'src/utils/pagination/paginated-query.decorator';
 import { CreateProductDto } from './dto/create-product.dto';
 import { GetAdminProductsDto } from './dto/get-admin-products.dto';
 import { ProductsService } from './products.service';
@@ -17,7 +18,7 @@ export class ProductsAdminController {
   constructor(private productsService: ProductsService) {}
 
   @Get()
-  getProduct(@Body() getAdminProductsDto: GetAdminProductsDto) {
+  getProduct(@PaginatedQuery() getAdminProductsDto: GetAdminProductsDto) {
     return this.productsService.getProducts(getAdminProductsDto);
   }
 
