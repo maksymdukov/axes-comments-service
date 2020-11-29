@@ -1,8 +1,9 @@
 import React, { useMemo } from "react";
 import MUIDataTable from "mui-datatables";
 import { useDispatch } from "react-redux";
+import CenteredLoader from "components/loader/centered-loader";
 
-const MuiTable = ({ columns, data, options, pagination }) => {
+const MuiTable = ({ columns, data, options, pagination, loading }) => {
   const dispatch = useDispatch();
   const paginat = useMemo(() => {
     if (pagination) {
@@ -31,10 +32,19 @@ const MuiTable = ({ columns, data, options, pagination }) => {
       search: false,
       viewColumns: false,
       rowsPerPageOptions: [5, 10, 20, 30],
+      textLabels: {
+        body: {
+          noMatch: loading ? (
+            <CenteredLoader key={loading} loading={loading} />
+          ) : (
+            "Нет записей"
+          ),
+        },
+      },
       ...options,
       ...paginat,
     }),
-    [options, paginat]
+    [options, paginat, loading]
   );
   return <MUIDataTable options={opts} columns={columns} data={data} />;
 };

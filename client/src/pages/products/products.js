@@ -9,6 +9,7 @@ import {
   getProductsPagination,
   updateProductsPagination,
   getProducts,
+  getProductsLoading,
 } from "./redux/products-slide";
 import MuiTable from "components/tables/mui-table";
 import { getProductsColumns } from "./products.utils";
@@ -46,6 +47,8 @@ const Products = () => {
   };
 
   // Table
+
+  const loading = useSelector(getProductsLoading);
 
   const pagination = useMemo(() => {
     return {
@@ -112,6 +115,7 @@ const Products = () => {
       </Box>
       <section>
         <MuiTable
+          loading={loading}
           options={{
             onRowsDelete: onProductBulkDelete,
           }}

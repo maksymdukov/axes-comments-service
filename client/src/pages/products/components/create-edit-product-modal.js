@@ -54,6 +54,7 @@ const CreateEditProductModal = ({
       actions={false}
       content={false}
       titleClassname={classes.greyBG}
+      closeIcon
     >
       <Formik
         initialValues={initValues}

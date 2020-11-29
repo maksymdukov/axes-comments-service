@@ -111,6 +111,11 @@ const links = [
     icon: ShopTwoIcon,
   },
   {
+    label: "Продукты",
+    to: "/products",
+    icon: ListAltIcon,
+  },
+  {
     label: "Галлерея",
     to: "/gallery",
     icon: PermMediaIcon,
