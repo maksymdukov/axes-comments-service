@@ -106,10 +106,12 @@ export class OrdersService {
     // create anonymous user
     const anonymousUser = await this.anonymousUsersService.create({
       email,
-      firstName,
-      lastName,
-      middleName,
-      phone,
+      profile: {
+        firstName,
+        lastName,
+        middleName,
+        phone,
+      },
     });
 
     // create delivery
@@ -176,10 +178,15 @@ export class OrdersService {
   }
 
   private notifyAboutNewOrder(order: Order) {
-    const user = order.anonymousUser || {
-      ...order.user.profile,
-      email: order.user.email,
-    };
+    const user = order.anonymousUser
+      ? {
+          ...order.anonymousUser.profile,
+          email: order.anonymousUser.email,
+        }
+      : {
+          ...order.user.profile,
+          email: order.user.email,
+        };
     this.smsService.sendToAdmin(
       `Новый заказ топоров от ${user.firstName} ${user.lastName}.`,
     );
@@ -197,10 +204,15 @@ export class OrdersService {
   }
 
   private notifyAboutNewCustomOrder(order: Order) {
-    const user = order.anonymousUser || {
-      ...order.user.profile,
-      email: order.user.email,
-    };
+    const user = order.anonymousUser
+      ? {
+          ...order.anonymousUser.profile,
+          email: order.anonymousUser.email,
+        }
+      : {
+          ...order.user.profile,
+          email: order.user.email,
+        };
     this.smsService.sendToAdmin(
       `Новый индивидуальный заказ топоров от ${user.firstName} ${user.lastName}.`,
     );

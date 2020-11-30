@@ -21,10 +21,10 @@ export class AnonymousUsersService {
     const { email, middleName, lastName, firstName, phone } = changeAnonUserDto;
     const user = await this.anonymousUserRepository.findOneOrFail(id);
     user.email = email ?? user.email;
-    user.phone = phone ?? user.phone;
-    user.firstName = firstName ?? user.firstName;
-    user.lastName = lastName ?? user.lastName;
-    user.middleName = middleName ?? user.middleName;
+    user.profile.phone = phone ?? user.profile.phone;
+    user.profile.firstName = firstName ?? user.profile.firstName;
+    user.profile.lastName = lastName ?? user.profile.lastName;
+    user.profile.middleName = middleName ?? user.profile.middleName;
 
     return this.anonymousUserRepository.save(user);
   }

@@ -25,7 +25,7 @@ export class CommentsService {
     const { email, firstName, rating, content, slug } = createAnonCommentDto;
     const anonymousUser = this.anonymousUsersRepository.create({
       email,
-      firstName,
+      profile: { firstName },
     });
     const [anonUser, product] = await Promise.all([
       this.anonymousUsersRepository.save(anonymousUser),
