@@ -4,8 +4,8 @@ import {
   paginationReducer,
   makePaginationSelector,
 } from "utils/redux/pagination/pagination";
-import { fetchAllOrdersApi } from "./all-orders.api";
 import { fetchState, fetchReducers } from "utils/redux/fetch/fetch";
+import { fetchAllOrdersApi } from "../apis/get-orders.api";
 
 export const allOrdersSlice = createSlice({
   name: "allOrders",
@@ -16,7 +16,7 @@ export const allOrdersSlice = createSlice({
   },
   reducers: {
     changeStatusFilter: (state, { payload }) => {
-      state.statusFilter = payload.statusFilter;
+      state.statusFilter = payload.value;
     },
     changeOrder: (state, { payload }) => {
       state.items = state.items.map((order) => {
@@ -49,9 +49,9 @@ export const fetchAllOrders = () => async (dispatch, getState) => {
   try {
     const state = getState();
     const { page, size } = getAllOrdersPagination(state);
-    const statusFilter = getAllOrdersStatusFilter(state);
+    const status = getAllOrdersStatusFilter(state);
     dispatch(fetchStart());
-    const { data } = await fetchAllOrdersApi({ page, size, statusFilter });
+    const { data } = await fetchAllOrdersApi({ page, size, status });
     dispatch(fetchSuccess({ items: data.items, total: data.total }));
   } catch (error) {
     console.log(error);

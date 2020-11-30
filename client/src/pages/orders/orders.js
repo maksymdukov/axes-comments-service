@@ -1,55 +1,65 @@
-import React, { useEffect } from "react";
+import React from "react";
 import MainHeader from "components/typography/main-header";
-import OrderFilters from "components/filters/order-filters";
 import {
   updateAllOrdersPagination,
   getAllOrdersStatusFilter,
-  changeStatusFilterAllOrders,
   getAllOrders,
-  getAllOrdersLoading,
   fetchAllOrders,
   getAllOrdersPagination,
 } from "./redux/all-orders-slice";
-import Paginator from "components/pagination/pagination";
-import { useDispatch, useSelector } from "react-redux";
-import ExpansionItem from "./components/expansion-item";
-import CenteredLoader from "components/loader/centered-loader";
-import NoData from "components/typography/no-data";
+import { useSelector } from "react-redux";
+import Entities from "components/entity/entities";
+import { getOrderColumns } from "./orders.utils";
+import { deleteOrderApi } from "./apis/delete-order.api";
+import getCustomSelectBar from "./components/custom-select-bar";
+import ViewOrder from "./components/view-order";
+import OrderStatusFilter from "./components/status-filter";
 
 const Orders = () => {
-  const dispatch = useDispatch();
-  const allOrders = useSelector(getAllOrders);
-  const { size, page } = useSelector(getAllOrdersPagination);
-  const loading = useSelector(getAllOrdersLoading);
-  const statusFilter = useSelector(getAllOrdersStatusFilter);
+  const status = useSelector(getAllOrdersStatusFilter);
+  const entityOptions = {
+    getPagination: getAllOrdersPagination,
+    getEntities: getAllOrders,
+    getEntitiesLoading: getAllOrdersPagination,
+    fetchEntities: fetchAllOrders,
+    updatePagination: updateAllOrdersPagination,
+    deleteEntityApi: deleteOrderApi,
+    fetchDeps: [status],
+  };
 
-  useEffect(() => {
-    dispatch(fetchAllOrders());
-  }, [page, size, statusFilter, dispatch]);
+  const editModalOptions = {
+    useInitialValues: () => {},
+    EntityForm: function EntityForm() {
+      return null;
+    },
+  };
+
+  const tableOptions = {
+    customToolbarSelect: getCustomSelectBar,
+  };
+
+  const viewModalOptions = {
+    View: ViewOrder,
+    fullWidth: true,
+    maxWidth: "md",
+    getTitle: (title) => `Заказ ID ${title.id}`,
+  };
 
   return (
-    <div>
-      <MainHeader>Заказы:</MainHeader>
-      <OrderFilters
-        pageSizeProps={{
-          updatePagination: updateAllOrdersPagination,
-          getPaginationState: getAllOrdersPagination,
-        }}
-        statusFilterProps={{
-          getStatusFilter: getAllOrdersStatusFilter,
-          updateStatusFilter: changeStatusFilterAllOrders,
-        }}
+    <>
+      <OrderStatusFilter />
+      <Entities
+        title="Заказы"
+        createBtn={false}
+        view={true}
+        edit={false}
+        getEntitiesColumns={getOrderColumns}
+        entityOptions={entityOptions}
+        editModalOptions={editModalOptions}
+        tableOptions={tableOptions}
+        viewModalOptions={viewModalOptions}
       />
-      {allOrders.map((order) => (
-        <ExpansionItem key={order.id} order={order} />
-      ))}
-      {!allOrders.length && !loading && <NoData />}
-      <CenteredLoader loading={loading} />
-      <Paginator
-        getPaginationState={getAllOrdersPagination}
-        updatePagination={updateAllOrdersPagination}
-      />
-    </div>
+    </>
   );
 };
 

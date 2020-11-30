@@ -70,7 +70,7 @@ const Comments = () => {
         editModalOptions={editModalOptions}
         tableOptions={tableOptions}
         viewModalOptions={viewModalOptions}
-      ></Entities>
+      />
     </>
   );
 };

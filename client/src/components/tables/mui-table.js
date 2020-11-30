@@ -34,10 +34,10 @@ const MuiTable = ({ columns, data, options, pagination, loading }) => {
       rowsPerPageOptions: [5, 10, 20, 30],
       textLabels: {
         body: {
-          noMatch: loading ? (
-            <CenteredLoader key={loading} loading={loading} />
-          ) : (
-            "Нет записей"
+          noMatch: (
+            <div key={loading}>
+              {loading ? <CenteredLoader loading={loading} /> : "Нет записей"}
+            </div>
           ),
         },
       },
