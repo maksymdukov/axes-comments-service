@@ -4,20 +4,20 @@ import {
   paginationReducer,
   makePaginationSelector,
 } from "utils/redux/pagination/pagination";
-import { fetchAllCommentsApi } from "./all-comments.api";
-import { commentStatus } from "constants/comment-status";
 import { fetchReducers, fetchState } from "utils/redux/fetch/fetch";
+import { commentStatus } from "../comments.constants";
+import { fetchAllCommentsApi } from "../apis/get-all-comments.api";
 
 export const allCommentsSlice = createSlice({
   name: "allComments",
   initialState: {
-    statusFilter: commentStatus.PENDING,
+    status: commentStatus.PENDING,
     ...paginationState,
     ...fetchState(),
   },
   reducers: {
     changeStatusFilter: (state, { payload }) => {
-      state.statusFilter = payload.statusFilter;
+      state.status = payload.value;
     },
     changeComment: (state, { payload }) => {
       state.items = state.items.map((comment) => {
@@ -44,16 +44,15 @@ export const {
 export const getAllCommentsLoading = (state) => state.allComments.loading;
 export const getAllCommentsPagination = makePaginationSelector("allComments");
 export const getAllComments = (state) => state.allComments.items;
-export const getAllCommentsStatusFilter = (state) =>
-  state.allComments.statusFilter;
+export const getAllCommentsStatusFilter = (state) => state.allComments.status;
 
 export const fetchAllComments = () => async (dispatch, getState) => {
   try {
     const state = getState();
     const { page, size } = getAllCommentsPagination(state);
-    const statusFilter = getAllCommentsStatusFilter(state);
+    const status = getAllCommentsStatusFilter(state);
     dispatch(fetchStart());
-    const { data } = await fetchAllCommentsApi({ page, size, statusFilter });
+    const { data } = await fetchAllCommentsApi({ page, size, status });
     dispatch(fetchSuccess({ items: data.items, total: data.total }));
   } catch (error) {
     console.log(error);

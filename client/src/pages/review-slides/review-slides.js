@@ -35,7 +35,7 @@ const ReviewSlides = () => {
     []
   );
 
-  const modalOptions = useMemo(
+  const editModalOptions = useMemo(
     () => ({
       useInitialValues,
       validationSchema: reviewSlidesValidation,
@@ -49,7 +49,7 @@ const ReviewSlides = () => {
       title="Слайды обзоров"
       getEntitiesColumns={getSlidesColumns}
       entityOptions={entityOptions}
-      modalOptions={modalOptions}
+      editModalOptions={editModalOptions}
     ></Entities>
   );
 };

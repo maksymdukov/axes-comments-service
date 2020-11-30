@@ -1,94 +1,77 @@
-import React, { useEffect } from "react";
-import CommentFilters from "components/filters/comment-filters";
+import Entities from "components/entity/entities";
+import React, { useMemo } from "react";
+import { useSelector } from "react-redux";
+import { deleteCommentApi } from "./apis/delete-comment.api";
+import { getCommentsColumns } from "./comments.utils";
+import getCustomSelectBar from "./components/custom-select-bar";
+import CommentStatusFilter from "./components/status-filter";
+import ViewComment from "./components/view-comment";
 import {
-  updateAllCommentsPagination,
-  getAllCommentsStatusFilter,
-  changeStatusFilterAllComments,
-  fetchAllComments,
-  changeCommentAll,
+  getAllCommentsPagination,
   getAllComments,
   getAllCommentsLoading,
-  getAllCommentsPagination,
+  fetchAllComments,
+  updateAllCommentsPagination,
+  getAllCommentsStatusFilter,
 } from "./redux/all-comments-slice";
-import CommentCard from "components/cards/comment-card";
-import Paginator from "components/pagination/pagination";
-import { useDispatch, useSelector } from "react-redux";
-import { commentStatus } from "constants/comment-status";
-import renderAxeInfo from "./components/render-axe-info";
-import MainHeader from "components/typography/main-header";
-import CenteredLoader from "components/loader/centered-loader";
-import NoData from "components/typography/no-data";
 
 const Comments = () => {
-  const dispatch = useDispatch();
-  const allComments = useSelector(getAllComments);
-  const { size, page } = useSelector(getAllCommentsPagination);
-  const loading = useSelector(getAllCommentsLoading);
-  const statusFilter = useSelector(getAllCommentsStatusFilter);
+  const status = useSelector(getAllCommentsStatusFilter);
+  const entityOptions = useMemo(
+    () => ({
+      getPagination: getAllCommentsPagination,
+      getEntities: getAllComments,
+      getEntitiesLoading: getAllCommentsLoading,
+      fetchEntities: fetchAllComments,
+      updatePagination: updateAllCommentsPagination,
+      deleteEntityApi: deleteCommentApi,
+      fetchDeps: [status],
+    }),
+    [status]
+  );
 
-  useEffect(() => {
-    dispatch(fetchAllComments());
-  }, [page, size, statusFilter, dispatch]);
+  const editModalOptions = useMemo(
+    () => ({
+      useInitialValues: () => {},
+      EntityForm: function EntityForm() {
+        return null;
+      },
+    }),
+    []
+  );
 
-  const onApproveSuccess = (comment) => () => {
-    if (statusFilter === "") {
-      dispatch(
-        changeCommentAll({
-          id: comment.id,
-          updatedComment: { status: commentStatus.APPROVED },
-        })
-      );
-    } else {
-      dispatch(fetchAllComments());
-    }
-  };
+  const tableOptions = useMemo(
+    () => ({
+      customToolbarSelect: getCustomSelectBar,
+    }),
+    []
+  );
 
-  const onSuspendSuccess = (comment) => () => {
-    if (statusFilter === "") {
-      dispatch(
-        changeCommentAll({
-          id: comment.id,
-          updatedComment: { status: commentStatus.PENDING },
-        })
-      );
-    } else {
-      dispatch(fetchAllComments());
-    }
-  };
+  const viewModalOptions = useMemo(
+    () => ({
+      View: ViewComment,
+      fullWidth: true,
+      maxWidth: "sm",
+      getTitle: (title) => `Комментарий ID ${title.id}`,
+    }),
+    []
+  );
 
-  const onDeleteSuccess = () => {
-    dispatch(fetchAllComments());
-  };
   return (
-    <div>
-      <MainHeader>Все комментарии:</MainHeader>
-      <CommentFilters
-        pageSizeProps={{
-          updatePagination: updateAllCommentsPagination,
-          getPaginationState: getAllCommentsPagination,
-        }}
-        statusFilterProps={{
-          getStatusFilter: getAllCommentsStatusFilter,
-          updateStatusFilter: changeStatusFilterAllComments,
-        }}
-      />
-      {allComments.map((comment) => (
-        <CommentCard
-          key={comment.id}
-          comment={comment}
-          onApproveSuccess={onApproveSuccess(comment)}
-          onDeleteSuccess={onDeleteSuccess}
-          onSuspendSuccess={onSuspendSuccess(comment)}
-          renderAxeInfo={renderAxeInfo}
-        />
-      ))}
-      {!allComments.length && !loading && <NoData />}
-      <CenteredLoader loading={loading} />
-      <Paginator
-        getPaginationState={getAllCommentsPagination}
-        updatePagination={updateAllCommentsPagination}
-      />
-    </div>
+    <>
+      <CommentStatusFilter />
+      <Entities
+        title="Комментарии"
+        createBtn={false}
+        view={true}
+        edit={false}
+        getEntitiesColumns={getCommentsColumns}
+        entityOptions={entityOptions}
+        editModalOptions={editModalOptions}
+        tableOptions={tableOptions}
+        viewModalOptions={viewModalOptions}
+      ></Entities>
+    </>
   );
 };
 

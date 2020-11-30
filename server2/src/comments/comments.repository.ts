@@ -10,7 +10,13 @@ export class CommentsRepository extends Repository<Comment> {
     const { status, skip, limit } = getCommentsDto;
     const where = getCommentsDto.status ? { where: { status } } : {};
     return this.findAndCount({
-      relations: ['product', 'anonymousUser', 'user'],
+      relations: [
+        'product',
+        'product.languages',
+        'product.languages.language',
+        'anonymousUser',
+        'user',
+      ],
       ...where,
       skip,
       take: limit,

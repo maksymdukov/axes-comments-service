@@ -4,13 +4,19 @@ import MainHeader from "components/typography/main-header";
 import AddIcon from "@material-ui/icons/Add";
 import { useDispatch, useSelector } from "react-redux";
 import MuiTable from "components/tables/mui-table";
-import EntityModal from "components/dialogs/entity-dialog";
+import EntityEditModal from "components/dialogs/entity-edit-dialog";
+import EntityViewModal from "components/dialogs/entity-view-dialog";
 
 const Entities = ({
   title,
   getEntitiesColumns,
-  modalOptions,
+  editModalOptions,
+  viewModalOptions = {},
   entityOptions,
+  tableOptions = {},
+  createBtn = true,
+  view = false,
+  edit = true,
 }) => {
   const {
     getPagination,
@@ -21,11 +27,14 @@ const Entities = ({
     deleteEntityApi,
     fetchDeps = [],
   } = entityOptions;
+
+  const { customToolbarSelect } = tableOptions;
   const dispatch = useDispatch();
   const { page, size, total } = useSelector(getPagination);
   const entities = useSelector(getEntities);
   const [modalOpened, setModalOpened] = useState(false);
-  const [entityToEdit, setEntityToEdit] = useState(undefined);
+  const [viewModalOpened, setViewModalOpened] = useState(false);
+  const [entity, setEntity] = useState(undefined);
 
   useEffect(() => {
     dispatch(fetchEntities());
@@ -39,10 +48,14 @@ const Entities = ({
     setModalOpened(false);
   }, [setModalOpened]);
 
+  const closeViewModal = useCallback(() => {
+    setViewModalOpened(false);
+  }, [setViewModalOpened]);
+
   const onCreateEntityClick = useCallback(() => {
-    setEntityToEdit(undefined);
+    setEntity(undefined);
     setModalOpened(true);
-  }, [setModalOpened, setEntityToEdit]);
+  }, [setModalOpened, setEntity]);
 
   const onCreateEditSuccess = () => {
     closeModal();
@@ -65,10 +78,10 @@ const Entities = ({
 
   const onEditEntityClick = useCallback(
     (rowIdx) => {
-      setEntityToEdit(entities[rowIdx]);
+      setEntity(entities[rowIdx]);
       openModal();
     },
-    [openModal, setEntityToEdit, entities]
+    [openModal, setEntity, entities]
   );
 
   const onDeleteEntityClick = useCallback(
@@ -80,6 +93,11 @@ const Entities = ({
     },
     [entities, dispatch]
   );
+
+  const onEntityViewClick = useCallback(async (rowData, { dataIndex }) => {
+    setEntity(entities[dataIndex]);
+    setViewModalOpened(true);
+  });
 
   const onEntityBulkDelete = useCallback(
     ({ data }) => {
@@ -97,46 +115,86 @@ const Entities = ({
   const columns = useMemo(
     () =>
       getEntitiesColumns({
+        edit,
         entities,
         onDeleteClick: onDeleteEntityClick,
         onEditClick: onEditEntityClick,
       }),
-    [entities, onDeleteEntityClick, onEditEntityClick, getEntitiesColumns]
+    [
+      entities,
+      onDeleteEntityClick,
+      onEditEntityClick,
+      getEntitiesColumns,
+      fetchEntities,
+      dispatch,
+    ]
+  );
+
+  const tableOpts = useMemo(
+    () => ({
+      onRowsDelete: onEntityBulkDelete,
+      onRowClick: view ? onEntityViewClick : undefined,
+      customToolbarSelect: customToolbarSelect
+        ? customToolbarSelect({
+            entities,
+            onEntityBulkDelete,
+            refetchEntities: () => dispatch(fetchEntities()),
+          })
+        : undefined,
+    }),
+    [
+      entities,
+      onEntityBulkDelete,
+      view,
+      onEntityViewClick,
+      customToolbarSelect,
+      dispatch,
+      fetchEntities,
+    ]
   );
 
   return (
     <div>
       <MainHeader>{title}</MainHeader>
-      <Box display="flex" justifyContent="space-between" marginBottom={2}>
-        <Button
-          color="primary"
-          variant="contained"
-          size="small"
-          onClick={onCreateEntityClick}
-        >
-          <AddIcon /> Создать
-        </Button>
-      </Box>
+      {createBtn && (
+        <Box display="flex" justifyContent="space-between" marginBottom={2}>
+          <Button
+            color="primary"
+            variant="contained"
+            size="small"
+            onClick={onCreateEntityClick}
+          >
+            <AddIcon /> Создать
+          </Button>
+        </Box>
+      )}
       <section>
         <MuiTable
           loading={loading}
-          options={{
-            onRowsDelete: onEntityBulkDelete,
-          }}
+          options={tableOpts}
           columns={columns}
           data={entities || []}
           pagination={pagination}
         />
       </section>
-      <EntityModal
-        entity={entityToEdit}
-        modalOptions={modalOptions}
-        open={modalOpened}
-        onClose={closeModal}
-        product={entityToEdit}
-        onCreateSuccess={onCreateEditSuccess}
-        onEditSuccess={onCreateEditSuccess}
-      />
+      {edit && (
+        <EntityEditModal
+          entity={entity}
+          modalOptions={editModalOptions}
+          open={modalOpened}
+          onClose={closeModal}
+          onCreateSuccess={onCreateEditSuccess}
+          onEditSuccess={onCreateEditSuccess}
+        />
+      )}
+      {view && (
+        <EntityViewModal
+          modalOptions={viewModalOptions}
+          entity={entity}
+          onClose={closeViewModal}
+          open={viewModalOpened}
+        />
+      )}
     </div>
   );
 };

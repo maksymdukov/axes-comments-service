@@ -63,7 +63,7 @@ const Products = () => {
     [active, featured]
   );
 
-  const modalOptions = useMemo(
+  const editModalOptions = useMemo(
     () => ({
       useInitialValues,
       validationSchema: productFormValidation,
@@ -80,7 +80,7 @@ const Products = () => {
         title="Продукты"
         getEntitiesColumns={getProductsColumns}
         entityOptions={entityOptions}
-        modalOptions={modalOptions}
+        editModalOptions={editModalOptions}
       ></Entities>
     </>
   );

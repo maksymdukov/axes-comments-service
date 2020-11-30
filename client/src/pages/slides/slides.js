@@ -36,7 +36,7 @@ const Slides = () => {
     []
   );
 
-  const modalOptions = useMemo(
+  const editModalOptions = useMemo(
     () => ({
       useInitialValues,
       validationSchema: slidesValidation,
@@ -50,7 +50,7 @@ const Slides = () => {
       title="Слайды"
       getEntitiesColumns={getSlidesColumns}
       entityOptions={entityOptions}
-      modalOptions={modalOptions}
+      editModalOptions={editModalOptions}
     ></Entities>
   );
 };

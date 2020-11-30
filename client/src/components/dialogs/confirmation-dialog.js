@@ -1,14 +1,11 @@
+import React from "react";
 import {
   Box,
-  Button,
   Dialog,
-  DialogActions,
   DialogContent,
   DialogTitle,
   IconButton,
 } from "@material-ui/core";
-import LoadableButton from "components/buttons/loadable-button";
-import React from "react";
 import ConfirmationActions from "./confirmation-actions";
 import CloseIcon from "@material-ui/icons/Close";
 
@@ -25,10 +22,18 @@ const ConfirmationDialog = ({
   children,
   fullScreen,
   titleClassname,
+  fullWidth,
+  maxWidth,
 }) => {
   const Wrapper = content ? DialogContent : React.Fragment;
   return (
-    <Dialog onClose={onClose} open={open} fullScreen={fullScreen}>
+    <Dialog
+      onClose={onClose}
+      open={open}
+      fullScreen={fullScreen}
+      fullWidth={fullWidth}
+      maxWidth={maxWidth}
+    >
       <DialogTitle className={titleClassname}>
         <Box display="flex" justifyContent="space-between" alignItems="center">
           {title}
