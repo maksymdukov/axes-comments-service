@@ -4,3 +4,10 @@ export const orderStatus = {
   COMPLETED: "completed",
   CANCELED: "canceled",
 };
+
+export const orderStatusTransalted = {
+  [orderStatus.NEW]: 'Новый',
+  [orderStatus.PROCESSING]: 'В обработке',
+  [orderStatus.COMPLETED]: 'Завершен',
+  [orderStatus.CANCELED]: 'Отменен',
+};

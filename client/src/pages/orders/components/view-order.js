@@ -1,7 +1,9 @@
 import React from "react";
 
 const ViewOrder = ({ entity }) => {
-  return <div></div>;
+  return <div>
+    
+  </div>;
 };
 
 export default ViewOrder;

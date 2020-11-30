@@ -1,72 +1,73 @@
 import React from "react";
-import { Box, Card, CardContent } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import Group from "./group";
 import GroupItem from "./group-item";
-import { orderStatusTranslated } from "constants/order-status";
 import CartItems from "./cart-items";
 import UserImages from "./user-images";
+import { orderStatusTransalted } from "../orders.constants";
+import { getTotalOrderSum } from "../orders.utils";
 
-const OrderCard = ({
-  order: {
-    customer: { email, name, surname, phone, comments },
-    delivery: { type, npNumber, npSettlement, ukrAddress },
-    status,
-    items,
+const OrderCard = ({ entity }) => {
+  const {
+    comment,
     createdAt,
-    custom,
-  },
-  totalSum,
-}) => {
+    status,
+    user,
+    anonymousUser,
+    delivery,
+    details,
+    customDetails,
+  } = entity;
+  const { address, branch, settlement, idx } = delivery;
+  const isAnonymous = !!anonymousUser;
+  const isCustom = !!customDetails.length;
+  const isOrdinary = !isCustom;
+  const usr = isAnonymous ? anonymousUser : user;
+
+  const totalSum = getTotalOrderSum(details);
   return (
     <Box mb={2} flexGrow="1">
-      <Card elevation={0}>
-        <CardContent>
-          <Group label="Покупатель">
-            <GroupItem label="Email">{email}</GroupItem>
-            <GroupItem label="Имя">{name}</GroupItem>
-            <GroupItem label="Фамилия">{surname}</GroupItem>
-            <GroupItem label="Телефон">{phone}</GroupItem>
-            {comments && (
-              <GroupItem label="Комментарий клиента">{comments}</GroupItem>
-            )}
-          </Group>
+      <Group label="Покупатель">
+        <GroupItem label="Email">{usr.email}</GroupItem>
+        <GroupItem label="Имя">{usr.profile.firstName}</GroupItem>
+        <GroupItem label="Фамилия">{usr.profile.lastName}</GroupItem>
+        <GroupItem label="Телефон">{usr.profile.phone}</GroupItem>
+        {comment && (
+          <GroupItem label="Комментарий клиента">{comment}</GroupItem>
+        )}
+      </Group>
 
-          <Group label="Доставка">
-            <GroupItem label="Тип">{type}</GroupItem>
-            {npSettlement && (
-              <GroupItem label="Локация">{npSettlement}</GroupItem>
-            )}
-            {npNumber && <GroupItem label="Отделение">{npNumber}</GroupItem>}
-            {ukrAddress && <GroupItem label="Адрес">{ukrAddress}</GroupItem>}
-          </Group>
+      <Group label="Доставка">
+        <GroupItem label="Тип">{delivery.type}</GroupItem>
+        {settlement && <GroupItem label="Локация">{settlement}</GroupItem>}
+        {branch && <GroupItem label="Отделение">{branch}</GroupItem>}
+        {address && <GroupItem label="Адрес">{address}</GroupItem>}
+        {idx && <GroupItem label="Индекс">{idx}</GroupItem>}
+      </Group>
 
-          <Group label="Заказ">
-            <GroupItem label="Статус">
-              {orderStatusTranslated[status]}
-            </GroupItem>
-            <GroupItem label="Дата">
-              {new Date(createdAt).toLocaleString()}
-            </GroupItem>
-            {!custom && (
-              <GroupItem label="Общая сумма">{totalSum} грн</GroupItem>
-            )}
-          </Group>
+      <Group label="Заказ">
+        <GroupItem label="Статус">{orderStatusTransalted[status]}</GroupItem>
+        <GroupItem label="Дата">
+          {new Date(createdAt).toLocaleString()}
+        </GroupItem>
+        {isOrdinary && (
+          <GroupItem label="Общая сумма">{totalSum} грн</GroupItem>
+        )}
+      </Group>
 
-          {!custom && (
-            // Usual order
-            <Group label="Товары">
-              <CartItems items={items} />
-            </Group>
-          )}
+      {isOrdinary && (
+        // Usual order
+        <Group label="Товары">
+          <CartItems items={details} />
+        </Group>
+      )}
 
-          {custom && (
-            // Custom order
-            <Group label="Пользовательские картинки">
-              <UserImages custom={custom} />
-            </Group>
-          )}
-        </CardContent>
-      </Card>
+      {isCustom && (
+        // Custom order
+        <Group label="Пользовательские картинки">
+          <UserImages custom={customDetails} />
+        </Group>
+      )}
     </Box>
   );
 };

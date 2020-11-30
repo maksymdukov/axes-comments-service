@@ -39,9 +39,9 @@ const useStyles = makeStyles({
   },
 });
 
-const getImageUrl = (image) => `${config.BUCKET_URL}${image}`;
+const getImageUrl = (image) => image.url;
 
-const UserImages = ({ custom }) => {
+const UserImages = ({ custom: images }) => {
   const classes = useStyles();
   const [fullscreenImg, setFullscreenImg] = useState(null);
 
@@ -51,9 +51,9 @@ const UserImages = ({ custom }) => {
   return (
     <>
       <Box display="flex" flexWrap="wrap" alignItems="center">
-        {custom.images.map((image) => (
+        {images.map(({ image }) => (
           <Box
-            key={image}
+            key={image.id}
             position="relative"
             className={classes.imgContainer}
             onClick={openBackdrop(image)}

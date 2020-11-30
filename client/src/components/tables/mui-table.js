@@ -34,19 +34,24 @@ const MuiTable = ({ columns, data, options, pagination, loading }) => {
       rowsPerPageOptions: [5, 10, 20, 30],
       textLabels: {
         body: {
-          noMatch: (
-            <div key={loading}>
-              {loading ? <CenteredLoader loading={loading} /> : "Нет записей"}
-            </div>
+          noMatch: loading ? (
+            <CenteredLoader loading={loading} />
+          ) : (
+            "Нет записей"
           ),
         },
       },
       ...options,
       ...paginat,
     }),
-    [options, paginat, loading]
+    [options, paginat]
   );
-  return <MUIDataTable options={opts} columns={columns} data={data} />;
+  console.log("loading", loading);
+  return (
+    <>
+      <MUIDataTable options={opts} columns={columns} data={data} />
+    </>
+  );
 };
 
 export default MuiTable;

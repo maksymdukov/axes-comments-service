@@ -13,6 +13,8 @@ export class OrdersRepository extends Repository<Order> {
       relations: [
         'details',
         'details.product',
+        'details.product.images',
+        'details.product.languages',
         'customDetails',
         'customDetails.image',
         'user',

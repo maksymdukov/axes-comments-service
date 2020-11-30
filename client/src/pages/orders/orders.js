@@ -1,26 +1,26 @@
 import React from "react";
-import MainHeader from "components/typography/main-header";
 import {
   updateAllOrdersPagination,
   getAllOrdersStatusFilter,
   getAllOrders,
   fetchAllOrders,
   getAllOrdersPagination,
+  getAllOrdersLoading,
 } from "./redux/all-orders-slice";
 import { useSelector } from "react-redux";
 import Entities from "components/entity/entities";
 import { getOrderColumns } from "./orders.utils";
 import { deleteOrderApi } from "./apis/delete-order.api";
-import getCustomSelectBar from "./components/custom-select-bar";
-import ViewOrder from "./components/view-order";
 import OrderStatusFilter from "./components/status-filter";
+import OrderCard from "./components/order-card";
+import getCustomSelectBar from "./components/custom-select-bar";
 
 const Orders = () => {
   const status = useSelector(getAllOrdersStatusFilter);
   const entityOptions = {
     getPagination: getAllOrdersPagination,
     getEntities: getAllOrders,
-    getEntitiesLoading: getAllOrdersPagination,
+    getEntitiesLoading: getAllOrdersLoading,
     fetchEntities: fetchAllOrders,
     updatePagination: updateAllOrdersPagination,
     deleteEntityApi: deleteOrderApi,
@@ -39,7 +39,7 @@ const Orders = () => {
   };
 
   const viewModalOptions = {
-    View: ViewOrder,
+    View: OrderCard,
     fullWidth: true,
     maxWidth: "md",
     getTitle: (title) => `Заказ ID ${title.id}`,

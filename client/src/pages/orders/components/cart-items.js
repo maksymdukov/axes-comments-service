@@ -18,22 +18,27 @@ const CartItems = ({ items }) => {
         </TableRow>
       </TableHead>
       <TableBody>
-        {items.map((cartItem) => (
-          <TableRow key={cartItem.id}>
-            <TableCell>{cartItem.title}</TableCell>
-            <TableCell>
-              {cartItem.image && (
-                <img
-                  src={cartItem.image.url}
-                  alt={cartItem.title}
-                  style={{ width: 100, height: "auto" }}
-                />
-              )}
-            </TableCell>
-            <TableCell>{cartItem.price}</TableCell>
-            <TableCell>{cartItem.count}</TableCell>
-          </TableRow>
-        ))}
+        {items.map((cartItem) => {
+          const {
+            product: { images, languages },
+          } = cartItem;
+          return (
+            <TableRow key={cartItem.id}>
+              <TableCell>{languages[0].title}</TableCell>
+              <TableCell>
+                {images && images[0] && (
+                  <img
+                    src={images[0].url}
+                    alt={"img"}
+                    style={{ width: 100, height: "auto" }}
+                  />
+                )}
+              </TableCell>
+              <TableCell>{cartItem.currentPrice}</TableCell>
+              <TableCell>{cartItem.qty}</TableCell>
+            </TableRow>
+          );
+        })}
       </TableBody>
     </Table>
   );
