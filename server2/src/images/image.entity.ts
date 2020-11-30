@@ -30,6 +30,9 @@ export class Image {
   @Column()
   height: number;
 
+  @Column({ nullable: true })
+  size: number;
+
   @Column({ length: 100 })
   contentType: string;
 

@@ -31,7 +31,7 @@ export class ImagesService {
     const assets = await this.uploadImagesToStorage(files);
 
     const persistPromises = assets.map(async (asset) => {
-      const { contentType, fileName, height, id, url, width } = asset;
+      const { contentType, fileName, height, id, url, width, size } = asset;
 
       const image = this.imageRepository.create({
         contentType,
@@ -40,6 +40,7 @@ export class ImagesService {
         width,
         imageId: id,
         url,
+        size,
       });
       const img = await this.imageRepository.save(image);
 

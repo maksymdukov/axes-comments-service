@@ -5,4 +5,5 @@ export interface INormalizedAsset {
   height: number;
   fileName: string;
   contentType: string;
+  size: number;
 }

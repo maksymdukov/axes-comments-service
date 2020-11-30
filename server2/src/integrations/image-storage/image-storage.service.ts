@@ -62,6 +62,8 @@ export class ImageStorageService {
     });
 
     asset = await asset.processForAllLocales();
+    console.dir(asset, { depth: 8 });
+
     return this.normalizieAsset(asset);
   }
 
@@ -82,6 +84,7 @@ export class ImageStorageService {
             contentType,
             details: {
               image: { width, height },
+              size,
             },
           },
         },
@@ -94,6 +97,7 @@ export class ImageStorageService {
       height: height as number,
       fileName,
       contentType,
+      size: size as number,
     };
   }
 }
