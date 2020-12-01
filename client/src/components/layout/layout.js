@@ -102,11 +102,6 @@ const links = [
     icon: CommentIcon,
   },
   {
-    label: "Топоры",
-    to: "/axes",
-    icon: ListAltIcon,
-  },
-  {
     label: "Заказы",
     to: "/orders",
     icon: ShopTwoIcon,

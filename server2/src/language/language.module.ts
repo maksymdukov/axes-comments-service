@@ -13,6 +13,8 @@ import { LanguageService } from './language.service';
       provide: LANGUAGES,
       inject: [LanguageRepository],
       useFactory: async (languageRepository: LanguageRepository) => {
+        // TODO check for existence of specific languages
+        // add if they do not exist
         const languages = await languageRepository.find({});
         return languages;
       },
