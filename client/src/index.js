@@ -8,6 +8,7 @@ import { Router } from "react-router-dom";
 import { createBrowserHistory } from "history";
 import moment from "moment";
 import "moment/locale/ru";
+import "../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
 moment.locale("ru");
 

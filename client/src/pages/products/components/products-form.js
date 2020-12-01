@@ -1,11 +1,13 @@
 import EntityForm from "components/form/entity-form";
-import ImagesField from 'components/form/gallery/images-field';
+import ImagesField from "components/form/gallery/images-field";
 import GutteredCheckbox from "components/form/guttered-checkbox";
 import GutteredField from "components/form/guttered-field";
+import WYSIWYGField from "components/form/wysiwyg/wysiwyg-filed";
 import { TextField } from "formik-material-ui";
 import React, { useCallback } from "react";
 import { createProductApi } from "../apis/create-product.api";
 import { updateProductApi } from "../apis/update-product.api";
+import { editorStateToHtml } from "../products.utils";
 import TitleField from "./title-field";
 
 const ProductsForm = (props) => {
@@ -14,6 +16,8 @@ const ProductsForm = (props) => {
       ...values,
       mainImageId: values.mainImage.map((img) => img.id)[0],
       imageIds: values.images.map((img) => img.id),
+      ruLongDescription: editorStateToHtml(values.ruLongDescription),
+      ukLongDescription: editorStateToHtml(values.ukLongDescription),
     };
     if (product) {
       // editing product
@@ -23,7 +27,6 @@ const ProductsForm = (props) => {
       return createProductApi(formatedValues);
     }
   }, []);
-
   return (
     <EntityForm {...props} api={api}>
       <GutteredCheckbox label="Активный" name="isActive" />
@@ -52,16 +55,12 @@ const ProductsForm = (props) => {
         label="Короткое описание (укр)"
       />
       <GutteredField
-        component={TextField}
-        multiline
-        rows={4}
+        component={WYSIWYGField}
         name="ruLongDescription"
         label="Длинное описание (рус)"
       />
       <GutteredField
-        component={TextField}
-        multiline
-        rows={4}
+        component={WYSIWYGField}
         name="ukLongDescription"
         label="Длинное описание (укр)"
       />

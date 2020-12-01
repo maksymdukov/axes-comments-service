@@ -13,10 +13,11 @@ import {
 import { deleteProductApi } from "./apis/delete-product.api";
 import { productFormValidation } from "./components/product-form-validation";
 import ProductsForm from "./components/products-form";
-import { getProductsColumns } from "./products.utils";
+import { createEditorState, getProductsColumns } from "./products.utils";
 import { useSelector } from "react-redux";
 import ActiveProductFilter from "./components/active-filter";
 import FeaturedProductFilter from "./components/featured-filter";
+import { EditorState } from "draft-js";
 
 const useInitialValues = ({ entity }) => {
   const lngMap = useMemo(
@@ -34,10 +35,14 @@ const useInitialValues = ({ entity }) => {
           : false,
       ruTitle: (lngMap.ru && lngMap.ru.title) || "",
       ruDescription: (lngMap.ru && lngMap.ru.description) || "",
-      ruLongDescription: (lngMap.ru && lngMap.ru.longDescription) || "",
+      ruLongDescription:
+        createEditorState(lngMap.ru && lngMap.ru.longDescription) ||
+        EditorState.createEmpty(),
       ukTitle: (lngMap.uk && lngMap.uk.title) || "",
       ukDescription: (lngMap.uk && lngMap.uk.description) || "",
-      ukLongDescription: (lngMap.uk && lngMap.uk.longDescription) || "",
+      ukLongDescription:
+        createEditorState(lngMap.uk && lngMap.uk.longDescription) ||
+        EditorState.createEmpty(),
       price: (entity && entity.price) || 0,
       slug: (entity && entity.slug) || "",
       mainImage: (entity && entity.mainImage && [entity.mainImage]) || [],
