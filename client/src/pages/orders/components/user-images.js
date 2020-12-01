@@ -1,6 +1,5 @@
 import React from "react";
 import { Box, makeStyles, Backdrop } from "@material-ui/core";
-import { config } from "config";
 import { useState } from "react";
 
 const useStyles = makeStyles({

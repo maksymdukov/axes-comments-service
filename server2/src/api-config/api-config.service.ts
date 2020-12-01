@@ -14,6 +14,7 @@ export class ApiConfigService {
       imageHosting: this.get('imageHosting'),
       mail: this.get('mail'),
       sms: this.get('sms'),
+      ssg: this.get('ssg'),
     };
   }
 

@@ -1,0 +1,1 @@
+export const SSG_ROOT_OPTIONS = 'SSG_ROOT_OPTIONS';

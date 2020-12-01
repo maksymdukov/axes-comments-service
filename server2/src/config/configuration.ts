@@ -20,4 +20,7 @@ export default () => ({
     apiKey: process.env.SMS_SERVICE_API_KEY,
     adminPhone: process.env.ADMIN_PHONE,
   },
+  ssg: {
+    buildFrontendHook: process.env.BUILD_FRONTEND_WEBHOOK,
+  },
 });

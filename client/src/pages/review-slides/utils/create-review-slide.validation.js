@@ -1,4 +1,4 @@
-import { object, bool, string, number, array } from "yup";
+import { object, string, array } from "yup";
 
 export const reviewSlidesValidation = object().shape({
   name: string().required(),

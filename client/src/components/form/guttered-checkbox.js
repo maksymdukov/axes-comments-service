@@ -1,4 +1,4 @@
-import { Box, FormControlLabel } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import { Field } from "formik";
 import { CheckboxWithLabel } from "formik-material-ui";
 import React from "react";

@@ -67,6 +67,7 @@ const EditImageForm = ({
           />
           <FieldLike label="Width" value={image.width} />
           <FieldLike label="Height" value={image.height} />
+          {image.size && <FieldLike label="Size" value={image.size} />}
         </Form>
       </DialogContent>
       <ConfirmationActions

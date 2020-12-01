@@ -28,6 +28,10 @@ export interface IServerConfig {
   port: string;
 }
 
+export interface ISSG {
+  buildFrontendHook: string;
+}
+
 export interface IAppConfig {
   NODE_ENV: string;
   server: IServerConfig;
@@ -36,4 +40,5 @@ export interface IAppConfig {
   imageHosting: IImageStorageConfig;
   mail: IMailConfig;
   sms: ISmsConfig;
+  ssg: ISSG;
 }

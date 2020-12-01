@@ -20,6 +20,8 @@ import { DeliveryModule } from './delivery/delivery.module';
 import { MailerModule } from './integrations/mailer/mailer.module';
 import { SmsModule } from './integrations/sms/sms.module';
 import { PmModule } from './pm/pm.module';
+import { SsgModule } from './integrations/ssg/ssg.module';
+import { FrontendModule } from './frontend/frontend.module';
 
 const configModule = ConfigModule.forRoot({
   load: [configuration],
@@ -81,6 +83,13 @@ const smsModule = SmsModule.forRootAsync({
   }),
 });
 
+const ssgModule = SsgModule.forRootAsync({
+  inject: [ApiConfigService],
+  useFactory: (apiConfigService: ApiConfigService) => ({
+    rebuildEndpoint: apiConfigService.config.ssg.buildFrontendHook,
+  }),
+});
+
 @Module({
   imports: [
     configModule,
@@ -88,6 +97,7 @@ const smsModule = SmsModule.forRootAsync({
     imageStorageModule,
     mailerModule,
     smsModule,
+    ssgModule,
     ImagesModule,
     UsersModule,
     AuthModule,
@@ -101,6 +111,8 @@ const smsModule = SmsModule.forRootAsync({
     OrdersModule,
     DeliveryModule,
     PmModule,
+    SsgModule,
+    FrontendModule,
   ],
   controllers: [],
   providers: [],
