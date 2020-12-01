@@ -15,7 +15,6 @@ const MuiTable = ({ columns, data, options, pagination, loading }) => {
         rowsPerPage: size,
         page: page - 1,
         onChangePage: (page) => {
-          console.log("page", page);
           dispatch(paginationUpdated({ page: page + 1 }));
         },
         onChangeRowsPerPage: (size) => dispatch(paginationUpdated({ size })),
@@ -46,7 +45,6 @@ const MuiTable = ({ columns, data, options, pagination, loading }) => {
     }),
     [options, paginat]
   );
-  console.log("loading", loading);
   return (
     <>
       <MUIDataTable options={opts} columns={columns} data={data} />
