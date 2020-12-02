@@ -17,29 +17,42 @@ export class ProductRepository extends Repository<Product> {
   }
 
   async findProducts(getProductsDto: GetProductsDto | GetAdminProductsDto) {
-    const { skip, limit, locale, isFeatured } = getProductsDto;
+    const {
+      skip,
+      limit,
+      locale,
+      isFeatured,
+      featured,
+      sort,
+      order,
+    } = getProductsDto;
     const query = this.getPopulatedProduct()
       .orderBy('products.createdAt', 'DESC')
       .take(limit)
       .skip(skip);
-    if (getProductsDto instanceof GetAdminProductsDto) {
-      query.addSelect('products.isActive');
-    }
     if (locale) {
       query
         .where('lang.name = :locale', { locale })
         .andWhere('imglang.name = :locale', { locale });
     }
-    if (isFeatured) {
+    if (featured) {
       query.andWhere('products.isFeatured = :isFeatured', { isFeatured });
     }
-    if (
-      getProductsDto instanceof GetAdminProductsDto &&
-      getProductsDto.isActive !== undefined
-    ) {
-      query.andWhere('products.isActive = :isActive', {
-        isActive: getProductsDto.isActive,
+    if (sort) {
+      query.orderBy({
+        [sort]: { order },
       });
+    } else {
+      query.orderBy('products.createdAt', order);
+    }
+
+    if (getProductsDto instanceof GetAdminProductsDto) {
+      query.addSelect('products.isActive');
+      if (getProductsDto.active) {
+        query.andWhere('products.isActive = :isActive', {
+          isActive: getProductsDto.isActive,
+        });
+      }
     }
     return query.getManyAndCount();
   }

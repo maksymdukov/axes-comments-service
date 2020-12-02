@@ -4,6 +4,7 @@ import { LANGUAGES } from './language.constants';
 import { Language } from './language.entity';
 import { LanguageRepository } from './language.repository';
 import { LanguageService } from './language.service';
+import { addLanguagesIfNotExist } from './language.utils';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Language])],
@@ -13,8 +14,9 @@ import { LanguageService } from './language.service';
       provide: LANGUAGES,
       inject: [LanguageRepository],
       useFactory: async (languageRepository: LanguageRepository) => {
-        // TODO check for existence of specific languages
+        // check for existence of specific languages
         // add if they do not exist
+        await addLanguagesIfNotExist(languageRepository);
         const languages = await languageRepository.find({});
         return languages;
       },
