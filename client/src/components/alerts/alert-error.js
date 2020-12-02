@@ -7,7 +7,7 @@ const AlertError = ({ error }) => {
     <Alert severity="error" variant="filled">
       {Array.isArray(error)
         ? error.map((err) => <div key={err}>{err}</div>)
-        : { error }}
+        : error}
     </Alert>
   );
 };

@@ -22,6 +22,7 @@ import { SmsModule } from './integrations/sms/sms.module';
 import { PmModule } from './pm/pm.module';
 import { SsgModule } from './integrations/ssg/ssg.module';
 import { FrontendModule } from './frontend/frontend.module';
+import { PagesModule } from './pages/pages.module';
 
 const configModule = ConfigModule.forRoot({
   load: [configuration],
@@ -113,6 +114,7 @@ const ssgModule = SsgModule.forRootAsync({
     PmModule,
     SsgModule,
     FrontendModule,
+    PagesModule,
   ],
   controllers: [],
   providers: [],

@@ -7,6 +7,7 @@ import Gallery from "pages/gallery/gallery";
 import Products from "pages/products/products";
 import Slides from "pages/slides/slides";
 import ReviewSlides from "pages/review-slides/review-slides";
+import Infopages from "pages/infopages/infopages";
 
 const Routes = () => {
   return (
@@ -18,6 +19,7 @@ const Routes = () => {
         <Route path="/slides" exact component={Slides} />
         <Route path="/review-slides" exact component={ReviewSlides} />
         <Route path="/orders" component={Orders} />
+        <Route path="/pages" component={Infopages} />
       </Switch>
     </Layout>
   );

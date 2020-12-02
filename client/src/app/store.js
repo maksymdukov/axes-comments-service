@@ -7,6 +7,7 @@ import { productsReducer } from "pages/products/redux/products-slide";
 import { slidesReducer } from "pages/slides/redux/slides-slice";
 import { reviewSlidesReducer } from "pages/review-slides/redux/review-slides-slice";
 import { allCommentsReducer } from "pages/comments/redux/all-comments-slice";
+import { pagesReducer } from "pages/infopages/redux/infopage-slice";
 
 export default configureStore({
   reducer: {
@@ -18,5 +19,6 @@ export default configureStore({
     products: productsReducer,
     slides: slidesReducer,
     reviewslides: reviewSlidesReducer,
+    pages: pagesReducer,
   },
 });

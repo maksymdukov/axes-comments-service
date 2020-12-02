@@ -3,11 +3,11 @@ import ImagesField from "components/form/gallery/images-field";
 import GutteredCheckbox from "components/form/guttered-checkbox";
 import GutteredField from "components/form/guttered-field";
 import WYSIWYGField from "components/form/wysiwyg/wysiwyg-filed";
+import { editorStateToHtml } from "components/wysiwyg/sysiwyg.utils";
 import { TextField } from "formik-material-ui";
 import React, { useCallback } from "react";
 import { createProductApi } from "../apis/create-product.api";
 import { updateProductApi } from "../apis/update-product.api";
-import { editorStateToHtml } from "../products.utils";
 import TitleField from "./title-field";
 
 const ProductsForm = (props) => {

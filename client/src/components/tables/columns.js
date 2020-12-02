@@ -35,3 +35,8 @@ export const nameColumn = ({ entities }) => ({
     },
   },
 });
+
+export const idColumn = () => ({
+  name: "id",
+  label: "ID",
+});

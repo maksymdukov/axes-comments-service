@@ -23,6 +23,7 @@ import { Link, useLocation } from "react-router-dom";
 import RebuildBtn from "components/header/rebuild-btn";
 import PermMediaIcon from "@material-ui/icons/PermMedia";
 import SlideshowIcon from "@material-ui/icons/Slideshow";
+import FileCopyIcon from "@material-ui/icons/FileCopy";
 
 const drawerWidth = 240;
 
@@ -125,6 +126,11 @@ const links = [
     label: "Слайды отзывов",
     to: "/review-slides",
     icon: SlideshowIcon,
+  },
+  {
+    label: "Страницы",
+    to: "/pages",
+    icon: FileCopyIcon,
   },
 ];
 

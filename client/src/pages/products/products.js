@@ -13,11 +13,12 @@ import {
 import { deleteProductApi } from "./apis/delete-product.api";
 import { productFormValidation } from "./components/product-form-validation";
 import ProductsForm from "./components/products-form";
-import { createEditorState, getProductsColumns } from "./products.utils";
+import { getProductsColumns } from "./products.utils";
 import { useSelector } from "react-redux";
 import ActiveProductFilter from "./components/active-filter";
 import FeaturedProductFilter from "./components/featured-filter";
 import { EditorState } from "draft-js";
+import { createEditorState } from "components/wysiwyg/sysiwyg.utils";
 
 const useInitialValues = ({ entity }) => {
   const lngMap = useMemo(
