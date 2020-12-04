@@ -21,6 +21,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const ImageList = ({
+  loading,
   images,
   page,
   size,
@@ -106,6 +107,7 @@ const ImageList = ({
     <>
       <section className={classes.gallery}>
         <MuiTable
+          loading={loading}
           pagination={pagination}
           options={options}
           columns={columns}

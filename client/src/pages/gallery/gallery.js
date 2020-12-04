@@ -77,6 +77,7 @@ const Gallery = ({
         </Button>
       </Box>
       <ImageList
+        loading={loading}
         images={images}
         page={page}
         size={size}
@@ -89,7 +90,6 @@ const Gallery = ({
         bulkActions={bulkActions}
       />
       {!images.length && !loading && <NoData />}
-      <CenteredLoader loading={loading} />
       <FileUploadDialog
         isOpened={isDialogOpen}
         handleClose={closeDialog}

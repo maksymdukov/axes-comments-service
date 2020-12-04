@@ -65,6 +65,7 @@ const EditImageForm = ({
             label="Название (рус)"
             name="titleRu"
           />
+          <FieldLike label="Filename" value={image.fileName} />
           <FieldLike label="Width" value={image.width} />
           <FieldLike label="Height" value={image.height} />
           {image.size && <FieldLike label="Size" value={image.size} />}

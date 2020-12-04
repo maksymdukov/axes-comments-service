@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Query } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { GetPageDto } from './dto/get-page.dto';
 import { PagesService } from './pages.service';
 

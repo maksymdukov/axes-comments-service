@@ -55,8 +55,10 @@ export class PagesService {
 
   async update(id: number, updatePageDto: UpdatePageDto) {
     const { ruContent, ukContent, name } = updatePageDto;
-    await this.throwIfNameExists(name);
     const page = await this.pageRepository.findOneOrFail(id);
+
+    name !== page.name && this.throwIfNameExists(name);
+
     page.languages.forEach((lng) => {
       if (lng.language.name === ELanguage.ru) {
         lng.content = ruContent;

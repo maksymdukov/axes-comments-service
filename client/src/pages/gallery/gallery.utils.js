@@ -25,5 +25,14 @@ export const getGalleryColumns = ({ onEditClick, onDeleteClick, images }) => [
       },
     },
   },
+  {
+    name: "widthheight",
+    label: "Размер (ш-в)",
+    options: {
+      customBodyRenderLite: (dataIndex) => {
+        return `${images[dataIndex].width} x ${images[dataIndex].height}`;
+      },
+    },
+  },
   actionsColumn({ onDeleteClick, onEditClick }),
 ];
