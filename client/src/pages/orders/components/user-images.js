@@ -38,9 +38,9 @@ const useStyles = makeStyles({
   },
 });
 
-const getImageUrl = (image) => image.url;
+const getImageUrl = (image) => (image && image.url) || "";
 
-const UserImages = ({ custom: images }) => {
+const UserImages = ({ custom: images = [] }) => {
   const classes = useStyles();
   const [fullscreenImg, setFullscreenImg] = useState(null);
 
@@ -50,9 +50,9 @@ const UserImages = ({ custom: images }) => {
   return (
     <>
       <Box display="flex" flexWrap="wrap" alignItems="center">
-        {images.map(({ image }) => (
+        {images.map(({ image, id }) => (
           <Box
-            key={image.id}
+            key={id}
             position="relative"
             className={classes.imgContainer}
             onClick={openBackdrop(image)}

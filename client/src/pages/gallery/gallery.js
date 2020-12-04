@@ -1,12 +1,11 @@
-import CenteredLoader from "components/loader/centered-loader";
-import MainHeader from "components/typography/main-header";
-import NoData from "components/typography/no-data";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
+import MainHeader from "components/typography/main-header";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchGallery,
   getGalleryImages,
   getGalleryLoading,
+  getGalleryOwnerFilter,
   getGalleryPagination,
   updateGalleryPagination,
   updateImage,
@@ -15,6 +14,7 @@ import { Box, Button } from "@material-ui/core";
 import FileUploadDialog from "./components/file-upload-dialog";
 import ImageList from "./components/image-list";
 import PublishIcon from "@material-ui/icons/Publish";
+import OwnerFilter from "./components/owner-filter";
 
 const Gallery = ({
   header = true,
@@ -25,12 +25,13 @@ const Gallery = ({
   const dispatch = useDispatch();
   const images = useSelector(getGalleryImages);
   const loading = useSelector(getGalleryLoading);
+  const isAdminFilter = useSelector(getGalleryOwnerFilter);
   const { page, size, total } = useSelector(getGalleryPagination);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   useEffect(() => {
     dispatch(fetchGallery());
-  }, [page, size]);
+  }, [page, size, isAdminFilter]);
 
   const closeDialog = useCallback(() => {
     setIsDialogOpen(false);
@@ -66,6 +67,7 @@ const Gallery = ({
   return (
     <div>
       {header && <MainHeader>Галлерея:</MainHeader>}
+      <OwnerFilter />
       <Box display="flex" justifyContent="space-between" marginBottom={2}>
         <Button
           color="primary"
@@ -89,7 +91,6 @@ const Gallery = ({
         rowsSelected={selectedRows}
         bulkActions={bulkActions}
       />
-      {!images.length && !loading && <NoData />}
       <FileUploadDialog
         isOpened={isDialogOpen}
         handleClose={closeDialog}

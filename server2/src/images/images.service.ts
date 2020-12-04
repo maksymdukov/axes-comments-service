@@ -8,6 +8,7 @@ import { ImageRepository } from './image.repository';
 import { LanguageService } from 'src/language/language.service';
 import { ImageLanguageRepository } from './image-language.repository';
 import { PaginationService } from 'src/utils/pagination/pagination.service';
+import { GetImagesAdminDto } from './dto/get-images-admin.dto';
 
 @Injectable()
 export class ImagesService {
@@ -20,14 +21,14 @@ export class ImagesService {
     private paginationService: PaginationService,
   ) {}
 
-  async getImages(paginationDto: PaginationDto) {
+  async getImages(getImagesAdminDto: GetImagesAdminDto) {
     return this.paginationService.paginateOutput(
-      await this.imageRepository.findImages(paginationDto),
-      paginationDto,
+      await this.imageRepository.findImages(getImagesAdminDto),
+      getImagesAdminDto,
     );
   }
 
-  async uploadImages(files: Express.Multer.File[]) {
+  async uploadImages(files: Express.Multer.File[], isAdmin = false) {
     const assets = await this.uploadImagesToStorage(files);
 
     const persistPromises = assets.map(async (asset) => {
@@ -41,6 +42,7 @@ export class ImagesService {
         imageId: id,
         url,
         size,
+        isAdmin,
       });
       const img = await this.imageRepository.save(image);
 

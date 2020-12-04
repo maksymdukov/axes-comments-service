@@ -18,7 +18,7 @@ export class CustomOrderDetails {
   })
   order: Order;
 
-  @OneToOne(() => Image)
+  @OneToOne(() => Image, { onDelete: 'SET NULL' })
   @JoinColumn()
   image: Image;
 }

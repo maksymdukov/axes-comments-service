@@ -11,6 +11,7 @@ import { getLanguagesMap } from "utils/languages";
 export const gallerySlice = createSlice({
   name: "gallery",
   initialState: {
+    ownerFilter: "true",
     ...paginationState,
     ...fetchState(),
   },
@@ -30,6 +31,10 @@ export const gallerySlice = createSlice({
         return img;
       });
     },
+    updateOwnerFilter: (state, { payload }) => {
+      const { value } = payload;
+      state.ownerFilter = value;
+    },
     ...fetchReducers,
     ...paginationReducer,
   },
@@ -41,9 +46,11 @@ export const {
   fetchSuccess,
   updatePagination: updateGalleryPagination,
   updateImage,
+  updateOwnerFilter: updateImageOwnerFilter,
 } = gallerySlice.actions;
 
 export const getGalleryLoading = (state) => state.gallery.loading;
+export const getGalleryOwnerFilter = (state) => state.gallery.ownerFilter;
 export const getGalleryPagination = makePaginationSelector("gallery");
 export const getGalleryImages = (state) => state.gallery.items;
 
@@ -51,8 +58,9 @@ export const fetchGallery = () => async (dispatch, getState) => {
   try {
     const state = getState();
     const { page, size } = getGalleryPagination(state);
+    const isAdmin = getGalleryOwnerFilter(state);
     dispatch(fetchStart());
-    const { data } = await fetchImagesApi({ page, size });
+    const { data } = await fetchImagesApi({ page, size, isAdmin });
     dispatch(fetchSuccess({ items: data.items, total: data.total }));
   } catch (error) {
     console.log(error);

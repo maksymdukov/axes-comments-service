@@ -13,7 +13,7 @@ export class CustomOrdersDetailsService {
     private customOrderDetailsRepository: Repository<CustomOrderDetails>,
   ) {}
   async createMany(order: Order, files: Express.Multer.File[]) {
-    const images = await this.imagesService.uploadImages(files);
+    const images = await this.imagesService.uploadImages(files, false);
     const detailOpts: DeepPartial<CustomOrderDetails>[] = images.map(
       (image) => ({
         image,

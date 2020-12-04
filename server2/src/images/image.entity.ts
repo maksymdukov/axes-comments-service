@@ -39,6 +39,9 @@ export class Image {
   @Column()
   fileName: string;
 
+  @Column({ select: false, default: true })
+  isAdmin: boolean;
+
   @CreateDateColumn()
   createdAt: Date;
 

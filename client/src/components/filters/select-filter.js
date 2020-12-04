@@ -19,12 +19,13 @@ const SelectFilter = ({
   updateFilterStatus,
   options,
   label,
+  mb,
 }) => {
   const classes = useStyles();
   const statusFilter = useSelector(getFilterStatus);
   const dispatch = useDispatch();
   return (
-    <Box display="inline-flex" alignItems="center" mr={1}>
+    <Box display="inline-flex" alignItems="center" mr={1} mb={mb}>
       <Typography className={classes.label}>{label}</Typography>
       <Select
         labelId="demo-simple-select-label"

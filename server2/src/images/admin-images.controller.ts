@@ -16,14 +16,15 @@ import { DeleteImagesDto } from './dto/delete-images.dto';
 import { UpdateImagesDto } from './dto/update-images.dto';
 import { PaginatedQuery } from 'src/utils/pagination/paginated-query.decorator';
 import { filesFilter } from './images.utils';
+import { GetImagesAdminDto } from './dto/get-images-admin.dto';
 
 @Controller('api/admin/images')
 export class AdminImagesController {
   constructor(private imageService: ImagesService) {}
 
   @Get()
-  getImages(@PaginatedQuery() pagintionDto: PaginationDto) {
-    return this.imageService.getImages(pagintionDto);
+  getImages(@PaginatedQuery() getImagesDto: GetImagesAdminDto) {
+    return this.imageService.getImages(getImagesDto);
   }
 
   @Post('upload')
@@ -39,7 +40,7 @@ export class AdminImagesController {
       throw new BadRequestException('files cannot be empty');
     }
 
-    return this.imageService.uploadImages(files);
+    return this.imageService.uploadImages(files, true);
   }
 
   @Delete()
