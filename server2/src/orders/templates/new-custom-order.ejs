@@ -12,8 +12,8 @@
         <p>Фамилия: <strong><%= user.lastName %></strong></p>
         <p>Email: <strong><%= user.email %></strong></p>
         <p>Телефон: <strong><%= user.phone %></strong></p>
-        <p>Доставка: <strong><%= delivery.delivery %></strong></p>
-        <% if (delivery.delivery === 'novaposhta') { %>
+        <p>Доставка: <strong><%= delivery.type %></strong></p>
+        <% if (delivery.type === 'novaposhta') { %>
         <p>Населенный пункт: <strong><%= delivery.settlement %></strong></p>
         <p>Номер отделения: <strong><%= delivery.branch %></strong></p>
         <% } else { %>

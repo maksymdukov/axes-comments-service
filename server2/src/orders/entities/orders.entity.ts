@@ -19,7 +19,7 @@ export class Order {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: true })
   comment: string;
 
   @Column({ enum: EOrderStatus, default: EOrderStatus.new })
