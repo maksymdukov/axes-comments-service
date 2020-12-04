@@ -17,6 +17,11 @@ export class ProductsController {
     return this.productsService.getProducts(getProductsDto);
   }
 
+  @Get('slugs')
+  getProductSlugs() {
+    return this.productsService.getSlugs();
+  }
+
   @Get(':id')
   getProductById(
     @Param('id', ParseIntPipe) id: number,

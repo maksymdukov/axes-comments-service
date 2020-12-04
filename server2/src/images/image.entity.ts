@@ -45,7 +45,9 @@ export class Image {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToMany(() => ImageLanguage, (imageLanguage) => imageLanguage.image)
+  @OneToMany(() => ImageLanguage, (imageLanguage) => imageLanguage.image, {
+    eager: true,
+  })
   languages: ImageLanguage[];
 
   @OneToMany(() => Slide, (slide) => slide.bigImage)

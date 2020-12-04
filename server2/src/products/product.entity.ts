@@ -36,7 +36,7 @@ export class Product {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @ManyToOne(() => Image, { nullable: true })
+  @ManyToOne(() => Image, { nullable: true, eager: true })
   mainImage: Image;
 
   @ManyToMany(() => Image, (image) => image.products)

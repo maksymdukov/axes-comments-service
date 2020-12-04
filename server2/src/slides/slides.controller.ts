@@ -1,4 +1,4 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { PaginatedQuery } from 'src/utils/pagination/paginated-query.decorator';
 import { PaginationDto } from 'src/utils/pagination/pagination.dto';
 import { SlidesService } from './slides.service';
@@ -7,6 +7,7 @@ import { SlidesService } from './slides.service';
 export class SlidesController {
   constructor(private slidesService: SlidesService) {}
 
+  @Get()
   async getSlides(@PaginatedQuery() paginationDto: PaginationDto) {
     return this.slidesService.getSlides(paginationDto);
   }

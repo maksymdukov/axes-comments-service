@@ -6,15 +6,16 @@ import { PaginationDto } from 'src/utils/pagination/pagination.dto';
 import { PaginationService } from 'src/utils/pagination/pagination.service';
 import { Repository } from 'typeorm';
 import { CreatePageDto } from './dto/create-page.dto';
+import { GetPageDto } from './dto/get-page.dto';
 import { UpdatePageDto } from './dto/update-page.dto';
 import { PageLanguage } from './entities/page-language.entity';
-import { Page } from './entities/page.entity';
+import { PagesRepository } from './pages.respository';
 
 @Injectable()
 export class PagesService {
   constructor(
-    @InjectRepository(Page)
-    private pageRepository: Repository<Page>,
+    @InjectRepository(PagesRepository)
+    private pageRepository: PagesRepository,
     @InjectRepository(PageLanguage)
     private pageLngRepository: Repository<PageLanguage>,
     private languageService: LanguageService,
@@ -48,8 +49,8 @@ export class PagesService {
     );
   }
 
-  async findOne(name: string) {
-    return this.pageRepository.findOne({ where: { name } });
+  async findOneByName(name: string, getPageDto: GetPageDto) {
+    return this.pageRepository.getOneByName(name, getPageDto);
   }
 
   async update(id: number, updatePageDto: UpdatePageDto) {

@@ -148,6 +148,10 @@ export class ProductsService {
     return this.productsRepository.findProductBySlug(slug, getOneProductDto);
   }
 
+  async getSlugs() {
+    return this.productsRepository.getSlugs();
+  }
+
   async getProductsPrices(
     slugs: string[],
   ): Promise<{ [index: string]: number }> {
