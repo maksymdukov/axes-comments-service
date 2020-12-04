@@ -81,6 +81,7 @@ const ImagesField = ({ isSingle, field, form, label }) => {
         </Box>
         {galleryOpen && (
           <Gallery
+            filters={false}
             header={false}
             onRowSelectionChange={onRowSelectionChange}
             getSelectedRows={getSelectedRows}

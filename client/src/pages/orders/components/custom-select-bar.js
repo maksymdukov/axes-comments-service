@@ -21,7 +21,7 @@ const getCustomSelectBar = ({
   function CustomSelectBar({ data }, _, setSelectedRows) {
     const wrapWithReset = (fn) => (...args) => {
       const result = fn({ data }, ...args);
-      if (result) setSelectedRows([]);
+      if (result !== false) setSelectedRows([]);
     };
 
     const onStatusChanged = async (status) => {

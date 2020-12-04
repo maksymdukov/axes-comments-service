@@ -18,6 +18,7 @@ import OwnerFilter from "./components/owner-filter";
 
 const Gallery = ({
   header = true,
+  filters = true,
   onRowSelectionChange,
   getSelectedRows = () => [],
   bulkActions = true,
@@ -67,7 +68,7 @@ const Gallery = ({
   return (
     <div>
       {header && <MainHeader>Галлерея:</MainHeader>}
-      <OwnerFilter />
+      {filters && <OwnerFilter />}
       <Box display="flex" justifyContent="space-between" marginBottom={2}>
         <Button
           color="primary"
