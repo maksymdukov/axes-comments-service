@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getIsAuthenticated, login } from "features/auth/loginSlice";
 import { parseHash } from "utils/uri";
 import { history } from "index";
-import { config } from "config";
+import { config } from "../../config";
 
 const Login = () => {
   const isAuth = useSelector(getIsAuthenticated);
@@ -13,7 +13,6 @@ const Login = () => {
     return <Redirect to="/" />;
   }
   useEffect(() => {
-    console.log(window.location.hash);
     if (window.location.hash) {
       const hash = parseHash(window.location.hash);
       history.replace(window.location.pathname);
