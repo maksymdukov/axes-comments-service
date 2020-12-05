@@ -15,7 +15,7 @@ export class AdminGoogleStrategy extends PassportStrategy(
     super({
       clientID: googleClientId,
       clientSecret: googleClientSecret,
-      callbackURL: 'http://localhost:3001/api/admin/auth/google-callback',
+      callbackURL: `${apiConfigService.config.server.apiUrl}/api/admin/auth/google-callback`,
       scope: ['email', 'profile'],
     });
     this.userService = userService;

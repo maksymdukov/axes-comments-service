@@ -27,6 +27,7 @@ export interface ISmsConfig {
 export interface IServerConfig {
   port: string;
   feBuildPath: string;
+  apiUrl: string;
 }
 
 export interface ISSG {

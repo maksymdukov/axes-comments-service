@@ -1,6 +1,7 @@
 export default () => ({
   server: {
     port: process.env.PORT,
+    apiUrl: process.env.REACT_APP_API_URL,
   },
   auth: {
     jwtKey: process.env.JWT_KEY,
