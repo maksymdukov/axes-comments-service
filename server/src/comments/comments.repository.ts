@@ -30,7 +30,7 @@ export class CommentsRepository extends Repository<Comment> {
       .leftJoinAndSelect('comments.anonymousUser', 'user')
       .where('comments.slugId = :slug', { slug })
       .andWhere('comments.status = :status', { status: CommentStatus.approved })
-      .limit(limit)
+      .take(limit)
       .skip(skip)
       .getManyAndCount();
   }

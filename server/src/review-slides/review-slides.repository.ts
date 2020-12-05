@@ -11,7 +11,7 @@ export class ReviewSlidesRepository extends Repository<ReviewSlide> {
       .innerJoinAndSelect('image.languages', 'lang')
       .innerJoinAndSelect('lang.language', 'lng')
       .orderBy('reviewslides.updatedAt', 'DESC')
-      .limit(limit)
+      .take(limit)
       .skip(skip);
     if (locale) {
       qb.where('lng.name = :locale', { locale });
