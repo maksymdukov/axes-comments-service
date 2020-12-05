@@ -22,4 +22,12 @@ export class UsersService {
       pagination,
     );
   }
+
+  async getOne(id: number) {
+    return this.usersRepository.findOne(id);
+  }
+
+  async getOneByEmail(email: string) {
+    return this.usersRepository.findOne({ where: { email } });
+  }
 }

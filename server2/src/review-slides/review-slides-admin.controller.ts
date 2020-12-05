@@ -8,12 +8,15 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
+import { JwtAuth } from 'src/auth/decorators/jwt-auth.decorator';
+import { UserRoles } from 'src/users/enums/roles.enum';
 import { PaginatedQuery } from 'src/utils/pagination/paginated-query.decorator';
 import { PaginationDto } from 'src/utils/pagination/pagination.dto';
 import { CreateReviewSlideDto } from './dto/create-review-slide.dto';
 import { ReviewSlidesService } from './review-slides.service';
 
 @Controller('/api/admin/review-slides')
+@JwtAuth(UserRoles.admin)
 export class ReviewSlidesAdmin {
   constructor(private reviewSlidesService: ReviewSlidesService) {}
 

@@ -10,15 +10,17 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
-import { PaginationDto } from 'src/utils/pagination/pagination.dto';
 import { ImagesService } from 'src/images/images.service';
 import { DeleteImagesDto } from './dto/delete-images.dto';
 import { UpdateImagesDto } from './dto/update-images.dto';
 import { PaginatedQuery } from 'src/utils/pagination/paginated-query.decorator';
 import { filesFilter } from './images.utils';
 import { GetImagesAdminDto } from './dto/get-images-admin.dto';
+import { UserRoles } from 'src/users/enums/roles.enum';
+import { JwtAuth } from 'src/auth/decorators/jwt-auth.decorator';
 
 @Controller('api/admin/images')
+@JwtAuth(UserRoles.admin)
 export class AdminImagesController {
   constructor(private imageService: ImagesService) {}
 

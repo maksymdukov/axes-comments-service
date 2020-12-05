@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { apiRequest } from "utils/request";
 import jwtDecode from "jwt-decode";
 import { history } from "index";
 
@@ -58,16 +57,9 @@ export const {
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
 // will call the thunk with the `dispatch` function as the first argument. Async
 // code can then be executed and other actions can be dispatched
-export const login = (code) => async (dispatch) => {
+export const login = (token) => async (dispatch) => {
   try {
     dispatch(loginStart());
-    const resp = await apiRequest({
-      method: "POST",
-      path: "/admin/login",
-      data: { code },
-      withAuth: false,
-    });
-    const token = resp.data;
     const decoded = jwtDecode(token);
     localStorage.setItem(
       "auth",

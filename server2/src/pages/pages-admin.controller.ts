@@ -12,8 +12,11 @@ import { CreatePageDto } from './dto/create-page.dto';
 import { UpdatePageDto } from './dto/update-page.dto';
 import { PaginatedQuery } from 'src/utils/pagination/paginated-query.decorator';
 import { PaginationDto } from 'src/utils/pagination/pagination.dto';
+import { UserRoles } from 'src/users/enums/roles.enum';
+import { JwtAuth } from 'src/auth/decorators/jwt-auth.decorator';
 
 @Controller('/api/admin/pages')
+@JwtAuth(UserRoles.admin)
 export class PagesAdminController {
   constructor(private readonly pagesService: PagesService) {}
 

@@ -9,7 +9,7 @@ function App() {
     <div>
       <Switch>
         <Route path="/login" component={Login} />
-        <Route path="/" component={Routes} />
+        <ProtectedRoute path="/" component={Routes} />
       </Switch>
     </div>
   );

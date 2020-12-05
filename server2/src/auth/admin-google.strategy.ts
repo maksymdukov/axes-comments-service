@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, Profile } from 'passport-google-oauth20';
+import { UsersService } from 'src/users/users.service';
 import { ApiConfigService } from '../api-config/api-config.service';
 
 @Injectable()
@@ -8,7 +9,8 @@ export class AdminGoogleStrategy extends PassportStrategy(
   Strategy,
   'admin-google',
 ) {
-  constructor(apiConfigService: ApiConfigService) {
+  userService: UsersService;
+  constructor(apiConfigService: ApiConfigService, userService: UsersService) {
     const { googleClientId, googleClientSecret } = apiConfigService.config.auth;
     super({
       clientID: googleClientId,
@@ -16,6 +18,7 @@ export class AdminGoogleStrategy extends PassportStrategy(
       callbackURL: 'http://localhost:3001/api/admin/auth/google-callback',
       scope: ['email', 'profile'],
     });
+    this.userService = userService;
   }
 
   async validate(
@@ -25,14 +28,18 @@ export class AdminGoogleStrategy extends PassportStrategy(
   ): Promise<any> {
     // TODO
     // Go to DB and fetch user
-    const { name, emails, photos } = profile;
-    const user = {
-      email: emails[0].value,
-      firstName: name.givenName,
-      lastName: name.familyName,
-      picture: photos[0].value,
-      accessToken,
-    };
+    const { emails } = profile;
+    // const user = {
+    //   email: emails[0].value,
+    //   firstName: name.givenName,
+    //   lastName: name.familyName,
+    //   picture: photos[0].value,
+    //   accessToken,
+    // };
+    if (!emails || !emails.length) {
+      return;
+    }
+    const user = await this.userService.getOneByEmail(emails[0].value);
     return user;
   }
 }

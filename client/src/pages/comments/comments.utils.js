@@ -1,3 +1,5 @@
+import { commentStatusTranslation } from "./comments.constants";
+
 export const getCommentsColumns = ({ entities }) => [
   { name: "id", label: "ID" },
   {
@@ -10,6 +12,15 @@ export const getCommentsColumns = ({ entities }) => [
           (entity.anonymousUser && entity.anonymousUser.email) ||
           (entity.user && entity.user.email)
         );
+      },
+    },
+  },
+  {
+    name: "status00",
+    label: "Статус",
+    options: {
+      customBodyRenderLite: (dataIndex) => {
+        return commentStatusTranslation[entities[dataIndex].status];
       },
     },
   },

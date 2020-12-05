@@ -14,8 +14,11 @@ import { GetOrdersDto } from '../dto/get-orders.dto';
 import { OrdersService } from '../services/orders.service';
 import { ChangeOrderDto } from '../dto/change-order.dto';
 import { ChangeAnonymousCustomOrderDto } from '../dto/change-anonymous-custom-order.dto';
+import { UserRoles } from 'src/users/enums/roles.enum';
+import { JwtAuth } from 'src/auth/decorators/jwt-auth.decorator';
 
 @Controller('/api/admin/orders')
+@JwtAuth(UserRoles.admin)
 export class OrdersAdminController {
   constructor(private ordersService: OrdersService) {}
 

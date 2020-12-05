@@ -29,13 +29,13 @@ const SlidesForm = (props) => {
         isSingle
         component={ImagesField}
         name="bigImage"
-        label="Большое изображение"
+        label="Большое изображение (1920x664)"
       />
       <GutteredField
         isSingle
         component={ImagesField}
         name="smallImage"
-        label="Маленькое изображение"
+        label="Маленькое изображение (600x450)"
       />
     </EntityForm>
   );

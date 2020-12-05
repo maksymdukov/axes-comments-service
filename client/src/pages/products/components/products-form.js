@@ -75,12 +75,12 @@ const ProductsForm = (props) => {
         isSingle
         component={ImagesField}
         name="mainImage"
-        label="Главное изображение"
+        label="Главное изображение (4:3)"
       />
       <GutteredField
         component={ImagesField}
         name="images"
-        label="Изображения"
+        label="Изображения (4:3)"
       />
       <GutteredCheckbox label="Лучший" name="isFeatured" />
     </EntityForm>

@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AnonymousUserRepository } from 'src/anonymous-users/anonymous-user.repository';
 import { CommentsRepository } from './comments.repository';
 import { ProductRepository } from 'src/products/product.repository';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { ProductRepository } from 'src/products/product.repository';
       CommentsRepository,
       ProductRepository,
     ]),
+    AuthModule,
   ],
   providers: [CommentsService],
   controllers: [CommentsController, CommentsAdminController],
