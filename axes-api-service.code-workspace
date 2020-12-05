@@ -4,13 +4,10 @@
 			"path": "client"
 		},
 		{
-			"path": "server"
-		},
-		{
 			"path": "."
 		},
 		{
-			"path": "server2"
+			"path": "server"
 		}
 	],
 	"settings": {}
