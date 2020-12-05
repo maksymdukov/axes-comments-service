@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
-import { GoogleLogin } from "react-google-login";
 import { Redirect } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { getIsAuthenticated, login } from "features/auth/loginSlice";
 import { parseHash } from "utils/uri";
 import { history } from "index";
+import { config } from "config";
 
 const Login = () => {
   const isAuth = useSelector(getIsAuthenticated);
@@ -24,7 +24,7 @@ const Login = () => {
   }, []);
   return (
     <div>
-      <a href="http://localhost:3001/api/admin/auth/google-start">Login</a>
+      <a href={`${config.API_URL}/api/admin/auth/google-start`}>Login</a>
     </div>
   );
 };
