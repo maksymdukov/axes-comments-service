@@ -14,10 +14,11 @@ export class SmsService {
       recipient,
       text,
     });
-    return this.httpService.post(
+    const observable = this.httpService.post(
       '/service/Message/SendSmsMessage',
       options.toString(),
     );
+    return observable.toPromise();
   }
 
   async sendToAdmin(text: string) {

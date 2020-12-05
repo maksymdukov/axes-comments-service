@@ -9,7 +9,6 @@ import { SMS_ROOT_OPTIONS } from './sms.constancts';
 @Module({})
 export class SmsModule {
   static forRootAsync(options: ISmsModuleAsyncOpts): DynamicModule {
-    options.imports ??= [];
     const optionsProvider = {
       provide: SMS_ROOT_OPTIONS,
       useFactory: options.useFactory,
