@@ -5,10 +5,10 @@ export const fetchProductsApi = ({ page, size, active, featured }) => {
   params.append("page", page);
   params.append("size", size);
   if (active) {
-    params.append("isActive", active);
+    params.append("active", active);
   }
   if (featured) {
-    params.append("isFeatured", featured);
+    params.append("featured", featured);
   }
   return apiRequest({
     method: "GET",
