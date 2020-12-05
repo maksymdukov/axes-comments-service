@@ -5,12 +5,13 @@
   "main": "index.js",
   "scripts": {
     "dev": "NODE_ENV=development heroku local -f Procfile.dev -e .env.development",
+    "prod:emulate": "NODE_ENV=production PORT=3001 heroku local -f Procfile -e .env",
     "all:dev": "npm run server:dev & npm run client:dev",
     "server:dev": "cd server && npm run start:dev",
     "client:dev": "cd client && npm run start",
     "heroku-postbuild": "cd server && npm install && npm run build && cd ../client && npm install && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "cd server && npm run start"
+    "start": "NODE_ENV=production cd server && npm run start"
   },
   "author": "",
   "license": "ISC",

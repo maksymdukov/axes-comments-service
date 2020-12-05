@@ -11,7 +11,7 @@ export class ApiConfigService {
       NODE_ENV: this.get('NODE_ENV'),
       server: {
         ...this.get('server'),
-        feBuildPath: path.join(__dirname, '..', '..', 'client', 'build'),
+        feBuildPath: path.join(__dirname, '..', '..', '..', 'client', 'build'),
       },
       auth: this.get('auth'),
       db: this.get('db'),

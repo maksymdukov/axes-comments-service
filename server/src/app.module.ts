@@ -1,9 +1,4 @@
-import {
-  MiddlewareConsumer,
-  Module,
-  NestModule,
-  RequestMethod,
-} from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import configuration from './config/configuration';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -29,7 +24,6 @@ import { SsgModule } from './integrations/ssg/ssg.module';
 import { FrontendModule } from './frontend/frontend.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { PagesModule } from './pages/pages.module';
-import { ServeFrontendMiddleware } from './middlewares/serve-frontend.middleware';
 
 const configModule = ConfigModule.forRoot({
   load: [configuration],
@@ -135,14 +129,4 @@ const ssgModule = SsgModule.forRootAsync({
   controllers: [],
   providers: [],
 })
-export class AppModule implements NestModule {
-  constructor(private apiConfigService: ApiConfigService) {}
-  configure(consumer: MiddlewareConsumer) {
-    if (this.apiConfigService.isProd) {
-      consumer.apply(ServeFrontendMiddleware).forRoutes({
-        method: RequestMethod.GET,
-        path: '*',
-      });
-    }
-  }
-}
+export class AppModule {}
