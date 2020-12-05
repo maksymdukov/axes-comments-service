@@ -9,7 +9,8 @@ export class FrontendController {
   constructor(private feService: FrontendService) {}
 
   @Get('rebuild')
-  rebuildFrontend() {
-    return this.feService.rebuild();
+  async rebuildFrontend() {
+    await this.feService.rebuild();
+    return;
   }
 }

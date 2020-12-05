@@ -10,6 +10,6 @@ export class SsgService {
   ) {}
 
   rebuild() {
-    return this.httpService.get(this.options.rebuildEndpoint);
+    return this.httpService.get(this.options.rebuildEndpoint).toPromise();
   }
 }

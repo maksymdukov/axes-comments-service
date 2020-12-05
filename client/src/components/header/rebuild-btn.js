@@ -27,13 +27,19 @@ const RebuildBtn = () => {
       setPublished(true);
     },
   });
-  console.log("data", data);
+  const onClick = () => {
+    const ans = window.confirm("Вы хотите перестроить сайт?");
+    if (!ans) {
+      return;
+    }
+    trigger();
+  };
 
   return (
     <WithCenteredLoader loading={loading} wrapperClass={classes.btn}>
       <Button
         className={clsx(classes.rebuild, published && classes.rebuildSuccess)}
-        onClick={trigger}
+        onClick={onClick}
         disabled={loading || published}
         title="Перестроить весь сайт"
       >
