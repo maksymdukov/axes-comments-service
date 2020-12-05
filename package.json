@@ -9,7 +9,7 @@
     "all:dev": "npm run server:dev & npm run client:dev",
     "server:dev": "cd server && npm run start:dev",
     "client:dev": "cd client && npm run start",
-    "heroku-postbuild": "cd server && npm install && npm run build && cd ../client && npm install && npm run build",
+    "heroku-postbuild": "cd server && npm install && npm install --only=dev && npm run build && cd ../client && npm install && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "NODE_ENV=production cd server && npm run start"
   },
