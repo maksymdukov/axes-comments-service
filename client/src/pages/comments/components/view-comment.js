@@ -16,7 +16,9 @@ const ViewComment = ({ entity }) => {
       <LabelledParagraph
         label="Имя"
         content={
-          isAnonymous ? entity.anonymousUser.firstName : entity.user.firstName
+          isAnonymous
+            ? entity.anonymousUser.profile.firstName
+            : entity.user.profile.firstName
         }
       />
       <LabelledParagraph
