@@ -19,6 +19,7 @@ export class ApiConfigService {
       mail: this.get('mail'),
       sms: this.get('sms'),
       ssg: this.get('ssg'),
+      np: this.get('np'),
     };
   }
 
