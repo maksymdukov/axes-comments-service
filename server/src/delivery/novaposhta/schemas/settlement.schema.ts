@@ -3,7 +3,10 @@ import { Document } from 'mongoose';
 
 export type SettlementDocument = Document & Settlement;
 
-@Schema({ timestamps: true, skipVersioning: true })
+@Schema({
+  timestamps: true,
+  skipVersioning: true,
+})
 export class Settlement {
   @Prop({ unique: true })
   Ref: string;

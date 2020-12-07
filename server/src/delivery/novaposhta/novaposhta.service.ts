@@ -6,6 +6,7 @@ import { ELanguage } from 'src/language/languages.enum';
 import { DatesService } from 'src/utils/dates/dates.service';
 import { FindSettlementsDto } from './dto/find-settlements.dto';
 import { GetWarehousesDto } from './dto/get-warehouses.dto';
+import { ELIGIBLE_WAREHOUSE_TYPES } from './novaposhta.constants';
 import { SettlementDocument, Settlement } from './schemas/settlement.schema';
 import {
   WarehouseType,
@@ -33,10 +34,7 @@ export class NovaposhtaService {
 
   async findSettlements(findSettlementsDto: FindSettlementsDto) {
     const { locale, query } = findSettlementsDto;
-    const settlement = await this.settlementModel.findOne({});
-
-    this.checkExpiredSettlements(settlement);
-
+    await this.checkExpiredSettlements();
     const field = locale === ELanguage.ru ? 'DescriptionRu' : 'Description';
     const projectionFields =
       locale === ELanguage.ru
@@ -52,42 +50,19 @@ export class NovaposhtaService {
             SettlementTypeDescriptionRu: 0,
             AreaDescriptionRu: 0,
           };
-    const results = await this.settlementModel
+    return this.settlementModel
       .find(
         {
-          [field]: { $regex: query, $options: 'i' },
+          [field]: { $regex: `^${query}`, $options: 'i' },
         },
         projectionFields,
       )
       .limit(50)
       .exec();
-    return this.sortSettlements(results, query, field);
   }
 
-  private sortSettlements(
-    settlements: SettlementDocument[],
-    query: string,
-    field: 'Description' | 'DescriptionRu',
-  ) {
-    const qLower = query.toLocaleLowerCase();
-    return settlements.sort((a, b) => {
-      const aLower = a[field].toLocaleLowerCase();
-      const bLower = b[field].toLocaleLowerCase();
-      const isQueryAtFirstPositionInA = aLower.indexOf(qLower) === 0;
-      const isQueryAtFirstPositionInB = bLower.indexOf(qLower) === 0;
-      if (isQueryAtFirstPositionInA && isQueryAtFirstPositionInB) {
-        return aLower.localeCompare(bLower);
-      } else if (isQueryAtFirstPositionInA && !isQueryAtFirstPositionInB) {
-        return -1;
-      } else if (!isQueryAtFirstPositionInA && isQueryAtFirstPositionInB) {
-        return 1;
-      } else if (!isQueryAtFirstPositionInA && !isQueryAtFirstPositionInB) {
-        return 0;
-      }
-    });
-  }
-
-  private checkExpiredSettlements(settlement: SettlementDocument | null) {
+  private async checkExpiredSettlements() {
+    const settlement = await this.settlementModel.findOne({});
     if (
       !settlement ||
       this.datesService.diffInDays(settlement.createdAt, new Date()) >
@@ -152,11 +127,7 @@ export class NovaposhtaService {
       {
         SettlementRef: settlementRef,
         TypeOfWarehouse: {
-          $in: [
-            '6f8c7162-4b72-4b0a-88e5-906948c6a92f', // poshtomat
-            '841339c7-591a-42e2-8233-7a0a00f0ed6f', // poshtove viddilennya
-            '9a68df70-0267-42a8-bb5c-37f427e36ee4', // gruzove
-          ],
+          $in: ELIGIBLE_WAREHOUSE_TYPES,
         },
       },
       projectionFields,
