@@ -1,15 +1,7 @@
-import { Type } from 'class-transformer';
-import {
-  IsEmail,
-  IsEnum,
-  IsNotEmpty,
-  IsNumberString,
-  IsOptional,
-  IsString,
-} from 'class-validator';
-import { EDelivery } from 'src/delivery/delivery.enum';
+import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { CreateDeliveryDto } from 'src/delivery/dto/create-delivery.dto';
 
-export class CreateAnonymousCustomOrder {
+export class CreateAnonymousCustomOrder extends CreateDeliveryDto {
   @IsNotEmpty()
   @IsEmail()
   email: string;
@@ -33,27 +25,6 @@ export class CreateAnonymousCustomOrder {
   @IsOptional()
   @IsString()
   comment: string;
-
-  @IsNotEmpty()
-  @IsEnum(EDelivery)
-  delivery: EDelivery;
-
-  @IsOptional()
-  @IsString()
-  npSettlement: string;
-
-  @IsOptional()
-  @IsString()
-  npBranch: string;
-
-  @IsOptional()
-  @IsString()
-  ukrAddress: string;
-
-  @IsOptional()
-  @IsNumberString()
-  @Type(() => Number)
-  ukrIdx: number;
 
   files: Express.Multer.File[];
 }
