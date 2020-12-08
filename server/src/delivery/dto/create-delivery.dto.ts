@@ -1,4 +1,4 @@
-import { IsEnum, IsInt, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsEnum, IsInt, IsOptional, IsString } from 'class-validator';
 import { EDelivery } from '../delivery.enum';
 
 export class CreateDeliveryDto {
@@ -11,7 +11,15 @@ export class CreateDeliveryDto {
 
   @IsOptional()
   @IsString()
+  npSettlementId: string;
+
+  @IsOptional()
+  @IsString()
   npBranch: string;
+
+  @IsOptional()
+  @IsString()
+  npBranchId: string;
 
   @IsOptional()
   @IsString()
@@ -19,7 +27,7 @@ export class CreateDeliveryDto {
 
   @IsOptional()
   @IsString()
-  ukrIdx: number;
+  ukrIdx: string;
 
   @IsOptional()
   @IsInt()
