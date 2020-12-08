@@ -36,6 +36,9 @@ const serverStaticModule = ServeStaticModule.forRootAsync({
   imports: [ApiConfigModule],
   inject: [ApiConfigService],
   useFactory: async (apiConfigService: ApiConfigService) => {
+    if (apiConfigService.isDev) {
+      return [];
+    }
     return [
       {
         rootPath: apiConfigService.config.server.feBuildPath,
@@ -55,7 +58,7 @@ const typeOrmModule = TypeOrmModule.forRootAsync({
       useUnifiedTopology: true,
       synchronize: apiConfigService.isDev,
       logging: apiConfigService.isDev ? 'all' : undefined,
-      ...(apiConfigService.isProd && {
+      ...(apiConfigService.isDev && {
         ssl: {
           rejectUnauthorized: false,
         },
