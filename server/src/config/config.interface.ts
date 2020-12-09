@@ -6,7 +6,6 @@ export interface IAuthConfig {
 
 export interface IDbConfig {
   databaseUrl: string;
-  mongodbUri: string;
 }
 
 export interface IImageStorageConfig {
@@ -35,10 +34,6 @@ export interface ISSG {
   buildFrontendHook: string;
 }
 
-export interface INovaposhtaApiConfig {
-  apiKey: string;
-}
-
 export interface IAppConfig {
   NODE_ENV: string;
   server: IServerConfig;
@@ -48,5 +43,4 @@ export interface IAppConfig {
   mail: IMailConfig;
   sms: ISmsConfig;
   ssg: ISSG;
-  np: INovaposhtaApiConfig;
 }

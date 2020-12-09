@@ -10,7 +10,6 @@ export default () => ({
   },
   db: {
     databaseUrl: process.env.DATABASE_URI,
-    mongodbUri: process.env.MONGODB_URI,
   },
   imageHosting: {
     accessToken: process.env.IMAGE_HOSTING_ACCESS_TOKEN,
@@ -27,8 +26,5 @@ export default () => ({
   },
   ssg: {
     buildFrontendHook: process.env.BUILD_FRONTEND_WEBHOOK,
-  },
-  np: {
-    apiKey: process.env.NOVAPOSHTA_API_KEY,
   },
 });

@@ -62,6 +62,7 @@ export class ImageStorageService {
     });
 
     asset = await asset.processForAllLocales();
+    console.dir(asset, { depth: 8 });
 
     return this.normalizieAsset(asset);
   }

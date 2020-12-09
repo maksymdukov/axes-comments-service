@@ -24,8 +24,6 @@ import { SsgModule } from './integrations/ssg/ssg.module';
 import { FrontendModule } from './frontend/frontend.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { PagesModule } from './pages/pages.module';
-import { MongooseModule } from '@nestjs/mongoose';
-import { NovaposhtaApiModule } from './integrations/novaposhta-api/novaposhta-api.module';
 
 const configModule = ConfigModule.forRoot({
   load: [configuration],
@@ -36,12 +34,7 @@ const serverStaticModule = ServeStaticModule.forRootAsync({
   imports: [ApiConfigModule],
   inject: [ApiConfigService],
   useFactory: async (apiConfigService: ApiConfigService) => {
-    return [
-      {
-        rootPath: apiConfigService.config.server.feBuildPath,
-        exclude: ['/api/*'],
-      },
-    ];
+    return [{ rootPath: apiConfigService.config.server.feBuildPath }];
   },
 });
 
@@ -55,23 +48,12 @@ const typeOrmModule = TypeOrmModule.forRootAsync({
       useUnifiedTopology: true,
       synchronize: apiConfigService.isDev,
       logging: apiConfigService.isDev ? 'all' : undefined,
-      ...(apiConfigService.isProd && {
-        ssl: {
-          rejectUnauthorized: false,
-        },
-      }),
+      ssl: {
+        rejectUnauthorized: false,
+      },
       entities: ['dist/**/*.entity.js'],
     };
   },
-});
-
-// used for delivery
-const mongooseModule = MongooseModule.forRootAsync({
-  imports: [ApiConfigModule],
-  inject: [ApiConfigService],
-  useFactory: (apiConfigModule: ApiConfigService) => ({
-    uri: apiConfigModule.config.db.mongodbUri,
-  }),
 });
 
 const imageStorageModule = ImageStorageModule.forRootAsync({
@@ -118,24 +100,15 @@ const ssgModule = SsgModule.forRootAsync({
   }),
 });
 
-const novaposhtaApiModule = NovaposhtaApiModule.forRootAsync({
-  inject: [ApiConfigService],
-  useFactory: (apiConfigService: ApiConfigService) => ({
-    apiKey: apiConfigService.config.np.apiKey,
-  }),
-});
-
 @Module({
   imports: [
     configModule,
     serverStaticModule,
     typeOrmModule,
-    mongooseModule,
     imageStorageModule,
     mailerModule,
     smsModule,
     ssgModule,
-    novaposhtaApiModule,
     ImagesModule,
     UsersModule,
     AuthModule,
