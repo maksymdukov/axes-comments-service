@@ -83,9 +83,9 @@ export class NovaposhtaService {
       this.updateWarehouseTypes();
       const session = await this.connection.startSession();
       await session.withTransaction(async () => {
-        await this.settlementModel.deleteMany({});
+        await this.settlementModel.deleteMany({}, { session });
         for await (const settlements of this.novaposhtaApiService.fetchSettlements()) {
-          await this.settlementModel.insertMany(settlements);
+          await this.settlementModel.insertMany(settlements, { session });
         }
       });
     } catch (error) {
@@ -165,8 +165,11 @@ export class NovaposhtaService {
 
       const session = await this.connection.startSession();
       await session.withTransaction(async () => {
-        await this.warehouseModel.deleteMany({ SettlementRef: settlementRef });
-        await this.warehouseModel.insertMany(warehouses);
+        await this.warehouseModel.deleteMany(
+          { SettlementRef: settlementRef },
+          { session },
+        );
+        await this.warehouseModel.insertMany(warehouses, { session });
       });
     } catch (error) {
       throw error;
