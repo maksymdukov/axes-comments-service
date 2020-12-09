@@ -13,7 +13,7 @@ export class DeliveryService {
   async create(createDeliveryDto: CreateDeliveryDto) {
     const {
       delivery,
-      npBranch,
+      npNumber,
       npSettlement,
       ukrAddress,
       ukrIdx,
@@ -23,7 +23,7 @@ export class DeliveryService {
       type: delivery,
       address: ukrAddress,
       idx: ukrIdx,
-      branch: npBranch,
+      branch: npNumber,
       settlement: npSettlement,
     });
     return this.deliveryRepository.save(mainDelivery);
@@ -31,7 +31,7 @@ export class DeliveryService {
 
   async change(id: number, changeDeliveryDto: CreateDeliveryDto) {
     const {
-      npBranch,
+      npNumber,
       npSettlement,
       delivery,
       ukrAddress,
@@ -39,7 +39,7 @@ export class DeliveryService {
     } = changeDeliveryDto;
     const existingDelivery = await this.deliveryRepository.findOneOrFail(id);
     existingDelivery.address = ukrAddress ?? existingDelivery.address;
-    existingDelivery.branch = npBranch ?? existingDelivery.branch;
+    existingDelivery.branch = npNumber ?? existingDelivery.branch;
     existingDelivery.idx = ukrIdx ?? existingDelivery.idx;
     existingDelivery.settlement = npSettlement ?? existingDelivery.settlement;
     existingDelivery.type = delivery ?? existingDelivery.type;

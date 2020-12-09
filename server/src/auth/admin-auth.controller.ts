@@ -21,11 +21,7 @@ export class AdminAuthController {
   @UseGuards(AuthGuard('admin-google'))
   async googleCallback(@GetUser() user: User, @Res() res: Response) {
     const jwt = await this.adminAuthService.generateJWT(user);
-    const redirectUrl = `${
-      this.apiConfigService.isProd
-        ? this.apiConfigService.config.server.apiUrl
-        : 'http://localhost:3002'
-    }/login#token=${jwt}`;
+    const redirectUrl = `${this.apiConfigService.config.server.apiUrl}/login#token=${jwt}`;
     return res.redirect(redirectUrl);
   }
 }

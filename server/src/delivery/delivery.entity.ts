@@ -24,7 +24,7 @@ export class Delivery {
   address: string;
 
   @Column({ nullable: true })
-  branch: string;
+  branch: number;
 
   @Column({ nullable: true })
   settlement: string;

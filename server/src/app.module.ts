@@ -36,9 +36,6 @@ const serverStaticModule = ServeStaticModule.forRootAsync({
   imports: [ApiConfigModule],
   inject: [ApiConfigService],
   useFactory: async (apiConfigService: ApiConfigService) => {
-    if (apiConfigService.isDev) {
-      return [];
-    }
     return [
       {
         rootPath: apiConfigService.config.server.feBuildPath,

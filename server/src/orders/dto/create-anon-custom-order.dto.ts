@@ -3,6 +3,7 @@ import {
   IsEmail,
   IsEnum,
   IsNotEmpty,
+  IsNumber,
   IsNumberString,
   IsOptional,
   IsString,
@@ -43,8 +44,9 @@ export class CreateAnonymousCustomOrder {
   npSettlement: string;
 
   @IsOptional()
-  @IsString()
-  npBranch: string;
+  @IsNumber()
+  @Type(() => Number)
+  npNumber: number;
 
   @IsOptional()
   @IsString()

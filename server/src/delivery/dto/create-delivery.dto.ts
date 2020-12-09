@@ -10,8 +10,8 @@ export class CreateDeliveryDto {
   npSettlement: string;
 
   @IsOptional()
-  @IsString()
-  npBranch: string;
+  @IsNumber()
+  npNumber: number;
 
   @IsOptional()
   @IsString()
