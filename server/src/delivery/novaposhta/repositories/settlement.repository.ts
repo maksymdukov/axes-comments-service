@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { InjectConnection } from '@nestjs/typeorm';
+import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import { Connection, Model } from 'mongoose';
 import { NpSettlementsResponseItem } from 'src/integrations/novaposhta-api/interfaces/np-settlements-response.interface';
 import { NpWarehousesResponseItem } from 'src/integrations/novaposhta-api/interfaces/np-warehouses-response.interface';
