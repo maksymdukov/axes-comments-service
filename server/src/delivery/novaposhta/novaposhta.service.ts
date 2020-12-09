@@ -120,7 +120,7 @@ export class NovaposhtaService {
     }
 
     // check if warehouses in our db are expired
-    this.checkExpiredWarehouses(warehouse);
+    await this.checkExpiredWarehouses(warehouse);
 
     // find using query
     return this.warehouseModel.find(
