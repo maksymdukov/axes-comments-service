@@ -19,6 +19,9 @@ export class NovaposhtaService {
   private warehouseIntervalDays = 2;
   private settlementsIntervalDays = 30;
 
+  private updatingSettlements = false;
+  private updatingWarehouses = false;
+
   constructor(
     private novaposhtaApiService: NovaposhtaApiService,
     @InjectModel(Settlement.name)
@@ -73,15 +76,23 @@ export class NovaposhtaService {
   }
 
   async updateSettlements() {
+    if (this.updatingSettlements) return;
     // check interval, if it's too early - skip
-    this.updateWarehouseTypes();
-    const session = await this.connection.startSession();
-    await session.withTransaction(async () => {
-      await this.settlementModel.deleteMany({});
-      for await (const settlements of this.novaposhtaApiService.fetchSettlements()) {
-        await this.settlementModel.insertMany(settlements);
-      }
-    });
+    this.updatingSettlements = true;
+    try {
+      this.updateWarehouseTypes();
+      const session = await this.connection.startSession();
+      await session.withTransaction(async () => {
+        await this.settlementModel.deleteMany({});
+        for await (const settlements of this.novaposhtaApiService.fetchSettlements()) {
+          await this.settlementModel.insertMany(settlements);
+        }
+      });
+    } catch (error) {
+      throw error;
+    } finally {
+      this.updatingSettlements = false;
+    }
   }
 
   async findWarehouse(
@@ -120,7 +131,7 @@ export class NovaposhtaService {
     }
 
     // check if warehouses in our db are expired
-    await this.checkExpiredWarehouses(warehouse);
+    await this.checkExpiredWarehouses();
 
     // find using query
     return this.warehouseModel.find(
@@ -134,7 +145,8 @@ export class NovaposhtaService {
     );
   }
 
-  private async checkExpiredWarehouses(warehouse: WarehouseDocument) {
+  private async checkExpiredWarehouses() {
+    const warehouse = await this.warehouseModel.findOne();
     if (
       this.datesService.diffInDays(warehouse.createdAt, new Date()) >
       this.warehouseIntervalDays
@@ -144,15 +156,23 @@ export class NovaposhtaService {
   }
 
   private async updateWarehouses(settlementRef: string) {
-    const warehouses = await this.novaposhtaApiService.fetchWarehouses(
-      settlementRef,
-    );
+    if (this.updatingWarehouses) return;
+    this.updatingWarehouses = true;
+    try {
+      const warehouses = await this.novaposhtaApiService.fetchWarehouses(
+        settlementRef,
+      );
 
-    const session = await this.connection.startSession();
-    await session.withTransaction(async () => {
-      await this.warehouseModel.deleteMany({ SettlementRef: settlementRef });
-      await this.warehouseModel.insertMany(warehouses);
-    });
+      const session = await this.connection.startSession();
+      await session.withTransaction(async () => {
+        await this.warehouseModel.deleteMany({ SettlementRef: settlementRef });
+        await this.warehouseModel.insertMany(warehouses);
+      });
+    } catch (error) {
+      throw error;
+    } finally {
+      this.updatingWarehouses = false;
+    }
   }
 
   async updateWarehouseTypes() {
