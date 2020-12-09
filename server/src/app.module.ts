@@ -58,11 +58,9 @@ const typeOrmModule = TypeOrmModule.forRootAsync({
       useUnifiedTopology: true,
       synchronize: apiConfigService.isDev,
       logging: apiConfigService.isDev ? 'all' : undefined,
-      ...(apiConfigService.isDev && {
-        ssl: {
-          rejectUnauthorized: false,
-        },
-      }),
+      ssl: {
+        rejectUnauthorized: false,
+      },
       entities: ['dist/**/*.entity.js'],
     };
   },

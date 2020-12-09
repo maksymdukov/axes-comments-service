@@ -11,7 +11,7 @@
     "client:dev": "cd client && npm run start",
     "heroku-postbuild": "cd server && npm install && npm install --only=dev && npm run build && cd ../client && npm install && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "NODE_ENV=production cd server && npm run start"
+    "start": "NODE_ENV=production cd server && npm run start:prod"
   },
   "author": "",
   "license": "ISC",
