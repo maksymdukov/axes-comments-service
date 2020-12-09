@@ -3,6 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { NovaposhtaApiModule } from 'src/integrations/novaposhta-api/novaposhta-api.module';
 import { NovaposhtaController } from './novaposhta.controller';
 import { NovaposhtaService } from './novaposhta.service';
+import { SettlementRepository } from './repositories/settlement.repository';
 import { Settlement, SettlementSchema } from './schemas/settlement.schema';
 import {
   WarehouseType,
@@ -20,6 +21,6 @@ import { Warehouse, WarehouseSchema } from './schemas/warehouse.schema';
     NovaposhtaApiModule.forFeature(),
   ],
   controllers: [NovaposhtaController],
-  providers: [NovaposhtaService],
+  providers: [NovaposhtaService, SettlementRepository],
 })
 export class NovaposhtaModule {}

@@ -5,11 +5,11 @@ export type WarehouseDocument = Document & Warehouse;
 
 @Schema({ timestamps: true, skipVersioning: true })
 export class Warehouse {
-  @Prop({ unique: true })
+  @Prop()
   Ref: string;
 
   @Prop()
-  SiteKey: string;
+  SiteKey: number;
 
   @Prop()
   Description: string;
@@ -30,7 +30,7 @@ export class Warehouse {
   TypeOfWarehouse: string;
 
   @Prop()
-  Number: string;
+  Number: number;
 
   @Prop()
   CityRef: string;

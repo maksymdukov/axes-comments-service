@@ -95,4 +95,19 @@ export class NovaposhtaApiService {
       .then(this.checkSuccessResponse<NpWarehouseTypesResponse>())
       .then((resp) => resp.data);
   }
+
+  async fetchAllWarehouses() {
+    this.logger.verbose(`Fetching all warehouses`);
+    return this.httpService
+      .post<NpWarehousesResponse>('', {
+        modelName: 'AddressGeneral',
+        calledMethod: 'getWarehouses',
+      })
+      .toPromise()
+      .then(this.checkSuccessResponse<NpWarehousesResponse>())
+      .then((resp) => {
+        this.logger.verbose(`Fetched ${resp.data.length} items`);
+        return resp.data;
+      });
+  }
 }

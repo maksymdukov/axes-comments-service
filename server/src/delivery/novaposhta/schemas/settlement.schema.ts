@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { Warehouse, WarehouseSchema } from './warehouse.schema';
 
 export type SettlementDocument = Document & Settlement;
 
@@ -82,6 +83,9 @@ export class Settlement {
 
   @Prop()
   SpecialCashCheck: number;
+
+  @Prop({ type: [WarehouseSchema] })
+  warehouses: Warehouse[];
 
   createdAt: Date;
   updatedAt: Date;
