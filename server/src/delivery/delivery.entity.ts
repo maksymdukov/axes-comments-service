@@ -18,7 +18,7 @@ export class Delivery {
   type: string;
 
   @Column({ nullable: true })
-  idx: string;
+  idx: number;
 
   @Column({ nullable: true })
   address: string;
@@ -27,13 +27,7 @@ export class Delivery {
   branch: string;
 
   @Column({ nullable: true })
-  branchId: string;
-
-  @Column({ nullable: true })
   settlement: string;
-
-  @Column({ nullable: true })
-  settlementId: string;
 
   @OneToMany(() => Order, (order) => order.delivery, {
     nullable: true,
