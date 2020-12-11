@@ -8,12 +8,14 @@ import Products from "pages/products/products";
 import Slides from "pages/slides/slides";
 import ReviewSlides from "pages/review-slides/review-slides";
 import Infopages from "pages/infopages/infopages";
+import ClientFE from "pages/client-fe/client-fe";
 
 const Routes = () => {
   return (
     <Layout>
       <Switch>
         <Route path="/" exact component={Comments} />
+        <Route path="/clientfe" exact component={ClientFE} />
         <Route path="/gallery" exact component={Gallery} />
         <Route path="/products" exact component={Products} />
         <Route path="/slides" exact component={Slides} />

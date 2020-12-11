@@ -8,4 +8,12 @@ export class FrontendService {
   rebuild() {
     return this.ssgService.rebuild();
   }
+
+  getLastBuilds() {
+    return this.ssgService.getBuilds();
+  }
+
+  cancelBuild(buildId: string) {
+    return this.ssgService.cancelBuild(buildId);
+  }
 }

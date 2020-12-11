@@ -1,4 +1,10 @@
-import { Controller, Get } from '@nestjs/common';
+import {
+  BadRequestException,
+  Controller,
+  Get,
+  Param,
+  Patch,
+} from '@nestjs/common';
 import { JwtAuth } from 'src/auth/decorators/jwt-auth.decorator';
 import { UserRoles } from 'src/users/enums/roles.enum';
 import { FrontendService } from './frontend.service';
@@ -12,5 +18,16 @@ export class FrontendController {
   async rebuildFrontend() {
     await this.feService.rebuild();
     return;
+  }
+
+  @Get('build')
+  async getLastBuilds() {
+    return this.feService.getLastBuilds();
+  }
+
+  @Patch('build/:id')
+  async cancelBuild(@Param('id') buildId: string) {
+    if (!buildId) throw new BadRequestException('id is missing');
+    return this.feService.cancelBuild(buildId);
   }
 }

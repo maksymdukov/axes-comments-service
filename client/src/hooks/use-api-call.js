@@ -1,8 +1,14 @@
 import { useState, useCallback } from "react";
 
-export const useApiCall = ({ fetcher, onSuccess, onFail, setError }) => {
+export const useApiCall = ({
+  fetcher,
+  onSuccess,
+  onFail,
+  setError,
+  initData,
+}) => {
   const [{ data, loading, error }, setState] = useState({
-    data: null,
+    data: initData || null,
     loading: false,
     error: null,
   });

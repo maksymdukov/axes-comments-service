@@ -26,6 +26,8 @@ export default () => ({
     adminPhone: process.env.ADMIN_PHONE,
   },
   ssg: {
+    apiToken: process.env.ZEIT_TOKEN,
+    projectId: process.env.ZEIT_PROJECT_ID,
     buildFrontendHook: process.env.BUILD_FRONTEND_WEBHOOK,
   },
   np: {

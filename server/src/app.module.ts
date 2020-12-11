@@ -116,6 +116,8 @@ const ssgModule = SsgModule.forRootAsync({
   inject: [ApiConfigService],
   useFactory: (apiConfigService: ApiConfigService) => ({
     rebuildEndpoint: apiConfigService.config.ssg.buildFrontendHook,
+    apiToken: apiConfigService.config.ssg.apiToken,
+    projectId: apiConfigService.config.ssg.projectId,
   }),
 });
 

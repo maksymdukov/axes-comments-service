@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useApiCall } from "hooks/use-api-call";
-import { rebuildFrontendApi } from "./rebuild.api";
+import { rebuildFrontendApi } from "../apis/rebuild.api";
 import WithCenteredLoader from "components/loader/with-centered-loader";
 import { Button, makeStyles } from "@material-ui/core";
 import clsx from "clsx";
@@ -18,12 +18,13 @@ const useStyles = makeStyles(({ palette }) => ({
   },
 }));
 
-const RebuildBtn = () => {
+const RebuildBtn = ({onSuccess}) => {
   const classes = useStyles();
   const [published, setPublished] = useState(false);
   const { trigger, loading, data } = useApiCall({
     fetcher: rebuildFrontendApi,
     onSuccess: () => {
+      onSuccess();
       setPublished(true);
     },
   });

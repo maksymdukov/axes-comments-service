@@ -2,6 +2,8 @@ import { ModuleMetadata } from '@nestjs/common';
 
 export interface ISSGOptions {
   rebuildEndpoint: string;
+  apiToken: string;
+  projectId: string;
 }
 
 export type ISSGModuleAsyncOpts = {

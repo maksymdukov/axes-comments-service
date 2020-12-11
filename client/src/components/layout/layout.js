@@ -20,10 +20,10 @@ import ShopTwoIcon from "@material-ui/icons/ShopTwo";
 import CommentIcon from "@material-ui/icons/Comment";
 import LogoutButton from "components/buttons/logout";
 import { Link, useLocation } from "react-router-dom";
-import RebuildBtn from "components/header/rebuild-btn";
 import PermMediaIcon from "@material-ui/icons/PermMedia";
 import SlideshowIcon from "@material-ui/icons/Slideshow";
 import FileCopyIcon from "@material-ui/icons/FileCopy";
+import AccountBalanceIcon from "@material-ui/icons/AccountBalance";
 
 const drawerWidth = 240;
 
@@ -97,6 +97,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const links = [
+  {
+    label: "Администрирование",
+    to: "/clientfe",
+    icon: AccountBalanceIcon,
+  },
   {
     label: "Комментарии",
     to: "/",
@@ -172,7 +177,6 @@ export default function Layout({ children }) {
           <Typography variant="h6" noWrap>
             Админ панель
           </Typography>
-          <RebuildBtn />
           <LogoutButton className={classes.logout} />
         </Toolbar>
       </AppBar>

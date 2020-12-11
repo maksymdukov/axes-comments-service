@@ -33,6 +33,8 @@ export interface IServerConfig {
 
 export interface ISSG {
   buildFrontendHook: string;
+  apiToken: string;
+  projectId: string;
 }
 
 export interface INovaposhtaApiConfig {

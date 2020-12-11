@@ -1,5 +1,8 @@
 import { DynamicModule, HttpModule, Module } from '@nestjs/common';
-import { ISSGModuleAsyncOpts } from './interfaces/ssg-options.interface';
+import {
+  ISSGModuleAsyncOpts,
+  ISSGOptions,
+} from './interfaces/ssg-options.interface';
 import { SSG_ROOT_OPTIONS } from './interfaces/ssg.constants';
 import { SsgService } from './ssg.service';
 
@@ -23,7 +26,19 @@ export class SsgModule {
   static forFeature(): DynamicModule {
     return {
       module: SsgModule,
-      imports: [HttpModule],
+      imports: [
+        HttpModule.registerAsync({
+          inject: [SSG_ROOT_OPTIONS],
+          useFactory: (ssgOptions: ISSGOptions) => {
+            return {
+              baseURL: 'https://api.vercel.com',
+              headers: {
+                Authorization: `Bearer ${ssgOptions.apiToken}`,
+              },
+            };
+          },
+        }),
+      ],
       providers: [SsgService],
       exports: [SsgService],
     };
