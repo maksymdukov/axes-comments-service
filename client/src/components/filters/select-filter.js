@@ -19,7 +19,7 @@ const SelectFilter = ({
   updateFilterStatus,
   options,
   label,
-  mb,
+  mb = 0,
 }) => {
   const classes = useStyles();
   const statusFilter = useSelector(getFilterStatus);
