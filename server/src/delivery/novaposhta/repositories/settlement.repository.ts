@@ -5,7 +5,6 @@ import { NpSettlementsResponseItem } from 'src/integrations/novaposhta-api/inter
 import { NpWarehousesResponseItem } from 'src/integrations/novaposhta-api/interfaces/np-warehouses-response.interface';
 import { ELanguage } from 'src/language/languages.enum';
 import { FindSettlementsDto } from '../dto/find-settlements.dto';
-import { GetWarehousesDto } from '../dto/get-warehouses.dto';
 import { ELIGIBLE_WAREHOUSE_TYPES } from '../novaposhta.constants';
 import { Settlement, SettlementDocument } from '../schemas/settlement.schema';
 
@@ -58,31 +57,14 @@ export class SettlementRepository {
       .exec();
   }
 
-  async getWarehouses(ref: string, getWarehousesDto: GetWarehousesDto) {
-    const { locale } = getWarehousesDto;
-    const projectionFields =
-      locale === ELanguage.ru
-        ? {
-            Description: 0,
-            ShortAddress: 0,
-            CityDescription: 0,
-          }
-        : {
-            DescriptionRu: 0,
-            ShortAddressRu: 0,
-            CityDescriptionRu: 0,
-          };
-
-    return this.settlementModel
-      .aggregate()
-      .match({ Ref: ref })
-      .unwind('warehouses')
-      .match({
-        'warehouses.TypeOfWarehouse': { $in: ELIGIBLE_WAREHOUSE_TYPES },
-      })
-      .sort({ 'warehouses.Number': 1 })
-      .replaceRoot('warehouses')
-      .project(projectionFields);
+  async getWarehouses(settlement: SettlementDocument) {
+    return settlement.warehouses
+      .filter((warehouse) =>
+        ELIGIBLE_WAREHOUSE_TYPES.includes(warehouse.TypeOfWarehouse),
+      )
+      .sort((a, b) => {
+        return a.Number - b.Number;
+      });
   }
 
   async updateAll(

@@ -1,5 +1,4 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
 import { NovaposhtaApiService } from 'src/integrations/novaposhta-api/novaposhta-api.service';
 import { DatesService } from 'src/utils/dates/dates.service';
 import { FindSettlementsDto } from './dto/find-settlements.dto';
@@ -60,9 +59,6 @@ export class NovaposhtaService {
       return [];
     }
 
-    return this.settlementRepository.getWarehouses(
-      settlementRef,
-      getWarehousesDto,
-    );
+    return this.settlementRepository.getWarehouses(settlement);
   }
 }
