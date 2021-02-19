@@ -68,45 +68,37 @@ export class SettlementRepository {
   }
 
   async updateAll(
-    settlementsGen: AsyncGenerator<NpSettlementsResponseItem[]>,
+    settlements: NpSettlementsResponseItem[],
     warehouses: NpWarehousesResponseItem[],
   ) {
-    const session = await this.connection.startSession();
-    await session.withTransaction(async () => {
-      for await (const settlements of settlementsGen) {
-        await this.settlementModel.bulkWrite(
-          settlements.map((settlement) => ({
-            updateOne: {
-              filter: {
-                Ref: settlement.Ref,
-              },
-              update: settlement,
-              upsert: true,
-            },
-          })),
-          { session },
-        );
+    const settlementsHash = new Map<
+      string,
+      NpSettlementsResponseItem & { warehouses?: NpWarehousesResponseItem[] }
+    >();
+    settlements.forEach((settlement) =>
+      settlementsHash.set(settlement.Ref, settlement),
+    );
+    // merge with warehouses
+    warehouses.forEach((warehouse) => {
+      const settlement = settlementsHash.get(warehouse.SettlementRef);
+      if (settlement) {
+        settlement.warehouses
+          ? settlement.warehouses.push(warehouse)
+          : (settlement.warehouses = [warehouse]);
       }
-
-      await this.settlementModel.updateMany(
-        {},
-        { warehouses: [] },
-        { session },
-      );
-
-      await this.settlementModel.bulkWrite(
-        warehouses.map((warehouse) => ({
-          updateOne: {
-            filter: {
-              Ref: warehouse.SettlementRef,
-            },
-            update: {
-              $push: { warehouses: warehouse },
-            },
-          },
-        })),
-        { session },
-      );
     });
+    const populatedSettlements = Array.from(settlementsHash.values());
+    return this.settlementModel.bulkWrite([
+      {
+        deleteMany: {
+          filter: {},
+        },
+      },
+      ...populatedSettlements.map((settlement) => ({
+        insertOne: {
+          document: settlement,
+        },
+      })),
+    ]);
   }
 }

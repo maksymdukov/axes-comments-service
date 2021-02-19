@@ -37,8 +37,12 @@ export class NovaposhtaService {
     this.updatingSettlements = true;
     try {
       const warehouses = await this.novaposhtaApiService.fetchAllWarehouses();
-      const settlementsGen = this.novaposhtaApiService.fetchSettlements();
-      await this.settlementRepository.updateAll(settlementsGen, warehouses);
+      const allSettlements = [];
+      for await (const settlements of this.novaposhtaApiService.fetchSettlements()) {
+        allSettlements.push(...settlements);
+      }
+
+      await this.settlementRepository.updateAll(allSettlements, warehouses);
     } catch (error) {
       throw error;
     } finally {

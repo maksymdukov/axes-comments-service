@@ -3,7 +3,7 @@ import { Document } from 'mongoose';
 
 export type WarehouseDocument = Document & Warehouse;
 
-@Schema({ timestamps: true, skipVersioning: true })
+@Schema({ timestamps: true, skipVersioning: true, _id: false })
 export class Warehouse {
   @Prop()
   Ref: string;

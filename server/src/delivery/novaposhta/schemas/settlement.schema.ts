@@ -84,7 +84,7 @@ export class Settlement {
   @Prop()
   SpecialCashCheck: number;
 
-  @Prop({ type: [WarehouseSchema] })
+  @Prop({ type: [WarehouseSchema], default: [] })
   warehouses: Warehouse[];
 
   createdAt: Date;
