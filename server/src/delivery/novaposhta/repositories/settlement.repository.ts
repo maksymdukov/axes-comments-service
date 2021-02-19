@@ -71,34 +71,30 @@ export class SettlementRepository {
     settlements: NpSettlementsResponseItem[],
     warehouses: NpWarehousesResponseItem[],
   ) {
-    const settlementsHash = new Map<
-      string,
-      NpSettlementsResponseItem & { warehouses?: NpWarehousesResponseItem[] }
-    >();
-    settlements.forEach((settlement) =>
-      settlementsHash.set(settlement.Ref, settlement),
-    );
-    // merge with warehouses
-    warehouses.forEach((warehouse) => {
-      const settlement = settlementsHash.get(warehouse.SettlementRef);
-      if (settlement) {
-        settlement.warehouses
-          ? settlement.warehouses.push(warehouse)
-          : (settlement.warehouses = [warehouse]);
-      }
-    });
-    const populatedSettlements = Array.from(settlementsHash.values());
-    return this.settlementModel.bulkWrite([
+    await this.settlementModel.bulkWrite([
       {
         deleteMany: {
           filter: {},
         },
       },
-      ...populatedSettlements.map((settlement) => ({
+      ...settlements.map((settlement) => ({
         insertOne: {
           document: settlement,
         },
       })),
     ]);
+
+    await this.settlementModel.bulkWrite(
+      warehouses.map((warehouse) => ({
+        updateOne: {
+          filter: {
+            Ref: warehouse.SettlementRef,
+          },
+          update: {
+            $push: { warehouses: warehouse },
+          },
+        },
+      })),
+    );
   }
 }
