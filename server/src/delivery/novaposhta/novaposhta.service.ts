@@ -17,7 +17,7 @@ export class NovaposhtaService {
   ) {}
 
   async findSettlements(findSettlementsDto: FindSettlementsDto) {
-    await this.checkExpiredSettlements();
+    // await this.checkExpiredSettlements();
     return this.settlementRepository.findMany(findSettlementsDto);
   }
 

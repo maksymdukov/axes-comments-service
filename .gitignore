@@ -2,3 +2,4 @@
 .env*
 node_modules
 db_backup
+db.txt
